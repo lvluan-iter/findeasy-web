@@ -1,28 +1,39 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <router-view></router-view>
+    <scollto-top />
+
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import ScolltoTop from './components/ScolltoTop.vue';
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    ScolltoTop
   }
 }
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+* {
+  font-family: 'Roboto', sans-serif;
+}
+
+html, body {
+  overflow-x: hidden;
+}
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  height: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #FFFFFF;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
