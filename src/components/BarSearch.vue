@@ -1,7 +1,12 @@
 <template>
-    <div class="search-container">
-        <input type="search" v-model="searchValue" @input="barSearch" placeholder="Tìm kiếm thông tin theo mô tả">
-    </div>
+  <div class="search-container">
+    <input
+      v-model="searchValue"
+      type="search"
+      placeholder="Tìm kiếm thông tin theo mô tả"
+      @input="barSearch"
+    >
+  </div>
 </template>
 
 <script>

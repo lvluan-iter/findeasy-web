@@ -1,19 +1,49 @@
 <template>
   <div class="user-favorite">
     <h2>Danh Sách Bài Đăng Đã Lưu</h2>
-    <div v-if="loading" class="loading">Loading...</div>
-    <div v-if="error" class="error">Error: {{ error }}</div>
-    <div v-if="!loading && !error && favoriteProperties.length > 0" class="property-list">
-      <div v-for="property in favoriteProperties" :key="property.id" class="property-item">
-        <img :src="getImageUrl(property.imageUrls[0])" alt="Property Image" class="property-image"/>
+    <div
+      v-if="loading"
+      class="loading"
+    >
+      Loading...
+    </div>
+    <div
+      v-if="error"
+      class="error"
+    >
+      Error: {{ error }}
+    </div>
+    <div
+      v-if="!loading && !error && favoriteProperties.length > 0"
+      class="property-list"
+    >
+      <div
+        v-for="property in favoriteProperties"
+        :key="property.id"
+        class="property-item"
+      >
+        <img
+          :src="getImageUrl(property.imageUrls[0])"
+          alt="Property Image"
+          class="property-image"
+        >
         <div class="property-details">
           <h3>{{ property.title }}</h3>
-          <p class="property-description">{{ property.description }}</p>
-          <div class="property-price">{{ property.price }} VND</div>
+          <p class="property-description">
+            {{ property.description }}
+          </p>
+          <div class="property-price">
+            {{ property.price }} VND
+          </div>
         </div>
       </div>
     </div>
-    <div v-if="!loading && !error && favoriteProperties.length === 0" class="no-properties">No favorite properties found.</div>
+    <div
+      v-if="!loading && !error && favoriteProperties.length === 0"
+      class="no-properties"
+    >
+      No favorite properties found.
+    </div>
   </div>
 </template>
 

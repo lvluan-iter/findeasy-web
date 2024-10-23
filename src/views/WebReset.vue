@@ -2,7 +2,7 @@
   <div id="app">
     <header class="relative">
       <IconHeader />
-      <div class="nav" id="nav">
+      <div class="nav">
         <NavBar />
       </div>
     </header>

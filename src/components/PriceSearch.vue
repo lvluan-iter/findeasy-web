@@ -1,11 +1,26 @@
 <template>
   <div class="dropdown-container">
-    <div class="select" title="Giá cả" @mouseover="showDropdown" @mouseleave="hideDropdown">
+    <div
+      class="select"
+      title="Giá cả"
+      @mouseover="showDropdown"
+      @mouseleave="hideDropdown"
+    >
       <span>{{ selectedPriceText }}</span>
-      <i class="fa-solid fa-chevron-down"></i>
+      <i class="fa-solid fa-chevron-down" />
     </div>
-    <div class="pricedropdown" v-show="isOpen" @mouseover="showDropdown" @mouseleave="hideDropdown">
-      <div class="priceitem" v-for="(price, index) in priceOptions" :key="index" @click="selectPrice(price)">
+    <div
+      v-show="isOpen"
+      class="pricedropdown"
+      @mouseover="showDropdown"
+      @mouseleave="hideDropdown"
+    >
+      <div
+        v-for="(price, index) in priceOptions"
+        :key="index"
+        class="priceitem"
+        @click="selectPrice(price)"
+      >
         {{ price.text }}
       </div>
     </div>

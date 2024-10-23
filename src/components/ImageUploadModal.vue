@@ -1,19 +1,54 @@
 <template>
-  <div class="modal" v-if="isVisible">
+  <div
+    v-if="isVisible"
+    class="modal"
+  >
     <div class="modal-content">
-      <span class="close" @click="close">&times;</span>
+      <span
+        class="close"
+        @click="close"
+      >&times;</span>
       <h2>Thay đổi ảnh</h2>
       <div class="image-grid">
-        <div v-for="(image, index) in images" :key="index" class="image-item">
-          <img :src="image.url" alt="Property Image">
-          <button class="remove" @click="removeImage(index)">x</button>
+        <div
+          v-for="(image, index) in images"
+          :key="index"
+          class="image-item"
+        >
+          <img
+            :src="image.url"
+            alt="Property Image"
+          >
+          <button
+            class="remove"
+            @click="removeImage(index)"
+          >
+            x
+          </button>
         </div>
-        <div class="image-item add-new" @click="triggerFileInput">
-          <input type="file" @change="handleFileChange" ref="fileInput" accept="image/*" multiple style="display: none;" />
-          <button class="add">+</button>
+        <div
+          class="image-item add-new"
+          @click="triggerFileInput"
+        >
+          <input
+            ref="fileInput"
+            type="file"
+            accept="image/*"
+            multiple
+            style="display: none;"
+            @change="handleFileChange"
+          >
+          <button class="add">
+            +
+          </button>
         </div>
       </div>
-      <button class="save" @click="save">Xong</button>
+      <button
+        class="save"
+        @click="save"
+      >
+        Xong
+      </button>
     </div>
   </div>
 </template>

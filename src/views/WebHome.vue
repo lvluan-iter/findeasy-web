@@ -2,94 +2,67 @@
   <div id="app">
     <header class="relative">
       <IconHeader />
-      <div class="nav" id="nav">
+      <div class="nav">
         <NavBar />
       </div>
     </header>
     <main>
-      <div class="section" v-scroll-reveal>
-        <FirstBanner />
-      </div>
-      <div class="section0" v-scroll-reveal>
-        <HomeSOne />
-      </div>
-      <div class="section01" v-scroll-reveal>
-        <HomeSTwo />
-      </div>
-      <div class="section2" v-scroll-reveal>
-        <HomeSThree/>
-      </div>
-      <div class="section3" v-scroll-reveal>
-        <PopularProperty />
-      </div>
-      <div class="section4" v-scroll-reveal>
-        <JoinUs />
+      <div
+        v-for="(component, index) in components"
+        :key="index"
+        v-scroll-reveal
+        :class="component.class"
+      >
+        <component :is="component.name" />
       </div>
     </main>
     <footer class="footer">
       <WebFooter />
     </footer>
+    <CompareBar />
   </div>
 </template>
 
-<script>
-import IconHeader from '../components/IconHeader.vue';
-import NavBar from '../components/NavBar.vue';
-import WebFooter from '@/components/WebFooter.vue';
-import PopularProperty from '@/components/PopularProperty.vue';
-import FirstBanner from '@/components/FirstBanner.vue';
+<script setup>
+import { markRaw } from 'vue'
+import IconHeader from '../components/IconHeader.vue'
+import NavBar from '../components/NavBar.vue'
+import WebFooter from '@/components/WebFooter.vue'
+import FirstBanner from '@/components/FirstBanner.vue'
 import HomeSOne from '../components/HomeSOne.vue'
 import HomeSTwo from '../components/HomeSTwo.vue'
-import JoinUs from '@/components/JoinUs.vue';
-import HomeSThree from '@/components/HomeSThree.vue';
+import JoinUs from '@/components/JoinUs.vue'
+import HomeSThree from '@/components/HomeSThree.vue'
+import LocationComponent from '@/components/LocationComponent.vue'
+import CompareBar from '@/components/CompareBar.vue'
 
-export default {
-  name: 'WebHome',
-  components: {
-    IconHeader,
-    NavBar,
-    WebFooter,
-    PopularProperty,
-    HomeSOne,
-    FirstBanner,
-    HomeSTwo,
-    HomeSThree,
-    JoinUs
-  },
-  data() {
-    return {
-      visibleSections: []
-    };
-  },
-  methods: {
-    isVisible(index) {
-      return this.visibleSections.includes(index);
-    },
-  },
-  directives: {
-    scrollReveal: {
-      inserted(el) {
-        const observer = new IntersectionObserver(entries => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              el.classList.add('fade-in');
-              el.classList.remove('fade-out');
-            } else {
-              // Thay vì ẩn khi ra khỏi viewport, chỉ ẩn khi phần tử ở dưới bottom của viewport
-              if (entry.boundingClientRect.top > window.innerHeight) {
-                el.classList.remove('fade-in');
-                el.classList.add('fade-out');
-              }
-            }
-          });
-        }, {
-          threshold: [0],
-          rootMargin: '0px'
-        });
-        observer.observe(el);
-      }
-    }
-  },
+const components = [
+  { name: markRaw(FirstBanner), class: 'section' },
+  { name: markRaw(HomeSOne), class: 'section0' },
+  { name: markRaw(HomeSTwo), class: 'section01' },
+  { name: markRaw(HomeSThree), class: 'section2' },
+  { name: markRaw(LocationComponent), class: 'section5' },
+  { name: markRaw(JoinUs), class: 'section4' }
+]
+
+const vScrollReveal = {
+  mounted(el) {
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          el.classList.add('fade-in')
+          el.classList.remove('fade-out')
+        } else if (entry.boundingClientRect.top > window.innerHeight) {
+          el.classList.remove('fade-in')
+          el.classList.add('fade-out')
+        }
+      })
+    }, {
+      threshold: [0],
+      rootMargin: '0px'
+    })
+    observer.observe(el)
+  }
 }
 </script>
 
@@ -117,7 +90,7 @@ export default {
 .section0,
 .section1,
 .section2,
-.section3 {
+.section4 {
   opacity: 0;
   transform: translateY(30px);
   transition: opacity 0.6s ease-out, transform 0.6s ease-out;

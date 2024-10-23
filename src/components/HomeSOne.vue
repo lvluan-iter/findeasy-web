@@ -17,32 +17,34 @@
     </header>
     <div class="grid grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-4">
       <div class="p-6 sm:p-8 md:p-10 bg-[#0a73c0] rounded-lg text-white">
-        <h2 class="text-[calc(1.2rem+.8vw)] sm:text-[calc(1.325rem+.9vw)]">Regular Listing</h2>
-        <p>List your property with us and reach a broad audience of potential buyers.
-          Enjoy the benefits of our platform to manage and update your listings easily.</p>
+        <h2 class="text-[calc(1.2rem+.8vw)] sm:text-[calc(1.325rem+.9vw)]">
+          Regular Listing
+        </h2>
+        <p>
+          List your property with us and reach a broad audience of potential buyers.
+          Enjoy the benefits of our platform to manage and update your listings easily.
+        </p>
         <button class="p-2 rounded-lg bg-white text-black border-none flex items-center text-base mt-4 sm:mt-5 transition duration-300 ease-in-out hover:bg-gray-200 hover:scale-105">
           <span>Get Started</span>
-          <div class="w-px h-5 bg-black mx-2"></div>
-          <i class="fa-solid fa-arrow-right"></i>
+          <div class="w-px h-5 bg-black mx-2" />
+          <i class="fa-solid fa-arrow-right" />
         </button>
       </div>
 
       <div class="p-6 sm:p-8 md:p-10 bg-[#212529] rounded-lg text-white">
-        <h2 class="text-[calc(1.2rem+.8vw)] sm:text-[calc(1.325rem+.9vw)]">VIP Listing</h2>
-        <p>Elevate your property's visibility with a VIP listing. Get premium
-          placement, enhanced features, and increased exposure to attract more serious buyers. Stand out from the crowd and make your property shine!</p>
+        <h2 class="text-[calc(1.2rem+.8vw)] sm:text-[calc(1.325rem+.9vw)]">
+          VIP Listing
+        </h2>
+        <p>
+          Elevate your property's visibility with a VIP listing. Get premium
+          placement, enhanced features, and increased exposure to attract more serious buyers. Stand out from the crowd and make your property shine!
+        </p>
         <button class="p-2 rounded-lg bg-[#0a73c0] text-white border-none flex items-center text-base mt-4 sm:mt-5 transition duration-300 ease-in-out hover:bg-[#085a98] hover:scale-105">
           <span>Get Started</span>
-          <div class="w-px h-5 bg-white mx-2"></div>
-          <i class="fa-solid fa-arrow-right"></i>
+          <div class="w-px h-5 bg-white mx-2" />
+          <i class="fa-solid fa-arrow-right" />
         </button>
       </div>
     </div>
   </div>
 </template>
-
-<script>
-export default {
-  // Component logic here
-}
-</script>
