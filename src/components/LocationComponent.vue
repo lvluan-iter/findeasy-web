@@ -129,7 +129,7 @@ const windowWidth = ref(window.innerWidth);
 const fetchData = async () => {
   try {
     isLoading.value = true;
-    const response = await fetch(`https://propertyweb.onrender.com/api/location`);
+    const response = await fetch(`https://roombooking-fa3a.onrender.com/api/location`);
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
