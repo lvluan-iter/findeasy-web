@@ -15,13 +15,13 @@
         <!-- Radio button -->
         <div class="absolute -top-3 -right-3">
           <input
+            :id="plan.id"
+            class="sr-only"
             type="radio"
             :name="name"
-            :id="plan.id"
             :value="plan.id"
             :checked="modelValue === plan.id"
             @change="$emit('update:modelValue', plan.id)"
-            class="sr-only"
           >
           <label
             :for="plan.id"
@@ -70,7 +70,6 @@
           </li>
         </ul>
 
-        <!-- Select button -->
         <button
           :class="[
             'mt-6 w-full py-2 px-4 rounded-lg font-medium transition-colors duration-300',
@@ -78,7 +77,6 @@
               ? 'bg-blue-500 text-white hover:bg-blue-600'
               : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
           ]"
-          @click="$emit('update:modelValue', plan.id)"
         >
           Select {{ plan.name }} Plan
         </button>

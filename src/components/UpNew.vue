@@ -359,7 +359,6 @@ const property = reactive({
   userId: null,
   nearbyPlaces: [],
   isPaid: false
-
 });
 
 const currentDate = ref('');
@@ -444,7 +443,7 @@ const submitProperty = async () => {
     const propertyResponse = await fetch('https://roombooking-fa3a.onrender.com/api/properties', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json;charset=UTF-8',
       },
       body: JSON.stringify(property),
     });
@@ -456,7 +455,7 @@ const submitProperty = async () => {
     } else {
       resetForm();
       toast.success('Property added successfully!');
-      router.push('/my-properties');
+      router.push('/');
     }
   } catch (error) {
     console.error('Error:', error);
