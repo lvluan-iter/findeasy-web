@@ -282,6 +282,12 @@
             </h2>
             <NearbyPlacesInput v-model="property.nearbyPlaces" />
           </section>
+
+          <section>
+            <ListingPlans
+              v-model="selectedPlan"
+            />
+          </section>
         </div>
 
         <!-- Submit buttons -->
@@ -317,11 +323,13 @@ import AmenitiesCheckbox from './AmenitiesCheckbox.vue';
 import NearbyPlacesInput from './NearbyPlacesInput.vue';
 import { useUserStore } from '../stores/userStore'
 import { useCategoryStore } from '../stores/categoryStore'
+import ListingPlans from './ListingPlans.vue';
 
 const router = useRouter();
 const toast = useToast();
 const userStore = useUserStore()
 const categoryStore = useCategoryStore()
+const selectedPlan = ref('free');
 
 const categoryOptions = computed(() => categoryStore.getCategoryOptions)
 
@@ -350,6 +358,8 @@ const property = reactive({
   categoryId: -1,
   userId: null,
   nearbyPlaces: [],
+  isPaid: false
+
 });
 
 const currentDate = ref('');
@@ -387,7 +397,16 @@ const handleFileDrop = (event) => {
 };
 
 const addImagesToPreview = (files) => {
+  const maxImages = selectedPlan.value === 'premium' ? Infinity : 5;
+  
+  if (images.value.length >= maxImages) {
+    toast.error(`Free plan allows maximum ${maxImages} images`);
+    return;
+  }
+  
   Array.from(files).forEach(file => {
+    if (images.value.length >= maxImages) return;
+    
     if (file.type.startsWith('image/') && file.size <= 5 * 1024 * 1024) {
       const reader = new FileReader();
       reader.onload = e => {
@@ -395,7 +414,7 @@ const addImagesToPreview = (files) => {
       };
       reader.readAsDataURL(file);
     } else {
-      alert('Please upload image files only (max 5MB each)');
+      toast.error('Please upload image files only (max 5MB each)');
     }
   });
 };
@@ -420,6 +439,8 @@ const submitProperty = async () => {
     const imageUrls = await imageResponse.json();
     property.imageUrls = imageUrls;
 
+    property.isPaid = selectedPlan.value === 'premium';
+    
     const propertyResponse = await fetch('https://roombooking-fa3a.onrender.com/api/properties', {
       method: 'POST',
       headers: {
@@ -427,10 +448,16 @@ const submitProperty = async () => {
       },
       body: JSON.stringify(property),
     });
-    if (!propertyResponse.ok) throw new Error('Failed to submit property data');
-
-    resetForm();
-    toast.success('Property added successfully!');
+    
+    const response = await propertyResponse.json();
+    
+    if (response.paymentUrl) {
+      window.location.href = response.paymentUrl;
+    } else {
+      resetForm();
+      toast.success('Property added successfully!');
+      router.push('/my-properties');
+    }
   } catch (error) {
     console.error('Error:', error);
     toast.error('An error occurred. Please try again.');
@@ -454,6 +481,7 @@ const resetForm = () => {
     keywords: '',
     categoryId: null,
     nearbyPlaces: [],
+    isPaid: false
   });
   images.value = [];
   nearbyPlaces.value = [];
