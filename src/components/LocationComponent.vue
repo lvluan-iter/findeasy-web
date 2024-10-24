@@ -129,7 +129,10 @@ const windowWidth = ref(window.innerWidth);
 const fetchData = async () => {
   try {
     isLoading.value = true;
-    const response = await fetch(`http://localhost:8080/api/location`);
+    const response = await fetch(`https://propertyweb.onrender.com/api/location`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
     cities.value = await response.json();
   } catch (error) {
     console.error('Error:', error);
