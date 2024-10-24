@@ -218,7 +218,7 @@ export default {
         const priceMin = this.filters.priceMin * 1000000; // Chuyển đổi từ triệu sang VND
         const priceMax = this.filters.priceMax * 1000000; // Chuyển đổi từ triệu sang VND
 
-        const url = `http://localhost:8080/api/properties/search?location=${location}&minPrice=${priceMin}&maxPrice=${priceMax}&bedrooms=${bedrooms !== '' ? bedrooms : ''}&bathrooms=${bathrooms !== '' ? bathrooms : ''}&minArea=${minArea !== '' ? minArea : 0}&maxArea=${maxArea !== '' ? maxArea : 200}&amenities=${this.filters.amenities.join(',')}`;
+        const url = `https://roombooking-fa3a.onrender.com/api/properties/search?location=${location}&minPrice=${priceMin}&maxPrice=${priceMax}&bedrooms=${bedrooms !== '' ? bedrooms : ''}&bathrooms=${bathrooms !== '' ? bathrooms : ''}&minArea=${minArea !== '' ? minArea : 0}&maxArea=${maxArea !== '' ? maxArea : 200}&amenities=${this.filters.amenities.join(',')}`;
         console.log("Request URL:", url); // Debug URL
 
         const response = await fetch(url);

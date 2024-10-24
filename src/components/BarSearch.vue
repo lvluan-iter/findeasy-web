@@ -26,7 +26,7 @@ export default {
         },
         async fetchData() {
             try {
-                const response = await fetch(`http://localhost:8080/api/properties/search?keyword=${this.searchValue.toLowerCase()}`);
+                const response = await fetch(`https://roombooking-fa3a.onrender.com/api/properties/search?keyword=${this.searchValue.toLowerCase()}`);
                 if (!response.ok) {
                     console.log("Lỗi khi tải dữ liệu từ server");
                     return;

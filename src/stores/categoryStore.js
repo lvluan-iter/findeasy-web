@@ -24,7 +24,7 @@ export const useCategoryStore = defineStore('category', {
       this.isLoading = true
       this.error = null
       try {
-        const response = await fetch('http://localhost:8080/api/categories/')
+        const response = await fetch('https://roombooking-fa3a.onrender.com/api/categories/')
         if (!response.ok) throw new Error('Failed to fetch categories')
         this.categories = await response.json()
       } catch (error) {

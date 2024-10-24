@@ -377,7 +377,7 @@ const fetchUserProperties = async () => {
   }
   
   try {
-    const response = await fetch(`http://localhost:8080/api/properties/user/${user.value.id}`)
+    const response = await fetch(`https://roombooking-fa3a.onrender.com/api/properties/user/${user.value.id}`)
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`)
     }

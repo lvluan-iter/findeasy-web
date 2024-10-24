@@ -43,7 +43,7 @@ const fetchQuickStats = async () => {
   if (!user.value) return
 
   try {
-    const response = await fetch(`http://localhost:8080/api/properties/quick-stats/${user.value.id}`)
+    const response = await fetch(`https://roombooking-fa3a.onrender.com/api/properties/quick-stats/${user.value.id}`)
     const data = await response.json()
     quickStats.value = [
       { name: 'Total Properties', value: data.totalProperties, change: data.propertiesGrowth },

@@ -98,7 +98,7 @@ const handleFileUpload = async (event) => {
       formData.append('images', file);
     });
     try {
-      const response = await fetch('http://localhost:8080/api/upload-images', {
+      const response = await fetch('https://roombooking-fa3a.onrender.com/api/upload-images', {
         method: 'POST',
         body: formData,
       });

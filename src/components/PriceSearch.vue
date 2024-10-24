@@ -69,7 +69,7 @@ export default {
     async searchPrice() {
       const minPrice = parseFloat(this.selectedPrice.value) - 500000;
       try {
-        const response = await fetch(`http://localhost:8080/api/properties/search?minPrice=${minPrice}&maxPrice=${this.selectedPrice.value}`);
+        const response = await fetch(`https://roombooking-fa3a.onrender.com/api/properties/search?minPrice=${minPrice}&maxPrice=${this.selectedPrice.value}`);
         if (!response.ok) {
           console.error("Lỗi khi tải dữ liệu từ server");
           return;

@@ -72,7 +72,7 @@ const token = computed(() => route.query.token);
 
 const handleResetPasswordSubmit = async () => {
   try {
-    const response = await fetch('http://localhost:8080/api/auth/reset-password', {
+    const response = await fetch('https://roombooking-fa3a.onrender.com/api/auth/reset-password', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

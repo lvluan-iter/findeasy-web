@@ -78,7 +78,7 @@ const fetchData = async () => {
   error.value = null
   
   try {
-    const response = await fetch(`http://localhost:8080/api/properties/stats/${user.value.id}?yearMonth=${selectedMonth.value}`)
+    const response = await fetch(`https://roombooking-fa3a.onrender.com/api/properties/stats/${user.value.id}?yearMonth=${selectedMonth.value}`)
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`)
     }

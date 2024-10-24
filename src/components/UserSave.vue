@@ -72,7 +72,7 @@ export default {
     async fetchProperties() {
       try {
         const responses = await Promise.all(this.propertyIds.map(id => 
-          fetch(`http://localhost:8080/api/properties/${id}`).then(response => {
+          fetch(`https://roombooking-fa3a.onrender.com/api/properties/${id}`).then(response => {
             if (!response.ok) {
               throw new Error(`Failed to fetch property with ID ${id}`);
             }

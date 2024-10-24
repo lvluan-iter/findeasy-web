@@ -284,7 +284,7 @@ const shareProperty = (property) => {
 };
 
 const addToFavorites = (propertyId) => {
-  const url = `http://localhost:8080/api/users/${userStore.user.id}/favorites/${propertyId}`;
+  const url = `https://roombooking-fa3a.onrender.com/api/users/${userStore.user.id}/favorites/${propertyId}`;
   fetch(url, {
     method: 'POST',
     headers: {

@@ -255,7 +255,7 @@ const email = computed(() => route.query.email);
 const fetchTourRequests = async () => {
   if (!email.value) return
   try {
-    const response = await fetch(`http://localhost:8080/api/tour-requests/email/${email.value}`)
+    const response = await fetch(`https://roombooking-fa3a.onrender.com/api/tour-requests/email/${email.value}`)
     if (!response.ok) {
       throw new Error('Network response was not ok')
     }
@@ -269,7 +269,7 @@ const fetchTourRequests = async () => {
 const deleteRequest = async (id) => {
   if (confirm('Are you sure you want to delete this request?')) {
     try {
-      const response = await fetch(`http://localhost:8080/api/tour-requests/${id}`, {
+      const response = await fetch(`https://roombooking-fa3a.onrender.com/api/tour-requests/${id}`, {
         method: 'DELETE',
       })
       if (!response.ok) {
@@ -299,7 +299,7 @@ const closeRescheduleModal = () => {
 const submitReschedule = async () => {
   if (currentRequest.value) {
     try {
-      const response = await fetch(`http://localhost:8080/api/tour-requests/${currentRequest.value.id}/date`, {
+      const response = await fetch(`https://roombooking-fa3a.onrender.com/api/tour-requests/${currentRequest.value.id}/date`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

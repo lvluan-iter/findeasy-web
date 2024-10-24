@@ -681,7 +681,7 @@ const getPlaceIcon = (placeName) => {
 
 const fetchProperty = async () => {
   try {
-    const response = await fetch(`http://localhost:8080/api/properties/${route.params.id}`);
+    const response = await fetch(`https://roombooking-fa3a.onrender.com/api/properties/${route.params.id}`);
     if (!response.ok) throw new Error('Failed to fetch property');
     property.value = await response.json();
     editedProperty.value = JSON.parse(JSON.stringify(property.value));
@@ -706,7 +706,7 @@ const getCoordinates = async (address) => {
 
 const fetchUserContact = async () => {
   try {
-    const response = await fetch(`http://localhost:8080/api/users/id/${property.value.userId}`);
+    const response = await fetch(`https://roombooking-fa3a.onrender.com/api/users/id/${property.value.userId}`);
     if (response.ok) {
       contact.value = await response.json();
     }
@@ -717,7 +717,7 @@ const fetchUserContact = async () => {
 
 const updateProperty = async () => {
   try {
-    const response = await fetch(`http://localhost:8080/api/properties/${property.value.id}`, {
+    const response = await fetch(`https://roombooking-fa3a.onrender.com/api/properties/${property.value.id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(editedProperty.value)
@@ -737,7 +737,7 @@ const fetchUserStatus = async () => {
   }
   const token = localStorage.getItem('jwt');
   try {
-    const response = await fetch(`http://localhost:8080/api/users/status/${contact.value.id}`, {
+    const response = await fetch(`https://roombooking-fa3a.onrender.com/api/users/status/${contact.value.id}`, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
     if (response.ok) {
@@ -759,7 +759,7 @@ const handleSubmit = async () => {
       appointmentTime: formData.value.appointmentTime,
     };
 
-    const response = await fetch('http://localhost:8080/api/tour-requests', {
+    const response = await fetch('https://roombooking-fa3a.onrender.com/api/tour-requests', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

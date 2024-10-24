@@ -309,7 +309,7 @@ const formatDate = (dateString) => {
 const fetchTourRequests = async () => {
   if (!user.value) return
   try {
-    const response = await fetch(`http://localhost:8080/api/tour-requests/user/${user.value.id}`)
+    const response = await fetch(`https://roombooking-fa3a.onrender.com/api/tour-requests/user/${user.value.id}`)
     if (!response.ok) {
       throw new Error('Network response was not ok')
     }
@@ -322,7 +322,7 @@ const fetchTourRequests = async () => {
 
 const updateStatus = async (id, newStatus) => {
   try {
-    const response = await fetch(`http://localhost:8080/api/tour-requests/${id}/status`, {
+    const response = await fetch(`https://roombooking-fa3a.onrender.com/api/tour-requests/${id}/status`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -355,7 +355,7 @@ const closeRescheduleModal = () => {
 const submitReschedule = async () => {
   if (currentRequest.value) {
     try {
-      const response = await fetch(`http://localhost:8080/api/tour-requests/${currentRequest.value.id}/reschedule`, {
+      const response = await fetch(`https://roombooking-fa3a.onrender.com/api/tour-requests/${currentRequest.value.id}/reschedule`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

@@ -51,7 +51,7 @@ const fetchPropertyNearBy = async (info) => {
   loading.value = true;
   error.value = false;
   try {
-    const response = await fetch(`http://localhost:8080/api/properties/searchNearby?location=${info.location}&propertyId=${info.id}`);
+    const response = await fetch(`https://roombooking-fa3a.onrender.com/api/properties/searchNearby?location=${info.location}&propertyId=${info.id}`);
     if (!response.ok) {
       throw new Error('Failed to fetch properties');
     }

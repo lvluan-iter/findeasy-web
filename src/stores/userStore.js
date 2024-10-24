@@ -13,7 +13,7 @@ export const useUserStore = defineStore('user', {
     async login(credentials) {
       this.isLoading = true
       try {
-        const response = await fetch('http://localhost:8080/api/auth/login', {
+        const response = await fetch('https://roombooking-fa3a.onrender.com/api/auth/login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -64,7 +64,7 @@ export const useUserStore = defineStore('user', {
     },
     async refreshToken() {
       try {
-        const response = await fetch('http://localhost:8080/api/auth/refresh', {
+        const response = await fetch('https://roombooking-fa3a.onrender.com/api/auth/refresh', {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${this.getToken()}`,
@@ -93,7 +93,7 @@ export const useUserStore = defineStore('user', {
       
       this.isLoading = true
       try {
-        const response = await fetch('http://localhost:8080/api/users/info', {
+        const response = await fetch('https://roombooking-fa3a.onrender.com/api/users/info', {
           headers: { 'Authorization': `Bearer ${token}` }
         })
         if (response.ok) {

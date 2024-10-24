@@ -454,7 +454,7 @@ const saveProfile = async () => {
       const formData = new FormData();
       formData.append('images', selectedAvatarFile.value);
 
-      const uploadResponse = await fetch('http://localhost:8080/api/upload-images', {
+      const uploadResponse = await fetch('https://roombooking-fa3a.onrender.com/api/upload-images', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('jwt')}`
@@ -471,7 +471,7 @@ const saveProfile = async () => {
       }
     }
 
-    const profileResponse = await fetch(`http://localhost:8080/api/users/${user.id}`, {
+    const profileResponse = await fetch(`https://roombooking-fa3a.onrender.com/api/users/${user.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -501,7 +501,7 @@ const changePassword = async () => {
   }
 
   try {
-    const response = await fetch(`http://localhost:8080/api/users/${user.id}/password`, {
+    const response = await fetch(`https://roombooking-fa3a.onrender.com/api/users/${user.id}/password`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

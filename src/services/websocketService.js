@@ -29,7 +29,7 @@ const createWebSocketService = () => {
     }
 
     connectionStatus.value = 'connecting'
-    const socket = new SockJS('http://localhost:8080/ws')
+    const socket = new SockJS('https://roombooking-fa3a.onrender.com/ws')
     stompClient.value = Stomp.over(() => socket)
 
     const headers = {

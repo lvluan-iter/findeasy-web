@@ -21,7 +21,7 @@ export const usePropertyStore = defineStore('property', {
       this.loading = true
       this.error = null
       try {
-        const response = await fetch(`http://localhost:8080/api/properties/available?page=${page}&size=${this.pageSize}`)
+        const response = await fetch(`https://roombooking-fa3a.onrender.com/api/properties/available?page=${page}&size=${this.pageSize}`)
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`)
         }

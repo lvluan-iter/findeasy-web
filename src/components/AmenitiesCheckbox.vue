@@ -52,7 +52,7 @@ const isSelected = (feature) => selectedFeatures.value.some(f => f.id === featur
 
 const fetchAmenities = async () => {
   try {
-    const response = await fetch('http://localhost:8080/api/amenities');
+    const response = await fetch('https://roombooking-fa3a.onrender.com/api/amenities');
     features.value = await response.json();
   } catch (error) {
     console.error('Failed to fetch amenities:', error);

@@ -284,7 +284,7 @@ const search = async () => {
       (Array.isArray(searchData[key]) && searchData[key].length === 0)) && delete searchData[key]
     )
 
-    const response = await fetch('http://localhost:8080/api/properties/search?page=0&size=10', {
+    const response = await fetch('https://roombooking-fa3a.onrender.com/api/properties/search?page=0&size=10', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

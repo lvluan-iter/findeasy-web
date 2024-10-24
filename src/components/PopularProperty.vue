@@ -107,7 +107,7 @@ export default {
         },
         async fetchAvailableProperties() {
             try {
-                const response = await fetch(`http://localhost:8080/api/properties/popular`);
+                const response = await fetch(`https://roombooking-fa3a.onrender.com/api/properties/popular`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch properties');
                 }

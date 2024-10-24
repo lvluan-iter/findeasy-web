@@ -36,8 +36,8 @@ const fetchData = async () => {
   try {
     const userId = Number(route.params.id);
     const [userResponse, propertiesResponse] = await Promise.all([
-      fetch(`http://localhost:8080/api/users/id/${userId}`),
-      fetch(`http://localhost:8080/api/properties/user/${userId}`)
+      fetch(`https://roombooking-fa3a.onrender.com/api/users/id/${userId}`),
+      fetch(`https://roombooking-fa3a.onrender.com/api/properties/user/${userId}`)
     ]);
 
     if (userResponse.ok && propertiesResponse.ok) {

@@ -412,7 +412,7 @@ const submitProperty = async () => {
   });
 
   try {
-    const imageResponse = await fetch('http://localhost:8080/api/upload-images', {
+    const imageResponse = await fetch('https://roombooking-fa3a.onrender.com/api/upload-images', {
       method: 'POST',
       body: formData,
     });
@@ -420,7 +420,7 @@ const submitProperty = async () => {
     const imageUrls = await imageResponse.json();
     property.imageUrls = imageUrls;
 
-    const propertyResponse = await fetch('http://localhost:8080/api/properties', {
+    const propertyResponse = await fetch('https://roombooking-fa3a.onrender.com/api/properties', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

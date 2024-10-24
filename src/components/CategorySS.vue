@@ -108,7 +108,7 @@ export default {
   methods: {
     async loadCategory() {
       try {
-        const response = await fetch(`http://localhost:8080/api/categories/`);
+        const response = await fetch(`https://roombooking-fa3a.onrender.com/api/categories/`);
         if (!response.ok) {
           console.log("Lỗi khi tải dữ liệu từ server!");
           return;
@@ -121,7 +121,7 @@ export default {
     async updateAvaiblewithCate(categoryId) {
       try {
         console.log(this.categoryId);
-        const response = await fetch(`http://localhost:8080/api/properties/search?categoryId=${categoryId}`);
+        const response = await fetch(`https://roombooking-fa3a.onrender.com/api/properties/search?categoryId=${categoryId}`);
         if (!response.ok) {
           console.log("Lỗi trong quá trình lấy dữ liệu từ serve !")
         }
@@ -133,7 +133,7 @@ export default {
     },
     async addCategory() {
       try {
-        const response = await fetch('http://localhost:8080/api/categories', {
+        const response = await fetch('https://roombooking-fa3a.onrender.com/api/categories', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -169,7 +169,7 @@ export default {
     },
     async deleteCategory(categoryId) {
       try {
-        const response = await fetch(`http://localhost:8080/api/categories/${categoryId}`, {
+        const response = await fetch(`https://roombooking-fa3a.onrender.com/api/categories/${categoryId}`, {
           method: 'DELETE'
         });
         if (response.ok) {

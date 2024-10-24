@@ -57,7 +57,7 @@ const handleSortChange = async (newSortBy) => {
   if (properties.value.length > 100) {
     // Nếu có nhiều hơn 100 kết quả, gọi API để sắp xếp
     try {
-      const response = await fetch(`http://localhost:8080/api/properties/search?sort=${newSortBy}`, {
+      const response = await fetch(`https://roombooking-fa3a.onrender.com/api/properties/search?sort=${newSortBy}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(/* các tham số tìm kiếm hiện tại */)
