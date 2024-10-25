@@ -1,16 +1,18 @@
 <template>
   <div class="px-4 py-5 sm:px-6 md:px-12 lg:px-[120px] lg:py-14">
-    <!-- Header section -->
-    <div class="flex flex-wrap items-center gap-4 mb-2">
+    <div class="flex flex-wrap items-center gap-4">
       <button
         class="text-blue-600 hover:text-blue-800 font-medium flex items-center gap-2 transition duration-300"
         @click="$router.go(-1)"
       >
         <i class="fas fa-angle-left" />
-        <span>Back</span>
+        <span>Quay lại</span>
       </button>
+      <div class="hidden sm:block w-px h-6 bg-gray-300" />
+      <h1 class="text-xl sm:text-2xl font-bold text-gray-800">
+        Đăng Tin
+      </h1>
     </div>
-
     <hr class="w-full mb-5">
     <form
       class="space-y-8"
@@ -20,33 +22,23 @@
       <!-- Main content -->
       <div class="bg-white shadow-md rounded-lg overflow-visible">
         <!-- Property form header -->
-        <div class="bg-gray-50 px-6 py-4 flex flex-wrap items-center justify-between border-b border-gray-200">
-          <div class="text-lg font-semibold text-gray-800">
-            Add Property
-          </div>
+        <div class="bg-gray-50 px-6 py-4 flex flex-wrap items-center justify-end border-b border-gray-200">
           <div class="flex items-center gap-4 text-sm text-gray-600">
             <span>{{ currentDate }}</span>
             <i class="fas fa-calendar-alt text-[rgb(10,115,192)]" />
-            <div class="hidden sm:block w-px h-4 bg-gray-300" />
-            <div class="flex items-center gap-2">
-              <span>Your listing plan: Standard</span>
-              <i class="fas fa-caret-down" />
-            </div>
           </div>
         </div>
 
-        <!-- Form sections -->
         <div class="p-6 space-y-8">
-          <!-- Basic Information -->
           <section>
             <h2 class="text-xl font-semibold text-gray-800 mb-4">
-              Basic Information
+              Thông Tin Cơ Bản
             </h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               <CreativeInput
                 id="title"
                 v-model="property.title"
-                label="Title"
+                label="Tiêu đề"
                 required
                 placeholder="Viết tiêu đề cho tin đăng của bạn ..."
                 :tooltip-content="'Tiêu đề nên đầy đủ thông tin cần thiết, không nên ngắn quá để tối ưu hiển thị.'"
@@ -55,7 +47,7 @@
               <CreativeInput
                 id="type"
                 v-model="property.type"
-                label="Type"
+                label="Loại"
                 :is-select="true"
                 :show-tooltip="false"
                 :options="[
@@ -69,7 +61,7 @@
               <CreativeInput
                 id="category"
                 v-model="property.categoryId"
-                label="Category"
+                label="Danh mục"
                 :is-select="true"
                 :show-tooltip="false"
                 :options="categoryOptions"
@@ -79,17 +71,17 @@
               <CreativeInput
                 id="price"
                 v-model="property.price"
-                label="Price"
+                label="Giá"
                 :show-tooltip="false"
                 type="number"
                 required
-                placeholder="Enter property price"
+                placeholder="Nhập giá..."
                 input-icon-class="fas fa-dollar-sign text-gray-400"
               />
 
               <CreativeInput
                 id="tags"
-                label="Tags"
+                label="Từ khóa"
                 :show-tooltip="true"
                 tooltip-content="Nhập từ khóa liên quan đến bất động sản và nhấn enter để tạo tag."
                 input-icon-class="fas fa-tags text-gray-400"
@@ -106,53 +98,47 @@
             </div>
           </section>
 
-          <!-- Property Description -->
           <section>
             <h2 class="text-xl font-semibold text-gray-800 mb-4">
-              Property Description
+              Thông Tin Mô Tả
             </h2>
             <div class="space-y-2">
-              <label
-                for="description"
-                class="block text-sm font-medium text-gray-700"
-              >Description</label>
               <textarea
                 id="description"
                 v-model="property.description"
                 rows="6"
                 required
                 class="block w-full px-3 py-2 text-sm border border-gray-300 focus:border-blue-500 focus:outline-none transition duration-300 bg-transparent resize-none"
-                placeholder="Provide a detailed description of the property"
+                placeholder="Nhập thông tin mô tả đầy đủ về bất động sản..."
               />
             </div>
           </section>
 
-          <!-- Location / Contacts -->
           <section>
             <h2 class="text-xl font-semibold text-gray-800 mb-4">
-              Location / Contacts
+              Vị Trí
             </h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               <CreativeInput
                 id="address"
                 v-model="property.address"
-                label="Address"
+                label="Địa chỉ"
                 :show-tooltip="true"
                 tooltip-content="Nhập địa chỉ và nhấp vào bên ngoài ô nhập để cập nhật vi trí trên bản đồ."
                 type="text"
                 required
-                placeholder="Full Address"
+                placeholder="Nhập đầy đủ địa chỉ..."
                 input-icon-class="fas fa-map-marker-alt text-gray-400"
                 @blur="updateMapByAddress"
               />
               <CreativeInput
                 id="location"
                 v-model="property.location"
-                label="Location"
+                label="Địa điểm"
                 :show-tooltip="false"
                 type="text"
                 required
-                placeholder="City, State"
+                placeholder="Tỉnh, Thành Phố"
                 input-icon-class="fas fa-location-arrow text-gray-400"
               />
             </div>
@@ -172,10 +158,9 @@
             </div>
           </section>
 
-          <!-- Property Media -->
           <section>
             <h2 class="text-xl font-semibold text-gray-800 mb-4">
-              Property Media
+              Bộ Siêu Tập
             </h2>
             <div
               class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-500 transition-colors duration-300"
@@ -194,10 +179,10 @@
               >
               <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4" />
               <p class="text-sm text-gray-600">
-                Click here or drop files to upload
+                Nhấn vào đây hoặc kéo thả tệp để tải lên
               </p>
               <p class="text-xs text-gray-500 mt-2">
-                Supported formats: JPG, PNG, GIF (Max 5MB each)
+                Hỗ trợ định dạng: JPG, PNG, GIF (Tối đa 5MB)
               </p>
             </div>
             <div
@@ -227,13 +212,13 @@
           <!-- Property Details -->
           <section>
             <h2 class="text-xl font-semibold text-gray-800 mb-4">
-              Property Details
+              Thống Số Chi Tiết
             </h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               <CreativeInput
                 id="area"
                 v-model="property.area"
-                label="Area (sq ft)"
+                label="Diện tích (m²)"
                 :show-tooltip="false"
                 type="number"
                 required
@@ -244,7 +229,7 @@
               <CreativeInput
                 id="bedrooms"
                 v-model="property.bedrooms"
-                label="Bedrooms"
+                label="Phòng ngủ"
                 :show-tooltip="false"
                 type="number"
                 required
@@ -255,7 +240,7 @@
               <CreativeInput
                 id="bathrooms"
                 v-model="property.bathrooms"
-                label="Bathrooms"
+                label="Phòng tắm"
                 :show-tooltip="false"
                 type="number"
                 required
@@ -268,7 +253,7 @@
           <!-- Amenities -->
           <section>
             <h2 class="text-xl font-semibold text-gray-800 mb-4">
-              Amenities
+              Tiện Ích Sẵn Có
             </h2>
             <AmenitiesCheckbox
               v-model="property.amenities"
@@ -278,7 +263,7 @@
           <!-- New section: Nearby Places -->
           <section>
             <h2 class="text-xl font-semibold text-gray-800 mb-4">
-              Nearby Places
+              Khu Vực Lân Cận
             </h2>
             <NearbyPlacesInput v-model="property.nearbyPlaces" />
           </section>
@@ -297,13 +282,13 @@
             class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-300"
             @click="router.go(-1)"
           >
-            Cancel
+            Hủy
           </button>
           <button
             type="submit"
             class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-300"
           >
-            Upload
+            Đăng tin
           </button>
         </div>
       </div>
