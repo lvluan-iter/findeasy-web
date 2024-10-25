@@ -1,6 +1,8 @@
 <template> 
   <section class="space-y-4">
-    <h2 class="text-xl font-semibold text-gray-800 mb-4">Chọn Gói Đăng Tin</h2>
+    <h2 class="text-xl font-semibold text-gray-800 mb-4">
+      Chọn Gói Đăng Tin
+    </h2>
     <div class="grid md:grid-cols-2 gap-6">
       <div
         v-for="plan in plans"
@@ -39,12 +41,16 @@
         </div>
 
         <div class="mb-4">
-          <h3 class="text-lg font-semibold text-gray-900">{{ plan.name }}</h3>
+          <h3 class="text-lg font-semibold text-gray-900">
+            {{ plan.name }}
+          </h3>
           <div class="mt-2 flex items-baseline">
             <span class="text-3xl font-bold text-gray-900">{{ plan.price }}</span>
             <span class="ml-1 text-gray-500">VND</span>
           </div>
-          <p class="mt-1 text-sm text-gray-500">Có hiệu lực trong {{ plan.duration }}</p>
+          <p class="mt-1 text-sm text-gray-500">
+            Có hiệu lực trong {{ plan.duration }}
+          </p>
         </div>
 
         <ul class="space-y-3">

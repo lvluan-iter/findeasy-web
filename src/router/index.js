@@ -91,6 +91,10 @@ const routes = [
     path: '/yourproperty',
     name: 'WMyProperty',
     component: WMyProperty
+  },
+  {
+    path: '/payment-result',
+    component: () => import('@/components/PaymentResult.vue')
   }
 ];
 

@@ -19,9 +19,7 @@
       @submit.prevent="submitProperty"
       @keydown.enter.prevent
     >
-      <!-- Main content -->
       <div class="bg-white shadow-md rounded-lg overflow-visible">
-        <!-- Property form header -->
         <div class="bg-gray-50 px-6 py-4 flex flex-wrap items-center justify-end border-b border-gray-200">
           <div class="flex items-center gap-4 text-sm text-gray-600">
             <span>{{ currentDate }}</span>
@@ -260,7 +258,6 @@
             />
           </section>
 
-          <!-- New section: Nearby Places -->
           <section>
             <h2 class="text-xl font-semibold text-gray-800 mb-4">
               Khu Vực Lân Cận
@@ -275,7 +272,6 @@
           </section>
         </div>
 
-        <!-- Submit buttons -->
         <div class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex justify-end space-x-4">
           <button
             type="button"
@@ -406,6 +402,7 @@ const addImagesToPreview = (files) => {
 const removeImage = (index) => {
   images.value.splice(index, 1);
   console.log(property.userId)
+  console.log(property)
 };
 
 const submitProperty = async () => {
