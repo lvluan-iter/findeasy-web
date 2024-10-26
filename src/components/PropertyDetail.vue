@@ -52,7 +52,6 @@
       </div>
     </div>
 
-    <!-- Main image gallery -->
     <div class="relative w-full h-[50vh] sm:h-[60vh] md:h-[70vh] lg:h-[74vh] overflow-hidden">
       <div
         v-for="(image, index) in property.imageUrls"
@@ -67,10 +66,8 @@
         >
       </div>
 
-      <!-- Overlay for text and buttons -->
       <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-60" />
 
-      <!-- Text overlay -->
       <div class="absolute bottom-0 left-0 p-4 sm:p-6 md:p-8 text-white">
         <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-1 sm:mb-2">
           {{ property.title }}
@@ -85,7 +82,6 @@
         </div>
       </div>
 
-      <!-- Thumbnail navigation -->
       <div class="absolute bottom-0 right-0 p-2 sm:p-4 flex space-x-1 sm:space-x-2 overflow-x-auto">
         <div
           v-for="(image, index) in property.imageUrls.slice(0, 5)"
@@ -102,7 +98,6 @@
         </div>
       </div>
 
-      <!-- Navigation arrows -->
       <button
         class="absolute top-1/2 left-2 sm:left-4 transform -translate-y-1/2 text-white text-2xl sm:text-4xl opacity-50 hover:opacity-100 transition-opacity duration-300"
         @click="prevImage"
@@ -129,10 +124,8 @@
       </button>
     </div>
 
-    <!-- New layout for property details and form -->
     <div class="container mx-auto px-4 mt-8">
       <div class="flex flex-col lg:flex-row gap-8">
-        <!-- Left column: Property details -->
         <div class="lg:w-2/3">
           <div>
             <div class="flex justify-between items-center mb-6">
@@ -219,7 +212,6 @@
 
           <hr class="my-10">
 
-          <!-- New section: Property Type and Category -->
           <div class="mb-8">
             <h4 class="text-2xl font-semibold text-gray-800 mb-4">
               Thông tin bất động sản
@@ -404,7 +396,6 @@
             <hr class="my-10">
           </div>
 
-          <!-- Location -->
           <div>
             <h4 class="text-2xl font-semibold text-gray-800 mb-4">
               Vị trí

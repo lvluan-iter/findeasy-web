@@ -102,7 +102,10 @@
               >
                 <i class="fas fa-circle-arrow-up h-4 w-4" />
               </button>
-              <button class="p-1 text-gray-400 hover:text-gray-600">
+              <button 
+                class="p-1 text-gray-400 hover:text-gray-600"
+                @click="() => handleDelete(property)"
+              >
                 <i class="fas fa-trash h-4 w-4" />
               </button>
             </div>
@@ -110,6 +113,13 @@
         </div>
       </div>
     </div>
+
+    <ConfirmModal
+      ref="deleteConfirmModal"
+      title="Xóa tin đăng"
+      message="Bạn có chắc chắn muốn xóa tin đăng này không? Hành động này không thể hoàn tác."
+      confirm-text="Xóa tin"
+    />
     
     <ConfirmModal
       ref="confirmModal"
@@ -217,7 +227,7 @@ const currentDate = ref('')
 const sortBy = ref('newest')
 const confirmModal = ref(null)
 const selectedProperty = ref(null)
-
+const deleteConfirmModal = ref(null)
 const showExtensionModal = ref(false)
 const isLoading = ref(false)
 
@@ -328,6 +338,34 @@ const confirmExtend = async () => {
     selectedProperty.value = null
   }
 }
+
+const handleDelete = async (property) => {
+  selectedProperty.value = property
+  const confirmed = await deleteConfirmModal.value.showModal()
+  
+  if (confirmed) {
+    try {
+      const response = await fetch(`https://roombooking-fa3a.onrender.com/api/properties/${property.id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      
+      if (response.ok) {
+        properties.value = properties.value.filter(p => p.id !== property.id)
+        toast.success('Tin đăng đã được xóa thành công!')
+      } else {
+        throw new Error('Failed to delete property')
+      }
+    } catch (error) {
+      console.error('Error deleting property:', error)
+      toast.error('Đã có lỗi xảy ra khi xóa tin đăng. Vui lòng thử lại.')
+    }
+  }
+  selectedProperty.value = null
+}
+
 
 watch(user, fetchMyProperties, { immediate: true })
 
