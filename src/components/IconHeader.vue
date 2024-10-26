@@ -11,7 +11,9 @@
       @click="goToHome"
     >
       <i class="fa-solid fa-house-circle-check text-2xl md:text-3xl" />
-      <h1 class="logo-text">FINDEASY</h1>
+      <h1 class="logo-text">
+        FINDEASY
+      </h1>
       <div class="flex lg:hidden items-center w-[1px] h-[40px] bg-white mx-1 sm:mx-[20px]" />
     </div>
     <div class="hidden lg:flex gap-5 items-center">
