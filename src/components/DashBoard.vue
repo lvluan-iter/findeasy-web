@@ -233,6 +233,7 @@
             v-for="action in quickActions" 
             :key="action.name" 
             class="flex flex-col items-center justify-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50"
+            @click="router.push(action.url)"
           >
             <i :class="['fas', action.icon, 'text-gray-600 text-2xl']" />
             <span class="mt-2 text-sm font-medium text-gray-900">{{ action.name }}</span>
@@ -282,7 +283,9 @@ import { storeToRefs } from 'pinia'
 import QuickStats from './QuickStats.vue';
 import PropertyStatsChart from './PropertyStatsChart.vue';
 import MapView from './MapView.vue';
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 const userStore = useUserStore()
 const { user } = storeToRefs(userStore)
 const currentDate = ref('')
@@ -308,10 +311,10 @@ const notifications = ref([
 ])
 
 const quickActions = [
-  { name: 'Add Property', icon: 'fa-plus-circle' },
-  { name: 'Schedule Viewing', icon: 'fa-calendar' },
-  { name: 'Generate Report', icon: 'fa-file-alt' },
-  { name: 'Account Settings', icon: 'fa-cog' },
+  { name: 'Đăng Tin', icon: 'fa-plus-circle', url: '/upnew' },
+  { name: 'Quản lý Cuộc Hẹn', icon: 'fa-calendar', url: '/tourrequest' },
+  { name: 'Xuất Báo Cáo', icon: 'fa-file-alt' },
+  { name: 'Cài Đặt Tài Khoản', icon: 'fa-cog', url: '/profile' },
 ]
 
 const updateDateTime = () => {
