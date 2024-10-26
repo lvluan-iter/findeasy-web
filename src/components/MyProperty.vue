@@ -42,11 +42,14 @@
               Giá (Cao-Thấp)
             </option>
             <option value="price-low-high">
-              Giá (Cao-Thấp)
+              Giá (Thấp-Cao)
             </option>
           </select>
         </div>
-        <button class="inline-flex items-center justify-center gap-2 bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors">
+        <button 
+          class="inline-flex items-center justify-center gap-2 bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors"
+          @click="router.push('/upnew')"
+        >
           Đăng Tin
           <i class="fas fa-plus h-4 w-4" />
         </button>
@@ -76,14 +79,14 @@
             </p>
           </div>
           <div class="flex items-center justify-between pt-2 border-t">
-            <span class="text-sm text-gray-500">Viewed - {{ property.visits }}</span>
+            <span class="text-sm text-gray-500">Lượt xem - {{ property.visits }}</span>
             <div class="flex items-center gap-3">
               <button 
                 class="p-1 text-gray-400 hover:text-gray-600"
                 @click="() => toggleVisibility(property)"
               >
                 <i 
-                  :class="[
+                  :class="[ 
                     'fas',
                     property.available ? 'fa-eye-slash' : 'fa-eye',
                     'h-4 w-4'
@@ -120,7 +123,11 @@ import { ref, computed, onMounted, watch } from 'vue'
 import { useUserStore } from '../stores/userStore'
 import { storeToRefs } from 'pinia'
 import ConfirmModal from './ConfirmModal.vue'
+import { useToast } from 'vue-toast-notification';
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
+const toast = useToast() 
 const userStore = useUserStore()
 const { user } = storeToRefs(userStore)
 const properties = ref([])
@@ -187,10 +194,15 @@ const toggleVisibility = async (property) => {
       })
       
       if (response.ok) {
-        property.isAvailable = !property.isAvailable
+        window.location.reload()
+        const message = property.available ? 'Tin đăng đã được hiển thị!' : 'Tin đăng đã bị ẩn!'
+        toast.success(message) 
+      } else {
+        toast.error('Đã có lỗi xảy ra. Vui lòng thử lại.')
       }
     } catch (error) {
       console.error('Error:', error)
+      toast.error('Đã có lỗi xảy ra. Vui lòng thử lại.')
     }
   }
   selectedProperty.value = null

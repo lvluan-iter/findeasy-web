@@ -5,7 +5,7 @@
         Nền Tảng Đăng Tin
       </div>
       <h1 class="font-bold text-[calc(1.25rem+1.2vw)] sm:text-[calc(1.375rem+1.5vw)] text-[#212529] m-0 mb-4 sm:mb-5">
-        Kết Nối Khách Hàng Tiền Năng
+        Kết Nối Khách Hàng Tiềm Năng
       </h1>
       <p class="text-[#707070]">
         Tận dụng cơ hội để quảng bá danh sách bất động sản của bạn và tiếp cận rộng rãi hơn. 

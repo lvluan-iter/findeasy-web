@@ -12,7 +12,7 @@
           class="flex items-center text-3xl"
         >
           <i class="fa-solid fa-house-circle-check text-[#0a73c0] mr-1.5" />
-          <span>FINDEASY</span>
+          <h1>FINDEASY</h1>
           <div class="flex items-center w-[1px] h-[40px] bg-black mx-[20px]" />
         </div>
         <ul class="flex list-none m-0 p-0">

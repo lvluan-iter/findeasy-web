@@ -202,11 +202,9 @@ import { useRouter } from 'vue-router';
 import { useToast } from 'vue-toast-notification';
 import 'vue-toast-notification/dist/theme-default.css';
 
-// Router
 const router = useRouter();
 const $toast = useToast();
 
-// Form state
 const username = ref('');
 const password = ref('');
 const rewritepassword = ref('');
@@ -224,7 +222,6 @@ const isFocusedFullname = ref(false);
 const isFocusedPhoneNumber = ref(false);
 const isFocusedGender = ref(false);
 
-// Methods
 const handleUserRegister = async () => {
   if (rewritepassword.value === password.value) {
     passwordMismatch.value = false;
