@@ -274,7 +274,6 @@
 
           <hr class="my-10">
 
-          <!-- About the property -->
           <div>
             <h4 class="text-2xl font-semibold text-gray-800 mb-4">
               Mô tả
@@ -299,7 +298,6 @@
 
           <hr class="my-10">
 
-          <!-- New section: Nearby Places -->
           <div class="mb-8">
             <h4 class="text-2xl font-semibold text-gray-800 mb-4">
               Khu vực lân cận
@@ -333,7 +331,6 @@
 
           <hr class="my-10">
 
-          <!-- Amenities -->
           <div>
             <h4 class="text-2xl font-semibold text-gray-800 mb-4">
               Tiện ích sẵn có
@@ -361,7 +358,6 @@
             <hr class="my-10">
           </div>
 
-          <!-- Reach The Agent -->
           <div>
             <h4 class="text-2xl font-semibold text-gray-800 mb-4">
               Kết nối chủ sở hữu
@@ -775,7 +771,6 @@ const handleSubmit = async () => {
     const result = await response.json();
     console.log('Tour request submitted successfully:', result);
 
-    // Reset form after successful submission
     formData.value = {
       phoneNumber: '',
       appointmentDate: '',
@@ -783,7 +778,6 @@ const handleSubmit = async () => {
       email: ''
     };
 
-    // Show success message to the user
     alert('Tour request submitted successfully!');
 
   } catch (error) {

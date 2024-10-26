@@ -64,7 +64,7 @@ const props = defineProps({
   },
   initialCenter: {
     type: Array,
-    default: () => [10.7769, 106.7009] // Ho Chi Minh City coordinates
+    default: () => [10.7769, 106.7009] 
   },
   initialZoom: {
     type: Number,
@@ -111,7 +111,6 @@ watch(() => props.properties, async (newProperties) => {
     }
   }
   
-  // Center map on first property if available
   if (geoProperties.value.length > 0) {
     mapCenter.value = geoProperties.value[0].latLng;
   }
