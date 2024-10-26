@@ -5,15 +5,14 @@
       <div class="bg-gray-800 p-6 rounded-lg flex flex-col">
         <div class="w-12 h-1 bg-[#0A73C0] mb-4" />
         <h2 class="text-2xl text-white font-bold mb-4">
-          Explore Best Cities
+          Khám Phá
         </h2>
         <p class="text-gray-400 mb-6 text-sm">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-          sed do eiusmod tempor incididunt ut labore et dolore
-          magna aliqua.
+          Tìm kiếm nơi an cư lý tưởng hoặc cơ hội đầu tư bất động sản với chúng tôi. 
+          Khám phá các thành phố tốt nhất để thuê hoặc mua nhà, đáp ứng mọi nhu cầu sống và kinh doanh của bạn.
         </p>
         <button class="bg-black text-white px-6 py-3 hover:bg-gray-700 transition duration-300 text-sm flex items-center">
-          VIEW ALL CITIES
+          Xem Tất Cả
           <svg
             class="w-4 h-4 ml-2"
             fill="none"
@@ -42,7 +41,6 @@
         </div>
       </div>
 
-      <!-- Cities Cards Slider -->
       <div
         v-if="isLoading"
         class="lg:col-span-3 h-full flex items-center justify-center"
