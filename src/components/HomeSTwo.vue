@@ -4,9 +4,9 @@
       <div class="inline-block p-2 px-4 sm:p-2.5 sm:px-5 bg-[rgba(10,115,192,0.08)] rounded-full text-[#0a73c0] mb-2">
         <span>Nhà Môi Giới</span>
       </div>
-      <p class="font-bold text-[calc(1.25rem+1.2vw)] sm:text-[calc(1.375rem+1.5vw)] text-[#212529] m-0 mb-4 sm:mb-5">
-        Gặp Gỡ nhà Mua Giới Hàng Đầu
-      </p>
+      <h1 class="font-bold text-[calc(1.25rem+1.2vw)] sm:text-[calc(1.375rem+1.5vw)] text-[#212529] m-0 mb-4 sm:mb-5">
+        Gặp Gỡ Nhà Môi Giới Hàng Đầu
+      </h1>
       <span class="text-[#707070] block">
         Những nhà môi giới giàu kinh nghiệm của chúng tôi luôn sẵn sàng giúp bạn tìm hiểu và điều hướng thị trường bất động sản. 
         Dù bạn đang tìm mua, bán, hay thuê, các chuyên gia của chúng tôi cung cấp sự tư vấn chuyên sâu và dịch vụ cá nhân hóa, đảm bảo đáp ứng nhu cầu của bạn. 
