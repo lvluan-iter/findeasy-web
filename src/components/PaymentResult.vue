@@ -2,6 +2,7 @@
   <div class="bg-gray-100 flex items-center justify-center min-h-screen">
     <div class="text-center p-8 bg-white rounded-lg shadow-md">
       <div 
+        v-if="statusIcon"
         class="text-5xl mb-4" 
         :class="statusIcon.color"
       >
@@ -25,14 +26,11 @@
 
 <script setup>
 import { computed } from 'vue'
+import { useRoute } from 'vue-router'
 
-const props = defineProps({
-  status: {
-    type: String,
-    required: true,
-    validator: (value) => ['success', 'error', 'system-error'].includes(value)
-  }
-})
+const route = useRoute()
+
+const currentStatus = computed(() => route.query.status || 'error')
 
 const statusConfig = {
   success: {
@@ -55,11 +53,22 @@ const statusConfig = {
   }
 }
 
-const statusIcon = computed(() => ({
-  icon: statusConfig[props.status].icon,
-  color: statusConfig[props.status].color
-}))
+const statusIcon = computed(() => {
+  const status = currentStatus.value
+  if (!status || !statusConfig[status]) return null
+  return {
+    icon: statusConfig[status].icon,
+    color: statusConfig[status].color
+  }
+})
 
-const title = computed(() => statusConfig[props.status].title)
-const message = computed(() => statusConfig[props.status].message)
+const title = computed(() => {
+  const status = currentStatus.value
+  return statusConfig[status]?.title || 'Đã có lỗi xảy ra'
+})
+
+const message = computed(() => {
+  const status = currentStatus.value
+  return statusConfig[status]?.message || 'Vui lòng thử lại sau'
+})
 </script>
