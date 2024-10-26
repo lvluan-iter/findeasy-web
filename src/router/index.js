@@ -95,6 +95,14 @@ const routes = [
   {
     path: '/payment-result',
     component: () => import('@/components/PaymentResult.vue')
+  },
+  {
+    path: '/edit-property/:id',
+    name: 'EditProperty',
+    component: () => import('@/components/EditProperty.vue'),
+    meta: {
+      requiresAuth: true
+    },
   }
 ];
 

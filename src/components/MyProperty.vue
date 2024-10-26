@@ -93,7 +93,10 @@
                   ]"
                 />
               </button>
-              <button class="p-1 text-gray-400 hover:text-gray-600">
+              <button 
+                class="p-1 text-gray-400 hover:text-gray-600"
+                @click="() => handleEdit(property)"
+              >
                 <i class="fas fa-pen-to-square h-4 w-4" />
               </button>
               <button 
@@ -274,6 +277,10 @@ const filteredAndSortedProperties = computed(() => {
     }
   })
 })
+
+const handleEdit = (property) => {
+  router.push(`/edit-property/${property.id}`)
+}
 
 const toggleVisibility = async (property) => {
   selectedProperty.value = property

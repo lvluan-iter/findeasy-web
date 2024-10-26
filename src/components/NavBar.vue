@@ -3,7 +3,7 @@
     <nav
       :class="[
         'flex justify-between items-center bg-white/60 backdrop-blur-lg text-[#2c3038] h-[80px] w-full rounded-lg shadow-md',
-        { 'fixed top-0 left-0 w-full shadow-md px-[120px] z-[1000] rounded-none': isSticky }
+        { 'fixed top-0 left-0 w-full shadow-md px-[120px] z-10 rounded-none': isSticky }
       ]"
     >
       <div class="flex items-center">

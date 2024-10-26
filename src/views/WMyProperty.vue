@@ -30,6 +30,6 @@ import MyProperty from '@/components/MyProperty.vue'
   right: 0;
   margin: 0 auto;
   width: calc(100% - 240px);
-  z-index: 9999;
+  z-index: 10;
 }
 </style>
