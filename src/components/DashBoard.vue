@@ -319,9 +319,9 @@ const quickActions = [
 
 const updateDateTime = () => {
   const now = new Date()
-  currentDate.value = now.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
-  currentTime.value = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
-  currentDay.value = now.toLocaleDateString('en-US', { weekday: 'long' })
+  currentDate.value = now.toLocaleDateString('vi-VN', { year: 'numeric', month: 'long', day: 'numeric' })
+  currentTime.value = now.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })
+  currentDay.value = now.toLocaleDateString('vi-VN', { weekday: 'long' })
 }
 
 const fetchUserProperties = async () => {
