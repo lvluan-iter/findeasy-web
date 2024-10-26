@@ -15,10 +15,10 @@
         <div class="inline-block py-2 px-5 bg-[rgb(10,115,192,8%)] rounded-full text-[rgb(10,115,192)] mb-2.5">
           <span>Chào mừng đến với FindEasy!</span>
         </div>
-        <p class="font-bold text-[#212529] text-3xl md:text-4xl lg:text-6xl m-0 mb-5">
+        <h1 class="font-bold text-[#212529] text-3xl md:text-4xl lg:text-6xl m-0 mb-5">
           Tìm ngôi nhà mơ ước <br>
           tại vị trí lý tưởng
-        </p>
+        </h1>
         <div class="mb-8 ml-0 lg:ml-[80px]">
           <LocationSearch />
         </div>
