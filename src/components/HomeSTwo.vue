@@ -2,15 +2,15 @@
   <div class="px-4 sm:px-6 md:px-12 lg:px-[120px]">
     <div class="text-center mb-8 md:mb-[50px]">
       <div class="inline-block p-2 px-4 sm:p-2.5 sm:px-5 bg-[rgba(10,115,192,0.08)] rounded-full text-[#0a73c0] mb-2">
-        <span>Agents</span>
+        <span>Nhà Môi Giới</span>
       </div>
       <p class="font-bold text-[calc(1.25rem+1.2vw)] sm:text-[calc(1.375rem+1.5vw)] text-[#212529] m-0 mb-4 sm:mb-5">
-        Meet Our Top Real Estate Agents
+        Gặp Gỡ nhà Mua Giới Hàng Đầu
       </p>
       <span class="text-[#707070] block">
-        Our experienced agents are here to help you navigate the real estate market. Whether you're looking to buy,
-        sell, or rent, our agents provide expert guidance and personalized service to meet your needs. Connect with the
-        best in the business and achieve your real estate goals with confidence.
+        Những nhà môi giới giàu kinh nghiệm của chúng tôi luôn sẵn sàng giúp bạn tìm hiểu và điều hướng thị trường bất động sản. 
+        Dù bạn đang tìm mua, bán, hay thuê, các chuyên gia của chúng tôi cung cấp sự tư vấn chuyên sâu và dịch vụ cá nhân hóa, đảm bảo đáp ứng nhu cầu của bạn. 
+        Kết nối với những chuyên gia uy tín và đạt được mục tiêu bất động sản của bạn một cách tự tin.
       </span>
     </div>
     <div class="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-6">
