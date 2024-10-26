@@ -155,29 +155,6 @@
         </div>
       </div>
   
-      <div class="bg-white shadow rounded-lg p-6 mb-8">
-        <h3 class="text-lg font-medium text-gray-900 mb-4">
-          Tasks
-        </h3>
-        <div class="space-y-4">
-          <div
-            v-for="task in tasks"
-            :key="task.id"
-            class="flex items-center justify-between p-4 bg-gray-50 rounded-lg"
-          >
-            <div class="flex items-center">
-              <input
-                type="checkbox"
-                :checked="task.completed"
-                class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-              >
-              <span :class="['ml-3 text-sm', task.completed ? 'line-through text-gray-500' : 'text-gray-700']">{{ task.description }}</span>
-            </div>
-            <span class="text-sm text-gray-500">Due: {{ task.dueDate }}</span>
-          </div>
-        </div>
-      </div>
-  
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
         <div class="bg-white shadow rounded-lg">
           <div class="px-4 py-5 border-b border-gray-200 sm:px-6">
@@ -318,11 +295,6 @@ const tableHeaders = ['Bất động sản', 'Trạng thái', 'Loại', 'Giá', 
 const appointments = ref([
   { id: 1, dateTime: '2023-06-10 14:00', property: 'Oceanfront Villa', client: 'Alice Johnson', type: 'Viewing' },
   { id: 2, dateTime: '2023-06-11 10:30', property: 'Downtown Apartment', client: 'Bob Smith', type: 'Inspection' },
-])
-
-const tasks = ref([
-  { id: 1, description: 'Follow up with potential buyer for Oceanfront Villa', completed: false, dueDate: '2023-06-12' },
-  { id: 2, description: 'Prepare listing documents for new property', completed: true, dueDate: '2023-06-09' },
 ])
 
 const recentActivities = ref([
