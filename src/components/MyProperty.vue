@@ -56,7 +56,6 @@
       </div>
     </div>
 
-    <!-- Loading State -->
     <div
       v-if="isLoading"
       class="flex flex-col items-center justify-center py-12 px-4 text-center"
@@ -84,7 +83,6 @@
       </p>
     </div>
 
-    <!-- Empty State -->
     <div 
       v-else-if="properties.length === 0" 
       class="flex flex-col items-center justify-center py-12 px-4 text-center"
@@ -119,7 +117,6 @@
       </button>
     </div>
 
-    <!-- Property List -->
     <div 
       v-else 
       class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
@@ -129,7 +126,6 @@
         :key="property.id"
         class="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow"
       >
-        <!-- Rest of your existing property card code -->
         <div class="aspect-video relative">
           <img 
             :src="property.imageUrls?.[0] || '/api/placeholder/800/400'"
@@ -308,7 +304,7 @@ onMounted(() => {
 
 const fetchMyProperties = async () => {
   if (!user.value) return
-  isLoading.value = true // Set loading state
+  isLoading.value = true 
   try {
     const response = await fetch(`https://roombooking-fa3a.onrender.com/api/properties/user/${user.value.id}`)
     if (!response.ok) {
@@ -320,7 +316,7 @@ const fetchMyProperties = async () => {
     console.error('Error fetching properties:', error)
     toast.error('Có lỗi xảy ra khi tải dữ liệu. Vui lòng thử lại sau.')
   } finally {
-    isLoading.value = false // Clear loading state
+    isLoading.value = false 
   }
 }
 

@@ -70,8 +70,35 @@
       </div>
     </div>
 
+    <div
+      v-if="isLoading"
+      class="flex flex-col items-center justify-center py-12 px-4 text-center"
+    >
+      <div class="bg-blue-50 rounded-full p-6 mb-6 animate-pulse">
+        <svg
+          class="w-16 h-16 text-blue-500"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.5"
+            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+          />
+        </svg>
+      </div>
+      <h3 class="text-xl font-semibold text-gray-900 mb-2">
+        Đang tải dữ liệu...
+      </h3>
+      <p class="text-gray-500 mb-6 max-w-md">
+        Vui lòng đợi trong giây lát trong khi chúng tôi tải thông tin yêu cầu xem nhà của bạn.
+      </p>
+    </div>
+
     <div 
-      v-if="tourRequests.length === 0" 
+      v-else-if="tourRequests.length === 0" 
       class="flex flex-col items-center justify-center py-12 px-4 text-center"
     >
       <div class="bg-gray-100 rounded-full p-6 mb-6">
@@ -316,6 +343,7 @@ const rescheduleTime = ref('')
 const currentRequest = ref(null)
 const currentDate = ref('')
 const sortBy = ref('dateDesc')
+const isLoading = ref(false)
 
 onMounted(() => {
   currentDate.value = new Date().toLocaleDateString('en-GB')
@@ -361,6 +389,7 @@ const formatDate = (dateString) => {
 
 const fetchTourRequests = async () => {
   if (!user.value) return
+  isLoading.value = true
   try {
     const response = await fetch(`https://roombooking-fa3a.onrender.com/api/tour-requests/user/${user.value.id}`)
     if (!response.ok) {
@@ -370,6 +399,8 @@ const fetchTourRequests = async () => {
     tourRequests.value = data
   } catch (error) {
     console.error('Error fetching tour requests:', error)
+  } finally {
+    isLoading.value = false 
   }
 }
 
