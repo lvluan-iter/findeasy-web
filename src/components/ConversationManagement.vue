@@ -1,9 +1,8 @@
 <template>
   <div
     v-if="props.isOpen"
-    class="fixed bottom-10 right-10 z-10 w-full sm:w-96 h-[545px] max-h-[calc(100vh-5rem)] max-w-[calc(100vw-2rem)] bg-white rounded-lg shadow-2xl flex flex-col overflow-hidden transition-all duration-300 ease-in-out"
+    class="fixed bottom-7 right-10 z-10 w-full sm:w-96 h-[545px] max-h-[calc(100vh-5rem)] max-w-[calc(100vw-2rem)] bg-white rounded-lg shadow-2xl flex flex-col overflow-hidden transition-all duration-300 ease-in-out"
   >
-    <!-- Header -->
     <div class="bg-gradient-to-r from-blue-500 to-indigo-600 p-4 flex justify-between items-center">
       <h2 class="text-white font-bold text-lg">
         Tin nhắn
@@ -29,7 +28,6 @@
       </button>
     </div>
 
-    <!-- Search Bar -->
     <div class="p-4 border-b border-gray-200">
       <div class="relative">
         <input

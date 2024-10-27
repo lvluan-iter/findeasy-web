@@ -46,12 +46,14 @@
         </button>
         <button
           v-else
-          class="flex gap-2.5 px-5 py-3 text-white text-[16px] items-center bg-[#0a73c0] border border-[#0a73c0] cursor-pointer rounded-md hover:bg-[#0564a9] hover:border-[#0564a9] mr-5"
+          class="flex items-center gap-2.5 px-5 py-3 text-white text-[16px] bg-[#0a73c0] border border-[#0a73c0] cursor-pointer rounded-md hover:bg-[#0564a9] hover:border-[#0564a9] mr-5 relative group"
           @click="openUserSetting"
         >
-          <i class="fa-solid fa-bell" />
-          <div class="flex items-center w-[0.1px] h-[20px] bg-white" />
-          <span>{{ userStore.user.fullname }}</span>
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-user" />
+            <span>{{ userStore.user.fullname }}</span>
+          </div>
+          <i class="fa-solid fa-chevron-down text-sm transition-transform duration-300 group-hover:rotate-180" />
         </button>
         <ProfileSettingsDropdown
           v-if="userStore.isAuthenticated"
