@@ -56,12 +56,80 @@
       </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <!-- Loading State -->
+    <div
+      v-if="isLoading"
+      class="flex flex-col items-center justify-center py-12 px-4 text-center"
+    >
+      <div class="bg-blue-50 rounded-full p-6 mb-6 animate-pulse">
+        <svg
+          class="w-16 h-16 text-blue-500"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.5"
+            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+          />
+        </svg>
+      </div>
+      <h3 class="text-xl font-semibold text-gray-900 mb-2">
+        Đang tải dữ liệu...
+      </h3>
+      <p class="text-gray-500 mb-6 max-w-md">
+        Vui lòng đợi trong giây lát trong khi chúng tôi tải thông tin bất động sản của bạn.
+      </p>
+    </div>
+
+    <!-- Empty State -->
+    <div 
+      v-else-if="properties.length === 0" 
+      class="flex flex-col items-center justify-center py-12 px-4 text-center"
+    >
+      <div class="bg-gray-100 rounded-full p-6 mb-6">
+        <svg
+          class="w-16 h-16 text-gray-400"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.5"
+            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+          />
+        </svg>
+      </div>
+      <h3 class="text-xl font-semibold text-gray-900 mb-2">
+        Chưa có bất động sản nào
+      </h3>
+      <p class="text-gray-500 mb-6 max-w-md">
+        Bạn chưa có tin đăng bất động sản nào. Hãy bắt đầu bằng cách đăng tin mới để tiếp cận với nhiều khách hàng tiềm năng.
+      </p>
+      <button
+        class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-300"
+        @click="router.push('/upnew')"
+      >
+        <i class="fas fa-plus mr-2" />
+        Đăng tin mới
+      </button>
+    </div>
+
+    <!-- Property List -->
+    <div 
+      v-else 
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+    >
       <div 
         v-for="property in filteredAndSortedProperties" 
         :key="property.id"
         class="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow"
       >
+        <!-- Rest of your existing property card code -->
         <div class="aspect-video relative">
           <img 
             :src="property.imageUrls?.[0] || '/api/placeholder/800/400'"
@@ -240,6 +308,7 @@ onMounted(() => {
 
 const fetchMyProperties = async () => {
   if (!user.value) return
+  isLoading.value = true // Set loading state
   try {
     const response = await fetch(`https://roombooking-fa3a.onrender.com/api/properties/user/${user.value.id}`)
     if (!response.ok) {
@@ -249,6 +318,9 @@ const fetchMyProperties = async () => {
     properties.value = data
   } catch (error) {
     console.error('Error fetching properties:', error)
+    toast.error('Có lỗi xảy ra khi tải dữ liệu. Vui lòng thử lại sau.')
+  } finally {
+    isLoading.value = false // Clear loading state
   }
 }
 
@@ -373,7 +445,6 @@ const handleDelete = async (property) => {
   selectedProperty.value = null
 }
 
-
 watch(user, fetchMyProperties, { immediate: true })
 
 onMounted(fetchMyProperties)
@@ -386,5 +457,18 @@ onMounted(fetchMyProperties)
 
 .property-card {
   height: 280px;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: .5;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 </style>
