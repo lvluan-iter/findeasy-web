@@ -6,16 +6,15 @@
         @click="$router.go(-1)"
       >
         <i class="fas fa-angle-left" />
-        <span>Back</span>
+        <span>Quay lại</span>
       </button>
       <div class="hidden sm:block w-px h-6 bg-gray-300" />
       <h1 class="text-xl sm:text-2xl font-bold text-gray-800">
-        Profile
+        Trang Cá Nhân
       </h1>
     </div>
     <hr class="w-full mb-5">
     <div class="flex flex-col lg:flex-row gap-5">
-      <!-- Profile Section -->
       <div class="w-full lg:w-1/3 bg-white rounded-xl shadow-md overflow-hidden">
         <div class="bg-gradient-to-r from-blue-500 to-purple-600 px-6 py-8 text-white">
           <div class="flex flex-col items-center">
@@ -45,7 +44,7 @@
 
         <div class="p-6">
           <h2 class="text-xl font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200">
-            Personal Information
+            Thông Tin Cá Nhân
           </h2>
           <div class="space-y-4">
             <div class="flex items-center text-gray-700">
@@ -77,12 +76,11 @@
         </div>
       </div>
 
-      <!-- Edit Profile Section -->
       <div class="w-full lg:w-2/3">
         <div>
           <div class="bg-gray-50 px-6 py-4 flex flex-wrap items-center justify-between border-b border-gray-200 rounded-t-xl">
             <div class="text-lg font-semibold text-gray-800">
-              Edit Profile
+              Chỉnh Sửa Thông Tin
             </div>
             <div class="flex items-center gap-4 text-sm text-gray-600">
               <span>{{ currentDate }}</span>
@@ -90,17 +88,16 @@
             </div>
           </div>
           <div class="p-6 space-y-8 bg-white rounded-b-xl shadow-md">
-            <!-- Basic Information -->
             <section>
               <h2 class="text-xl font-semibold text-gray-800 mb-4">
-                Basic Information
+                Thông Tin Cơ Bản
               </h2>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="space-y-2">
                   <label
                     for="fullname"
                     class="block text-sm font-medium text-gray-700"
-                  >Full Name</label>
+                  >Họ và Tên</label>
                   <div class="relative group">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                       <i class="fas fa-user text-gray-400 group-focus-within:text-blue-500 transition duration-300" />
@@ -111,7 +108,6 @@
                       type="text"
                       required
                       class="block w-full pl-10 pr-3 py-2 text-sm border-b border-gray-300 focus:border-blue-500 focus:outline-none transition duration-300 bg-transparent"
-                      placeholder="Full Name"
                     >
                   </div>
                 </div>
@@ -131,7 +127,6 @@
                       type="email"
                       required
                       class="block w-full pl-10 pr-3 py-2 text-sm border-b border-gray-300 focus:border-blue-500 focus:outline-none transition duration-300 bg-transparent"
-                      placeholder="Email"
                     >
                   </div>
                 </div>
@@ -140,7 +135,7 @@
                   <label
                     for="gender"
                     class="block text-sm font-medium text-gray-700"
-                  >Gender</label>
+                  >Giới Tính</label>
                   <div class="relative group">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                       <i class="fas fa-venus-mars text-gray-400 group-focus-within:text-blue-500 transition duration-300" />
@@ -150,14 +145,14 @@
                       v-model="user.gender"
                       class="block w-full pl-10 pr-3 py-2 text-sm border-b border-gray-300 focus:border-blue-500 focus:outline-none transition duration-300 bg-transparent appearance-none"
                     >
-                      <option value="Male">
-                        Male
+                      <option value="Nam">
+                        Nam
                       </option>
-                      <option value="Female">
-                        Female
+                      <option value="Nữ">
+                        Nữ
                       </option>
-                      <option value="Other">
-                        Other
+                      <option value="Khác">
+                        Khác
                       </option>
                     </select>
                   </div>
@@ -167,7 +162,7 @@
                   <label
                     for="birthdate"
                     class="block text-sm font-medium text-gray-700"
-                  >Birthdate</label>
+                  >Ngày Sinh</label>
                   <div class="relative group">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                       <i class="fas fa-birthday-cake text-gray-400 group-focus-within:text-blue-500 transition duration-300" />
@@ -185,7 +180,7 @@
                   <label
                     for="phoneNumber"
                     class="block text-sm font-medium text-gray-700"
-                  >Phone Number</label>
+                  >Số Điện Thoại</label>
                   <div class="relative group">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                       <i class="fas fa-phone text-gray-400 group-focus-within:text-blue-500 transition duration-300" />
@@ -202,14 +197,13 @@
               </div>
             </section>
 
-            <!-- Privacy Settings -->
             <section>
               <h2 class="text-xl font-semibold text-gray-800 mb-4">
-                Privacy Settings
+                Cài Đặt Bảo Mật
               </h2>
               <div class="space-y-4">
                 <div class="flex items-center justify-between">
-                  <span class="text-sm font-medium text-gray-700">Show email to public</span>
+                  <span class="text-sm font-medium text-gray-700">Hiển thị email công khai</span>
                   <label class="switch">
                     <input
                       v-model="user.publicEmail"
@@ -219,7 +213,7 @@
                   </label>
                 </div>
                 <div class="flex items-center justify-between">
-                  <span class="text-sm font-medium text-gray-700">Show phone number to public</span>
+                  <span class="text-sm font-medium text-gray-700">Hiển thị số điện thoại công khai</span>
                   <label class="switch">
                     <input
                       v-model="user.publicPhone"
@@ -229,7 +223,7 @@
                   </label>
                 </div>
                 <div class="flex items-center justify-between">
-                  <span class="text-sm font-medium text-gray-700">Show birthdate to public</span>
+                  <span class="text-sm font-medium text-gray-700">Hiển thị ngày sinh công khai</span>
                   <label class="switch">
                     <input
                       v-model="user.publicProfile"
@@ -246,26 +240,24 @@
                 class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition duration-300"
                 @click="cancelEditing"
               >
-                <i class="fas fa-times mr-2" /> Cancel
+                <i class="fas fa-times mr-2" /> Hủy
               </button>
               <button
                 class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-300"
                 @click="saveProfile"
               >
-                <i class="fas fa-save mr-2" /> Save Changes
+                <i class="fas fa-save mr-2" /> Lưu thay đổi
               </button>
             </div>
           </div>
         </div>
-        <!-- Add 20px spacing -->
         <div class="h-5" />
 
-        <!-- Password Change Section -->
         <div class="mt-5">
           <div class="bg-gray-50 px-6 py-4 flex flex-wrap items-center justify-between border-b border-gray-200 rounded-t-xl">
-            <div class="text-lg font-semibold text-gray-800">
-              Change Password
-            </div>
+            <h1 class="text-xl font-semibold text-gray-800">
+              Đổi Mật Khẩu
+            </h1>
           </div>
           <div class="p-6 space-y-6 bg-white rounded-b-xl shadow-md">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -273,7 +265,7 @@
                 <label
                   for="currentPassword"
                   class="block text-sm font-medium text-gray-700"
-                >Current Password</label>
+                >Mật khẩu hiện tại</label>
                 <div class="relative group">
                   <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <i class="fas fa-lock text-gray-400 group-focus-within:text-blue-500 transition duration-300" />
@@ -291,7 +283,7 @@
                 <label
                   for="newPassword"
                   class="block text-sm font-medium text-gray-700"
-                >New Password</label>
+                >Mật khẩu mới</label>
                 <div class="relative group">
                   <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <i class="fas fa-key text-gray-400 group-focus-within:text-blue-500 transition duration-300" />
@@ -309,7 +301,7 @@
                 <label
                   for="confirmPassword"
                   class="block text-sm font-medium text-gray-700"
-                >Confirm New Password</label>
+                >Nhập lại mật khẩu</label>
                 <div class="relative group">
                   <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <i class="fas fa-check text-gray-400 group-focus-within:text-blue-500 transition duration-300" />
@@ -335,7 +327,7 @@
                 class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition duration-300"
                 @click="changePassword"
               >
-                <i class="fas fa-key mr-2" /> Change Password
+                <i class="fas fa-key mr-2" /> Đổi mật khẩu
               </button>
             </div>
           </div>
