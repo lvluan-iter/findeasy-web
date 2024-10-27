@@ -1,20 +1,25 @@
 <template>
   <div class="px-4 sm:px-6 md:px-8 lg:px-[120px] py-6 sm:py-8 md:py-10 lg:py-12">
-    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 space-y-4 sm:space-y-0">
-      <h1 class="text-xl sm:text-2xl font-bold flex items-center gap-2">
-        NEW REQUESTS <span class="bg-orange-500 text-white px-2 py-0.5 rounded-full text-sm">{{ pendingRequestsCount }}</span>
-      </h1>
-      <div class="flex items-center">
-        <span class="mr-2 text-sm sm:text-base">{{ currentDate }}</span>
-        <i class="fas fa-calendar-alt text-[rgb(10,115,192)] mr-3 sm:mr-5" />
-        <select 
-          v-model="tariffPlan" 
-          class="border p-1 rounded text-sm sm:text-base"
+    <div class="flex flex-wrap items-center gap-4">
+      <button
+        class="text-blue-600 hover:text-blue-800 hover:underline font-medium flex items-center gap-2 transition duration-300"
+        @click="$router.go(-1)"
+      >
+        <i class="fas fa-angle-left" />
+        <span>Quay lại</span>
+      </button>
+      <div class="hidden sm:block w-px h-6 bg-gray-300" />
+      <h1 class="flex items-center gap-2 text-xl sm:text-2xl font-bold text-gray-800">
+        Yêu Cầu Xem Nhà 
+        <div 
+          v-if="pendingRequestsCount > 0"
+          class="bg-orange-500 text-white w-5 h-5 flex items-center justify-center rounded-full text-sm"
         >
-          <option>EXTENDED</option>
-        </select>
-      </div>
+          {{ pendingRequestsCount }}
+        </div>
+      </h1>
     </div>
+    <hr class="w-full mb-5">
     
     <div class="flex flex-col space-y-4 sm:space-y-0 sm:flex-row sm:justify-between sm:items-center mb-6">
       <div class="relative w-full sm:w-64 md:w-72 lg:w-96">
@@ -43,26 +48,73 @@
           </button>
         </div>
         <div class="flex items-center">
-          <span class="mr-2 text-xs sm:text-sm text-gray-600">Sort by:</span>
+          <span class="mr-2 text-xs sm:text-sm text-gray-600">Sắp xếp:</span>
           <select 
             v-model="sortBy" 
             class="border p-1 rounded text-xs sm:text-sm bg-white"
           >
             <option value="dateDesc">
-              Date (Newest)
+              Mới nhất
             </option>
             <option value="dateAsc">
-              Date (Oldest)
+              Cũ nhất
             </option>
             <option value="nameAsc">
-              Name (A-Z)
+              Tên (A-Z)
             </option>
             <option value="nameDesc">
-              Name (Z-A)
+              Tên (Z-A)
             </option>
           </select>
         </div>
       </div>
+    </div>
+
+    <div 
+      v-if="tourRequests.length === 0" 
+      class="flex flex-col items-center justify-center py-12 px-4 text-center"
+    >
+      <div class="bg-gray-100 rounded-full p-6 mb-6">
+        <svg
+          class="w-16 h-16 text-gray-400"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.5"
+            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+          />
+        </svg>
+      </div>
+      <h3 class="text-xl font-semibold text-gray-900 mb-2">
+        Chưa có yêu cầu xem nhà nào
+      </h3>
+      <p class="text-gray-500 mb-6 max-w-md">
+        Khi có người đặt lịch xem nhà, yêu cầu sẽ xuất hiện ở đây. Bạn có thể quản lý và phản hồi các yêu cầu một cách dễ dàng.
+      </p>
+      <button
+        class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-300"
+        @click="refreshData"
+      >
+        <svg
+          class="w-4 h-4 mr-2"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+          />
+        </svg>
+        Làm mới
+      </button>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 lg:gap-8">
@@ -96,10 +148,10 @@
           </h2>
         </div>
         <div class="space-y-1 sm:space-y-2 text-sm sm:text-base">
-          <p><strong>Name:</strong> {{ request.email }}</p>
-          <p><strong>Phone:</strong> {{ request.phoneNumber }}</p>
-          <p><strong>Date:</strong> {{ formatDate(request.appointmentDate) }}</p>
-          <p><strong>Time:</strong> {{ request.appointmentTime }}</p>
+          <p><strong>Tên:</strong> {{ request.email }}</p>
+          <p><strong>Số điện thoại:</strong> {{ request.phoneNumber }}</p>
+          <p><strong>Ngày:</strong> {{ formatDate(request.appointmentDate) }}</p>
+          <p><strong>Giờ:</strong> {{ request.appointmentTime }}</p>
         </div>
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-4 space-y-2 sm:space-y-0">
           <span class="text-xs sm:text-sm text-gray-500">Received: {{ formatDate(request.createdAt) }}</span>
@@ -193,7 +245,6 @@
       </div>
     </div>
 
-    <!-- Reschedule Modal -->
     <div
       v-if="showRescheduleModalFlag"
       class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
@@ -263,13 +314,16 @@ const showRescheduleModalFlag = ref(false)
 const rescheduleDate = ref('')
 const rescheduleTime = ref('')
 const currentRequest = ref(null)
-const tariffPlan = ref('EXTENDED')
 const currentDate = ref('')
 const sortBy = ref('dateDesc')
 
 onMounted(() => {
   currentDate.value = new Date().toLocaleDateString('en-GB')
 })
+
+const refreshData = () => {
+  fetchTourRequests()
+}
 
 const pendingRequestsCount = computed(() => {
   return tourRequests.value.filter(request => request.status === 'pending').length
@@ -282,7 +336,6 @@ const filteredRequests = computed(() => {
     (filterStatus.value === 'all' || request.status === filterStatus.value)
   )
 
-  // Áp dụng sắp xếp
   switch (sortBy.value) {
     case 'dateDesc':
       filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
@@ -380,7 +433,3 @@ watch(user, fetchTourRequests, { immediate: true })
 
 onMounted(fetchTourRequests)
 </script>
-
-<style scoped>
-/* Add any additional styles here */
-</style>
