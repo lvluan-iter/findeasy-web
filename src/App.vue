@@ -15,19 +15,16 @@ import { onMounted, watch } from 'vue';
 import { useUserStore } from './stores/userStore'
 import { webSocketService } from './services/websocketService'
 import { useCategoryStore } from './stores/categoryStore'
-import { usePropertyStore } from './stores/propertyStore'
 import ScolltoTop from './components/ScolltoTop.vue'
 import HeartbeatComponent from './components/HeartbeatComponent.vue'
 import MessComponent from './components/MessComponent.vue';
 
 const userStore = useUserStore()
 const categoryStore = useCategoryStore()
-const propertyStore = usePropertyStore()
 
 onMounted(async () => {
   await userStore.initializeAuth();
   await categoryStore.fetchCategories();
-  await propertyStore.fetchAvailableProperties()
 });
 
 watch(() => userStore.isAuthenticated, (newValue) => {

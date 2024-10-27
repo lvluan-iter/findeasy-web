@@ -1,13 +1,22 @@
 <template>
   <div class="container mx-auto px-4 py-6">
-    <div class="space-y-4">
+    <div
+      v-if="loading"
+      class="flex justify-center items-center py-8"
+    >
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600" />
+    </div>
+    
+    <div
+      v-else
+      class="space-y-4"
+    >
       <div
         v-for="property in properties"
         :key="property.id"
         class="property bg-white rounded-lg overflow-hidden cursor-pointer shadow-[0_2px_4px_rgba(0,0,0,0.1)] hover:shadow-md transition-all duration-300"
       >
         <div class="flex flex-col md:flex-row">
-          <!-- Image section -->
           <div class="md:w-2/5 relative">
             <img
               class="w-full h-64 md:h-full object-cover"
@@ -102,7 +111,6 @@
                   Không có thông tin về các địa điểm lân cận.
                 </p>
               </div>
-              <!-- Đánh giá -->
               <div class="flex items-center mb-3">
                 <div class="flex items-center mr-2">
                   <i class="fas fa-star text-yellow-400" />
@@ -167,7 +175,7 @@
         <button
           :disabled="currentPage === 0"
           class="px-3 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
-          @click="changePage(currentPage - 1)"
+          @click="emit('changePage', currentPage - 1)"
         >
           Previous
         </button>
@@ -180,14 +188,14 @@
               ? 'bg-blue-50 border-blue-500 text-blue-600'
               : 'bg-white text-gray-500 hover:bg-gray-50'
           ]"
-          @click="changePage(page - 1)"
+          @click="emit('changePage', page - 1)"
         >
           {{ page }}
         </button>
         <button
           :disabled="currentPage === totalPages - 1"
           class="px-3 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
-          @click="changePage(currentPage + 1)"
+          @click="emit('changePage', currentPage + 1)"
         >
           Next
         </button>
@@ -222,6 +230,10 @@ const props = defineProps({
   totalPages: {
     type: Number,
     default: 1
+  },
+  loading: {
+    type: Boolean,
+    default: false
   }
 });
 
@@ -234,9 +246,6 @@ const displayedPages = computed(() => {
   return Array.from({ length: end - start + 1 }, (_, i) => start + i);
 });
 
-const changePage = (newPage) => {
-  emit('changePage', newPage);
-};
 
 const linktoDetail = (id) => {
   router.push(`/propertydetail/${id}`);

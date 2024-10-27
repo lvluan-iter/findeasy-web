@@ -13,7 +13,65 @@
         Kết nối với những chuyên gia uy tín và đạt được mục tiêu bất động sản của bạn một cách tự tin.
       </span>
     </div>
-    <div class="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-6">
+
+    <div
+      v-if="isLoading"
+      class="flex flex-col items-center justify-center py-12 px-4 text-center"
+    >
+      <div class="bg-blue-50 rounded-full p-6 mb-6 animate-pulse">
+        <svg
+          class="w-16 h-16 text-blue-500"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.5"
+            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+          />
+        </svg>
+      </div>
+      <h3 class="text-xl font-semibold text-gray-900 mb-2">
+        Đang tải dữ liệu...
+      </h3>
+      <p class="text-gray-500 mb-6 max-w-md">
+        Vui lòng đợi trong giây lát trong khi chúng tôi tải thông tin nhà môi giới.
+      </p>
+    </div>
+
+    <div 
+      v-else-if="users.length === 0"
+      class="flex flex-col items-center justify-center py-12 px-4 text-center"
+    >
+      <div class="bg-gray-100 rounded-full p-6 mb-6">
+        <svg
+          class="w-16 h-16 text-gray-400"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.5"
+            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+          />
+        </svg>
+      </div>
+      <h3 class="text-xl font-semibold text-gray-900 mb-2">
+        Chưa có nhà môi giới nào
+      </h3>
+      <p class="text-gray-500 mb-6 max-w-md">
+        Hiện tại chưa có nhà môi giới nào đăng ký trên hệ thống. Vui lòng quay lại sau.
+      </p>
+    </div>
+
+    <div 
+      v-else
+      class="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-6"
+    >
       <div 
         v-for="user in users" 
         :key="user.id"
@@ -43,11 +101,11 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router';
+import { useRouter } from 'vue-router'
 
 const router = useRouter()
-
 const users = ref([])
+const isLoading = ref(true)
 
 const fetchUsers = async () => {
   try {
@@ -58,6 +116,8 @@ const fetchUsers = async () => {
     users.value = await response.json()
   } catch (error) {
     console.error('Error fetching users:', error)
+  } finally {
+    isLoading.value = false
   }
 }
 
@@ -69,3 +129,18 @@ onMounted(() => {
   fetchUsers()
 })
 </script>
+
+<style scoped>
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: .5;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+</style>
