@@ -48,7 +48,7 @@
           <i class="fa-solid fa-right-from-bracket text-blue-600" />
         </div>
         <div class="text-sm sm:text-base font-medium text-white flex-grow text-center">
-          Log Out
+          Đăng Xuất
         </div>
       </button>
     </div>
@@ -72,10 +72,10 @@ const userStore = useUserStore()
 
 const isOpen = ref(false)
 const menuItems = [
-  { label: 'Dashboard', route: '/dashboard' },
-  { label: 'Your Property', route: '/yourproperty' },
-  { label: 'Your Request', route: '/tourrequest' },
-  { label: 'Edit Profile', route: '/profile' }
+  { label: 'Tổng Quan', route: '/dashboard' },
+  { label: 'Quản Lý Bất Động Sản', route: '/yourproperty' },
+  { label: 'Quản Lý Yêu Cầu', route: '/tourrequest' },
+  { label: 'Quản Lý Tài Khoản', route: '/profile' }
 ]
 
 const toggleDropdown = () => {

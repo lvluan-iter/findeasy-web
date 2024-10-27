@@ -1,7 +1,6 @@
 <template>
   <div class="min-h-screen bg-gray-50 py-8">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <!-- Header -->
       <div class="flex items-center justify-between mb-8">
         <div class="flex items-center gap-4">
           <button
@@ -10,7 +9,9 @@
           >
             <i class="fas fa-arrow-left text-xl" />
           </button>
-          <h1 class="text-2xl font-bold text-gray-900">Chỉnh sửa bất động sản</h1>
+          <h1 class="text-2xl font-bold text-gray-900">
+            Chỉnh sửa bất động sản
+          </h1>
         </div>
         <div class="flex items-center gap-3">
           <button
@@ -26,15 +27,16 @@
             :disabled="isLoading"
             @click="handleSubmit"
           >
-            <i v-if="isLoading" class="fas fa-circle-notch fa-spin" />
+            <i
+              v-if="isLoading"
+              class="fas fa-circle-notch fa-spin"
+            />
             {{ isLoading ? 'Đang xử lý...' : 'Lưu thay đổi' }}
           </button>
         </div>
       </div>
 
-      <!-- Main Content -->
       <div class="space-y-6">
-        <!-- Basic Information -->
         <div class="bg-white shadow rounded-lg p-6">
           <h2 class="text-lg font-semibold text-gray-900 mb-6">
             Thông tin cơ bản
@@ -71,8 +73,12 @@
                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 required
               >
-                <option value="For Rent">Cho thuê</option>
-                <option value="For Sale">Bán</option>
+                <option value="For Rent">
+                  Cho thuê
+                </option>
+                <option value="For Sale">
+                  Bán
+                </option>
               </select>
             </div>
             <div>
@@ -96,7 +102,6 @@
           </div>
         </div>
 
-        <!-- Property Details -->
         <div class="bg-white shadow rounded-lg p-6">
           <h2 class="text-lg font-semibold text-gray-900 mb-6">
             Chi tiết bất động sản
@@ -159,7 +164,6 @@
           </div>
         </div>
 
-        <!-- Description -->
         <div class="bg-white shadow rounded-lg p-6">
           <h2 class="text-lg font-semibold text-gray-900 mb-6">
             Mô tả
@@ -172,7 +176,6 @@
           />
         </div>
 
-        <!-- Amenities -->
         <div class="bg-white shadow rounded-lg p-6">
           <h2 class="text-lg font-semibold text-gray-900 mb-6">
             Tiện ích
@@ -180,7 +183,6 @@
           <AmenitiesCheckbox v-model="formData.amenities" />
         </div>
 
-        <!-- Nearby Places -->
         <div class="bg-white shadow rounded-lg p-6">
           <h2 class="text-lg font-semibold text-gray-900 mb-6">
             Địa điểm lân cận
@@ -188,7 +190,6 @@
           <NearbyPlacesInput v-model="formData.nearbyPlaces" />
         </div>
 
-        <!-- Images -->
         <div class="bg-white shadow rounded-lg p-6">
           <h2 class="text-lg font-semibold text-gray-900 mb-6">
             Hình ảnh
@@ -235,7 +236,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, onBeforeUnmount } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useToast } from 'vue-toast-notification'
 import { useCategoryStore } from '../stores/categoryStore'
@@ -250,6 +251,7 @@ const categoryStore = useCategoryStore()
 
 const isLoading = ref(false)
 const showImageDialog = ref(false)
+const isComponentMounted = ref(true)
 
 const formData = ref({
   title: '',
@@ -274,26 +276,34 @@ const fetchProperty = async () => {
     const response = await fetch(`https://roombooking-fa3a.onrender.com/api/properties/${route.params.id}`)
     if (!response.ok) throw new Error('Failed to fetch property')
     const property = await response.json()
-    formData.value = {
-      ...property,
-      categoryId: property.categoryId || '',
-      amenities: property.amenities || [],
-      nearbyPlaces: property.nearbyPlaces || []
+    if (isComponentMounted.value) {
+      formData.value = {
+        ...property,
+        categoryId: property.categoryId || '',
+        amenities: property.amenities || [],
+        nearbyPlaces: property.nearbyPlaces || []
+      }
     }
   } catch (error) {
     console.error('Error fetching property:', error)
-    toast.error('Không thể tải thông tin bất động sản. Vui lòng thử lại.')
-    router.push('/my-properties')
+    if (isComponentMounted.value) {
+      toast.error('Không thể tải thông tin bất động sản. Vui lòng thử lại.')
+      router.push('/yourproperty')
+    }
   }
 }
 
 const handleSaveImages = (images) => {
-  formData.value.imageUrls = images
-  showImageDialog.value = false
+  if (isComponentMounted.value) {
+    formData.value.imageUrls = images
+    showImageDialog.value = false
+  }
 }
 
 const removeImage = (index) => {
-  formData.value.imageUrls = formData.value.imageUrls.filter((_, i) => i !== index)
+  if (isComponentMounted.value) {
+    formData.value.imageUrls = formData.value.imageUrls.filter((_, i) => i !== index)
+  }
 }
 
 const handleSubmit = async () => {
@@ -309,15 +319,32 @@ const handleSubmit = async () => {
 
     if (!response.ok) throw new Error('Failed to update property')
 
-    toast.success('Cập nhật thành công!')
-    router.push('/my-properties')
+    if (isComponentMounted.value) {
+      toast.success('Cập nhật thành công!', {
+        duration: 1500
+      })
+      
+      setTimeout(() => {
+        if (isComponentMounted.value) {
+          router.push('/yourproperty')
+        }
+      }, 1600)
+    }
   } catch (error) {
     console.error('Error updating property:', error)
-    toast.error('Có lỗi xảy ra khi cập nhật. Vui lòng thử lại.')
-  } finally {
-    isLoading.value = false
+    if (isComponentMounted.value) {
+      toast.error('Có lỗi xảy ra khi cập nhật. Vui lòng thử lại.')
+      isLoading.value = false
+    }
   }
 }
 
-onMounted(fetchProperty)
+onMounted(() => {
+  isComponentMounted.value = true
+  fetchProperty()
+})
+
+onBeforeUnmount(() => {
+  isComponentMounted.value = false
+})
 </script>

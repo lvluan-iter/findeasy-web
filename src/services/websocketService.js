@@ -19,7 +19,6 @@ const subscriptions = []
 const createWebSocketService = () => {
   const connect = (newUserId) => {
     if (userId === newUserId && connectionStatus.value === 'connected') {
-      console.log('Already connected with the same user ID')
       return
     }
 
@@ -69,7 +68,6 @@ const createWebSocketService = () => {
 
     defaultSubscriptions.concat(subscriptions).forEach(({ topic, handler }) => {
       stompClient.value.subscribe(topic, message => {
-        console.log(`Received message on ${topic}:`, message.body)
         handler(JSON.parse(message.body))
       })
     })
@@ -104,7 +102,6 @@ const createWebSocketService = () => {
 
   const reconnect = () => {
     if (reconnectAttempts++ < maxReconnectAttempts) {
-      console.log(`Attempting to reconnect... (${reconnectAttempts}/${maxReconnectAttempts})`)
       setTimeout(() => connect(userId), 5000)
     } else {
       console.log('Max reconnect attempts reached')
@@ -190,5 +187,4 @@ const createWebSocketService = () => {
   }
 }
 
-// Tạo và export một instance duy nhất của WebSocket service
 export const webSocketService = createWebSocketService()
