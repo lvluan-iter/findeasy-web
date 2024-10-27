@@ -43,18 +43,55 @@
 
       <div
         v-if="isLoading"
-        class="lg:col-span-3 h-full flex items-center justify-center"
+        class="lg:col-span-3 h-full flex flex-col items-center justify-center text-center px-4"
       >
-        <p class="text-white">
+        <div class="bg-blue-500/10 rounded-full p-6 mb-6 animate-pulse">
+          <svg
+            class="w-16 h-16 text-blue-500"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+            />
+          </svg>
+        </div>
+        <h3 class="text-xl font-semibold text-white mb-2">
           Đang tải dữ liệu...
+        </h3>
+        <p class="text-gray-400 mb-6 max-w-md">
+          Vui lòng đợi trong giây lát trong khi chúng tôi tải thông tin địa điểm.
         </p>
       </div>
+
       <div
         v-else-if="cities.length === 0"
-        class="lg:col-span-3 h-full flex items-center justify-center"
+        class="lg:col-span-3 h-full flex flex-col items-center justify-center text-center px-4"
       >
-        <p class="text-white">
-          Không có dữ liệu thành phố.
+        <div class="bg-gray-800 rounded-full p-6 mb-6">
+          <svg
+            class="w-16 h-16 text-gray-600"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+            />
+          </svg>
+        </div>
+        <h3 class="text-xl font-semibold text-white mb-2">
+          Không có dữ liệu thành phố
+        </h3>
+        <p class="text-gray-400 mb-6 max-w-md">
+          Hiện tại chưa có thông tin về các thành phố. Vui lòng thử lại sau.
         </p>
       </div>
       <div
@@ -202,5 +239,18 @@ onUnmounted(() => {
 
 .no-copy img {
   pointer-events: none;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: .5;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 </style>

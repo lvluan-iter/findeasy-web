@@ -19,7 +19,6 @@
             </div>
           </div>
           
-          <!-- Info section -->
           <div class="md:w-3/5 p-4 flex flex-col justify-between">
             <div>
               <div class="flex justify-between items-start mb-2">
@@ -27,7 +26,7 @@
                   {{ property.title }}
                 </h3>
                 <div class="text-2xl font-bold text-blue-600">
-                  ${{ (property.price / 1000000).toFixed(2) }}M<span class="text-sm text-gray-500 font-normal">/tháng</span>
+                  {{ (property.price / 1000000).toFixed(1) }}M<span class="text-sm text-gray-500 font-normal">/tháng</span>
                 </div>
               </div>
               <div class="flex items-center text-gray-600 mb-2 text-sm">
@@ -51,7 +50,6 @@
                   <span>{{ property.area }} m²</span>
                 </div>
               </div>
-              <!-- Tính năng nổi bật -->
               <div class="mb-3">
                 <h4 class="text-sm font-semibold text-gray-700 mb-1">
                   Tính năng nổi bật:
@@ -76,7 +74,6 @@
                   </span>
                 </div>
               </div>
-              <!-- Thông tin khu vực -->
               <div
                 v-if="property.nearbyPlaces && property.nearbyPlaces.length > 0"
                 class="mb-3"
@@ -109,9 +106,8 @@
               <div class="flex items-center mb-3">
                 <div class="flex items-center mr-2">
                   <i class="fas fa-star text-yellow-400" />
-                  <span class="ml-1 text-sm font-semibold">4.5</span>
+                  <span class="ml-1 text-sm font-semibold">VIP</span>
                 </div>
-                <span class="text-xs text-gray-500">(12 đánh giá)</span>
               </div>
             </div>
             <div class="flex justify-between items-center">
@@ -139,10 +135,9 @@
             </div>
           </div>
         </div>
-        <!-- Footer section with Compare button -->
         <div class="bg-gray-100 px-4 py-2 flex justify-between items-center">
           <div class="text-gray-500 text-xs">
-            Listed on {{ new Date(property.listedDate).toLocaleDateString() }}
+            Listed on {{ new Date(property.createdAt).toLocaleDateString() }}
           </div>
           <button
             class="px-4 py-2 bg-green-500 text-white text-sm rounded hover:bg-green-600 transition-colors duration-300 flex items-center"
@@ -161,7 +156,6 @@
       </div>
     </div>
     
-    <!-- Pagination -->
     <div
       v-if="showPagination"
       class="mt-6 flex justify-center"
