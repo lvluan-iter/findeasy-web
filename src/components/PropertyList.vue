@@ -327,7 +327,7 @@
             Chi tiết tin đăng
           </h3>
           <button
-            class="p-1.5 text-slate-600 dark:text-slate-300hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg"
+            class="p-1.5 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg"
             @click="closePreviewModal"
           >
             <i class="fas fa-times" />
@@ -340,14 +340,14 @@
         >
           <div class="relative rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-700">
             <img
-              :src="selectedListing.images[currentImageIndex] || '/api/placeholder/800/400'"
+              :src="selectedListing.imageUrls && selectedListing.imageUrls.length > 0 ? selectedListing.imageUrls[currentImageIndex] : '/api/placeholder/800/400'"
               :alt="selectedListing.title"
               class="w-full h-[400px] object-cover"
             >
-            
+        
             <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
               <button
-                v-for="(image, index) in selectedListing.images"
+                v-for="(imageUrl, index) in selectedListing.imageUrls || []"
                 :key="index"
                 class="w-2 h-2 rounded-full transition-colors"
                 :class="index === currentImageIndex ? 'bg-white' : 'bg-white/50'"
@@ -355,7 +355,6 @@
               />
             </div>
           </div>
-
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <h4 class="font-semibold text-slate-800 dark:text-slate-100 mb-2">
@@ -383,7 +382,7 @@
                     Loại BĐS
                   </dt>
                   <dd class="font-medium text-slate-800 dark:text-slate-200">
-                    {{ selectedListing.propertyType }}
+                    {{ selectedListing.type }}
                   </dd>
                 </div>
               </dl>
@@ -414,12 +413,12 @@
             </h4>
             <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
               <div
-                v-for="feature in selectedListing.features"
-                :key="feature.id"
+                v-for="amenity in selectedListing.amenities"
+                :key="amenity.id"
                 class="flex items-center gap-2 text-slate-600 dark:text-slate-300"
               >
-                <i :class="feature.icon" />
-                <span>{{ feature.name }}</span>
+                <i :class="amenity.icon" />
+                <span>{{ amenity.name }}</span>
               </div>
             </div>
           </div>
@@ -512,7 +511,10 @@ const fetchListings = async () => {
 const approveListing = async (listing) => {
   try {
     const response = await fetch(`${API_URL}/${listing.id}/approve`, {
-      method: 'POST'
+      method: 'PATCH',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('jwt')}`
+      }
     })
 
     if (!response.ok) throw new Error()
@@ -523,26 +525,15 @@ const approveListing = async (listing) => {
   }
 }
 
-const openRejectModal = (listing) => {
-  selectedListing.value = listing
-  showRejectModal.value = true
-  rejectForm.value.reason = ''
-}
-
-const closeRejectModal = () => {
-  showRejectModal.value = false
-  selectedListing.value = null
-  rejectForm.value.reason = ''
-}
-
 const rejectListing = async () => {
   if (!selectedListing.value) return
 
   try {
     const response = await fetch(`${API_URL}/${selectedListing.value.id}/reject`, {
-      method: 'POST',
+      method: 'DELETE',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('jwt')}`
       },
       body: JSON.stringify({ reason: rejectForm.value.reason })
     })
@@ -554,6 +545,58 @@ const rejectListing = async () => {
   } catch (err) {
     console.error('Error rejecting listing:', err)
   }
+}
+
+const lockListing = async () => {
+  if (!selectedListing.value) return
+
+  try {
+    const response = await fetch(`${API_URL}/${selectedListing.value.id}/lock`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('jwt')}`
+      },
+      body: JSON.stringify(lockForm.value)
+    })
+
+    if (!response.ok) throw new Error()
+
+    await fetchListings()
+    closeLockModal()
+  } catch (err) {
+    console.error('Error locking listing:', err)
+  }
+}
+
+const unlockListing = async (listing) => {
+  try {
+    const response = await fetch(`${API_URL}/${listing.id}/unlock`, {
+      method: 'PATCH',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('jwt')}`
+      }
+    })
+
+    if (!response.ok) throw new Error()
+
+    await fetchListings()
+  } catch (err) {
+    console.error('Error unlocking listing:', err)
+  }
+}
+
+
+const openRejectModal = (listing) => {
+  selectedListing.value = listing
+  showRejectModal.value = true
+  rejectForm.value.reason = ''
+}
+
+const closeRejectModal = () => {
+  showRejectModal.value = false
+  selectedListing.value = null
+  rejectForm.value.reason = ''
 }
 
 const openLockModal = (listing) => {
@@ -571,41 +614,6 @@ const closeLockModal = () => {
   lockForm.value = {
     reason: '',
     duration: 7
-  }
-}
-
-const lockListing = async () => {
-  if (!selectedListing.value) return
-
-  try {
-    const response = await fetch(`${API_URL}/${selectedListing.value.id}/lock`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(lockForm.value)
-    })
-
-    if (!response.ok) throw new Error()
-
-    await fetchListings()
-    closeLockModal()
-  } catch (err) {
-    console.error('Error locking listing:', err)
-  }
-}
-
-const unlockListing = async (listing) => {
-  try {
-    const response = await fetch(`${API_URL}/${listing.id}/unlock`, {
-      method: 'POST'
-    })
-
-    if (!response.ok) throw new Error()
-
-    await fetchListings()
-  } catch (err) {
-    console.error('Error unlocking listing:', err)
   }
 }
 
