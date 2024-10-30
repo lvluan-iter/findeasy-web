@@ -306,7 +306,11 @@ const fetchMyProperties = async () => {
   if (!user.value) return
   isLoading.value = true 
   try {
-    const response = await fetch(`https://roombooking-fa3a.onrender.com/api/properties/user/${user.value.id}`)
+    const response = await fetch(`https://roombooking-fa3a.onrender.com/api/properties/user/${user.value.id}`, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('jwt')}`
+      }
+    })
     if (!response.ok) {
       throw new Error('Network response was not ok')
     }
@@ -358,7 +362,8 @@ const toggleVisibility = async (property) => {
       const response = await fetch(`https://roombooking-fa3a.onrender.com/api/properties/${property.id}/toggle-visibility`, {
         method: 'PATCH',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('jwt')}`
         }
       })
       
@@ -390,7 +395,8 @@ const confirmExtend = async () => {
     const response = await fetch(`https://roombooking-fa3a.onrender.com/api/properties/${selectedProperty.value.id}/extend`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('jwt')}`
       }
     })
 
@@ -423,7 +429,8 @@ const handleDelete = async (property) => {
       const response = await fetch(`https://roombooking-fa3a.onrender.com/api/properties/${property.id}`, {
         method: 'DELETE',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('jwt')}`
         }
       })
       

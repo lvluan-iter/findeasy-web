@@ -5,6 +5,7 @@
       v-if="userStore.user"
       :user-id="userStore.user.id"
     />
+    <AdminButton />
     <MessComponent />
     <ScolltoTop />
   </div>
@@ -18,6 +19,7 @@ import { useCategoryStore } from './stores/categoryStore'
 import ScolltoTop from './components/ScolltoTop.vue'
 import HeartbeatComponent from './components/HeartbeatComponent.vue'
 import MessComponent from './components/MessComponent.vue';
+import AdminButton from './components/AdminButton.vue'
 
 const userStore = useUserStore()
 const categoryStore = useCategoryStore()

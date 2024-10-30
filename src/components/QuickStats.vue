@@ -43,13 +43,22 @@ const fetchQuickStats = async () => {
   if (!user.value) return
 
   try {
-    const response = await fetch(`https://roombooking-fa3a.onrender.com/api/properties/quick-stats/${user.value.id}`)
+    const response = await fetch(`https://roombooking-fa3a.onrender.com/api/properties/quick-stats/${user.value.id}`, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('jwt')}`
+      }
+    })
+    
+    if (!response.ok) {
+      throw new Error('Failed to fetch quick stats')
+    }
+
     const data = await response.json()
     quickStats.value = [
       { name: 'Total Properties', value: data.totalProperties, change: data.propertiesGrowth },
       { name: 'Total Requests', value: data.totalRequests, change: data.requestsGrowth },
       { name: 'Total Views', value: data.totalViews, change: data.viewsGrowth },
-      { name: 'Total Favorites', value: data.totalFavorites, change: data.favoritesGrowth}
+      { name: 'Total Favorites', value: data.totalFavorites, change: data.favoritesGrowth }
     ]
   } catch (error) {
     console.error('Error fetching quick stats:', error)

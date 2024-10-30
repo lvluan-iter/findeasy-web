@@ -103,6 +103,40 @@ const routes = [
     meta: {
       requiresAuth: true
     },
+  },
+  {
+    path: '/admin',
+    component: () => import('@/views/WebAdmin.vue'),
+    children: [
+      {
+        path: '', 
+        redirect: '/admin/dashboard'
+      },
+      {
+        path: 'dashboard', 
+        component: () => import('@/components/DashBoard.vue')
+      },
+      {
+        path: '/location',
+        component: () => import('@/components/LocationList.vue')
+      },
+      {
+        path: '/categories',
+        component: () => import('@/components/CategorieList.vue')
+      },
+      {
+        path: '/amenities',
+        component: () => import('@/components/AmenityList.vue')
+      },
+      {
+        path: '/users',
+        component: () => import('@/components/UserList.vue')
+      },
+      {
+        path: '/properties',
+        component: () => import('@/components/PropertyList.vue')
+      },
+    ]
   }
 ];
 
