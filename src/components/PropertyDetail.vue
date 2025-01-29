@@ -359,7 +359,7 @@
                 <div class="w-24 h-24 sm:w-32 sm:h-32 rounded-full border-4 border-[#0a73c0] overflow-hidden">
                   <img
                     class="w-full h-full object-cover"
-                    :src="contact.avatar"
+                    :src="property.user.avatar"
                     alt="Agent avatar"
                   >
                 </div>
@@ -370,13 +370,13 @@
               </div>
               <div class="flex-grow text-center sm:text-left">
                 <h5 class="text-xl font-semibold text-[#212529] mb-2">
-                  {{ contact.fullname }}
+                  {{ property.user.fullname }}
                 </h5>
                 <p class="text-[#707070] mb-4">
-                  {{ contact.phoneNumber }}
+                  {{ property.user.phoneNumber }}
                 </p>
                 <div
-                  v-if="user && contact.id !== user.id"
+                  v-if="user && property.user.id !== user.id"
                   class="flex flex-col sm:flex-row gap-3 justify-center sm:justify-start"
                 >
                   <button
@@ -567,7 +567,6 @@ const showChat = ref(false);
 const property = ref(null);
 const editedProperty = ref({});
 const isEditing = ref(false);
-const contact = ref({});
 const formData = ref({
   phoneNumber: '',
   appointmentDate: '',
@@ -584,7 +583,7 @@ const emit = defineEmits(['loadNearbyProperty']);
 const categoryOptions = computed(() => categoryStore.getCategoryOptions)
 
 const isShow = computed(() => {
-  return user.value && user.value.id === property.value?.userId;
+  return user.value && user.value.id === property.value?.user.id;
 });
 
 const startChat = () => {
@@ -691,17 +690,6 @@ const getCoordinates = async (address) => {
   return null;
 };
 
-const fetchUserContact = async () => {
-  try {
-    const response = await fetch(`https://roombooking-fa3a.onrender.com/api/users/id/${property.value.userId}`);
-    if (response.ok) {
-      contact.value = await response.json();
-    }
-  } catch (error) {
-    console.error('Error fetching user contact:', error);
-  }
-};
-
 const updateProperty = async () => {
   try {
     const response = await fetch(`https://roombooking-fa3a.onrender.com/api/properties/${property.value.id}`, {
@@ -806,9 +794,6 @@ function handleUserStatus(message) {
 const fetchAllData = async () => {
   try {
     await fetchProperty();
-    await Promise.all([
-      fetchUserContact(),
-    ]);
     await fetchUserStatus();
     if (property.value && property.value.address) {
       propertyCoordinates.value = await getCoordinates(property.value.address);

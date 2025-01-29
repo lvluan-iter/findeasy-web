@@ -52,8 +52,11 @@
               Admin
             </p>
           </div>
-          <button class="p-1.5 rounded-lg hover:bg-white/10">
-            <i class="fas fa-cog text-white/70" />
+          <button 
+            class="p-1.5 rounded-lg hover:bg-white/10"
+            @click="router.push('/')"
+          >
+            <i class="fas fa-sign-out-alt text-white/70" />
           </button>
         </div>
       </div>
@@ -136,51 +139,52 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 const route = useRoute()
+const router = useRouter()
 const isMobileMenuOpen = ref(false)
 const isDarkMode = ref(false)
 
 const navigation = [
   {
     name: 'Tổng quan',
-    path: '/dashboard',
+    path: '/admin/adashboard',
     icon: 'fa-chart-pie'
   },
   {
     name: 'Quản lý danh mục',
-    path: '/categories',
+    path: '/admin/categories',
     icon: 'fa-th-large'
   },
   {
     name: 'Quản lý địa điểm',
-    path: '/location',
+    path: '/admin/location',
     icon: 'fa-map-marker-alt'
   },
   {
     name: 'Quản lý tiện ích',
-    path: '/amenities',
+    path: '/admin/amenities',
     icon: 'fa-concierge-bell'
   },
   {
     name: 'Quản lý người dùng',
-    path: '/users',
+    path: '/admin/users',
     icon: 'fa-users'
   },
   {
     name: 'Quản lý tin đăng',
-    path: '/properties',
+    path: '/admin/properties',
     icon: 'fa-home'
   },
   {
     name: 'Báo cáo & Thống kê',
-    path: '/reports',
+    path: '/admin/reports',
     icon: 'fa-chart-line'
   },
   {
     name: 'Cài đặt hệ thống',
-    path: '/settings',
+    path: '/admin/settings',
     icon: 'fa-cog'
   }
 ]

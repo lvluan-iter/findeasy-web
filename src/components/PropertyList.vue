@@ -248,6 +248,7 @@
               type="button"
               class="px-4 py-2 text-slate-700 dark:text-slate-300 hover:bg-slate-100
                        dark:hover:bg-slate-700 rounded-lg transition-colors"
+              :disabled="isRunning"
               @click="closeLockModal"
             >
               Hủy bỏ
@@ -255,9 +256,14 @@
             <button
               type="submit"
               class="px-4 py-2 bg-[rgb(10,115,192)] text-white rounded-lg
-                       hover:bg-[rgb(8,92,154)] transition-colors"
+                       hover:bg-[rgb(8,92,154)] transition-colors disabled:opacity-50"
+              :disabled="isRunning"
             >
-              Xác nhận khóa
+              <i
+                v-if="isRunning"
+                class="fas fa-spinner fa-spin mr-2"
+              />
+              Khóa
             </button>
           </div>
         </form>
@@ -435,6 +441,7 @@ const API_URL = 'https://roombooking-fa3a.onrender.com/api/properties'
 
 const listings = ref([])
 const isLoading = ref(false)
+const isRunning = ref(false)
 const error = ref(null)
 const searchTerm = ref('')
 const currentTab = ref('pending')
@@ -551,6 +558,7 @@ const lockListing = async () => {
   if (!selectedListing.value) return
 
   try {
+    isRunning.value = true
     const response = await fetch(`${API_URL}/${selectedListing.value.id}/lock`, {
       method: 'PATCH',
       headers: {
@@ -566,6 +574,8 @@ const lockListing = async () => {
     closeLockModal()
   } catch (err) {
     console.error('Error locking listing:', err)
+  } finally {
+    isRunning.value = false
   }
 }
 

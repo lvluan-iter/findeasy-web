@@ -55,7 +55,7 @@
               Quản trị viên
             </option>
             <option value="Owner">
-              Chủ
+              Chủ sở hữu
             </option>
           </select>
         </div>
@@ -139,8 +139,8 @@
                     v-for="role in getRoleName(user.roles)"
                     :key="role"
                     :class="{
-                      'bg-purple-100 text-purple-800 dark:bg-purple-500/20 dark:text-purple-300': role === 'Admin',
-                      'bg-blue-100 text-blue-800 dark:bg-blue-500/20 dark:text-blue-300': role === 'Owner',
+                      'bg-purple-100 text-purple-800 dark:bg-purple-500/20 dark:text-purple-300': role === 'Owner',
+                      'bg-blue-100 text-blue-800 dark:bg-blue-500/20 dark:text-blue-300': role === 'Admin',
                       'bg-green-100 text-green-800 dark:bg-green-500/20 dark:text-green-300': role === 'User'
                     }"
                     class="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm"
@@ -203,7 +203,6 @@
       </div>
     </div>
   
-    <!-- Modal đổi vai trò -->
     <div
       v-if="showRoleModal"
       class="fixed inset-0 z-50 flex items-center justify-center"
@@ -235,9 +234,9 @@
           >
             <div
               :class="{
-                'bg-purple-100 text-purple-800': role.value === 'admin',
-                'bg-blue-100 text-blue-800': role.value === 'moderator',
-                'bg-green-100 text-green-800': role.value === 'user'
+                'bg-purple-100 text-purple-800': role.value === 'Admin',
+                'bg-blue-100 text-blue-800': role.value === 'Owner',
+                'bg-green-100 text-green-800': role.value === 'User'
               }"
               class="w-10 h-10 rounded-full flex items-center justify-center"
             >
@@ -282,7 +281,6 @@
       </div>
     </div>
   
-    <!-- Modal khóa tài khoản -->
     <div
       v-if="showLockModal"
       class="fixed inset-0 z-50 flex items-center justify-center"
@@ -362,7 +360,6 @@
       </div>
     </div>
 
-    <!-- Modal mở khóa tài khoản -->
     <div
       v-if="showUnlockModal"
       class="fixed inset-0 z-50 flex items-center justify-center"
@@ -444,19 +441,19 @@ const isUpdating = ref(false)
 
 const availableRoles = [
   {
-    value: 'admin',
-    label: 'Quản trị viên',
+    value: 'Owner',
+    label: 'Chủ sở hữu',
     icon: 'fa-user-shield',
     description: 'Toàn quyền quản lý hệ thống'
   },
   {
-    value: 'moderator',
-    label: 'Điều hành viên',
+    value: 'Admin',
+    label: 'Quản trị viên',
     icon: 'fa-user-gear',
     description: 'Quản lý nội dung và người dùng'
   },
   {
-    value: 'user',
+    value: 'User',
     label: 'Người dùng',
     icon: 'fa-user',
     description: 'Sử dụng các tính năng cơ bản'

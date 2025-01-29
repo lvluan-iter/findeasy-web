@@ -110,31 +110,31 @@ const routes = [
     children: [
       {
         path: '', 
-        redirect: '/admin/dashboard'
+        redirect: '/admin/adashboard'
       },
       {
-        path: 'dashboard', 
-        component: () => import('@/components/DashBoard.vue')
-      },
-      {
-        path: '/location',
+        path: '/admin/location',
         component: () => import('@/components/LocationList.vue')
       },
       {
-        path: '/categories',
+        path: '/admin/categories',
         component: () => import('@/components/CategorieList.vue')
       },
       {
-        path: '/amenities',
+        path: '/admin/amenities',
         component: () => import('@/components/AmenityList.vue')
       },
       {
-        path: '/users',
+        path: '/admin/users',
         component: () => import('@/components/UserList.vue')
       },
       {
-        path: '/properties',
+        path: '/admin/properties',
         component: () => import('@/components/PropertyList.vue')
+      },
+      {
+        path: '/admin/adashboard',
+        component: () => import('@/components/DashBoardList.vue')
       },
     ]
   }

@@ -19,7 +19,6 @@
       </button>
     </div>
   
-    <!-- Search Bar -->
     <div class="relative">
       <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
       <input
@@ -31,7 +30,6 @@
       >
     </div>
   
-    <!-- Loading State -->
     <div
       v-if="isLoading"
       class="flex items-center justify-center py-12"
@@ -39,7 +37,6 @@
       <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-[rgb(10,115,192)]" />
     </div>
   
-    <!-- Error State -->
     <div 
       v-else-if="error" 
       class="bg-red-50 dark:bg-red-500/10 text-red-500 p-4 rounded-lg text-center"
@@ -47,7 +44,6 @@
       {{ error }}
     </div>
   
-    <!-- Empty State -->
     <div 
       v-else-if="amenities.length === 0" 
       class="text-center py-12 text-slate-500 dark:text-slate-400"
@@ -56,7 +52,6 @@
       <p>Chưa có tiện ích nào. Hãy thêm tiện ích mới!</p>
     </div>
   
-    <!-- Amenities Grid -->
     <div
       v-else
       class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"
@@ -67,7 +62,6 @@
         class="bg-white dark:bg-slate-800 rounded-lg shadow-sm hover:shadow-md transition-shadow p-4
                  flex flex-col items-center group relative"
       >
-        <!-- Icon Preview -->
         <div
           class="w-12 h-12 flex items-center justify-center text-2xl mb-3 
                       bg-blue-50 dark:bg-blue-500/10 rounded-lg text-blue-600 dark:text-blue-400"
@@ -75,12 +69,10 @@
           <i :class="amenity.icon" />
         </div>
   
-        <!-- Amenity Name -->
         <h3 class="text-sm font-medium text-slate-700 dark:text-slate-200 text-center">
           {{ amenity.name }}
         </h3>
   
-        <!-- Actions -->
         <div class="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
           <button
             class="p-1.5 text-slate-600 dark:text-slate-300 hover:bg-slate-100 
@@ -100,7 +92,6 @@
       </div>
     </div>
   
-    <!-- Add/Edit Modal -->
     <div
       v-if="isModalOpen"
       class="fixed inset-0 z-50 flex items-center justify-center"
@@ -125,7 +116,6 @@
           class="space-y-4"
           @submit.prevent="saveAmenity"
         >
-          <!-- Name Input -->
           <div>
             <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
               Tên tiện ích
@@ -139,7 +129,6 @@
             >
           </div>
   
-          <!-- Icon Selection -->
           <div>
             <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
               Icon (Font Awesome)
@@ -160,7 +149,6 @@
             </div>
           </div>
   
-          <!-- Icon Preview -->
           <div class="p-4 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
             <p class="text-sm text-slate-500 dark:text-slate-400 mb-2">
               Preview:
@@ -180,7 +168,6 @@
             </div>
           </div>
   
-          <!-- Common Icons Suggestions -->
           <div>
             <p class="text-sm text-slate-500 dark:text-slate-400 mb-2">
               Icons phổ biến:
@@ -199,7 +186,6 @@
             </div>
           </div>
   
-          <!-- Form Actions -->
           <div class="flex justify-end gap-3 mt-6">
             <button
               type="button"
@@ -227,7 +213,6 @@
       </div>
     </div>
   
-    <!-- Delete Confirmation Modal -->
     <div
       v-if="showDeleteConfirm"
       class="fixed inset-0 z-50 flex items-center justify-center"

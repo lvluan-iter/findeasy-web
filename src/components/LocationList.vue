@@ -84,7 +84,7 @@
                 Mô tả
               </th>
               <th class="px-6 py-3 text-center text-sm font-semibold text-slate-600 dark:text-slate-200">
-                Số lượng BĐS
+                BĐS
               </th>
               <th class="px-6 py-3 text-center text-sm font-semibold text-slate-600 dark:text-slate-200">
                 Thao tác
