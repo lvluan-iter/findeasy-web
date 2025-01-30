@@ -126,7 +126,9 @@
                       v-model="user.email"
                       type="email"
                       required
-                      class="block w-full pl-10 pr-3 py-2 text-sm border-b border-gray-300 focus:border-blue-500 focus:outline-none transition duration-300 bg-transparent"
+                      disabled
+                      readonly
+                      class="block w-full pl-10 pr-3 py-2 text-sm border-b border-gray-300 focus:border-blue-500 focus:outline-none transition duration-300 bg-transparent cursor-not-allowed opacity-75"
                     >
                   </div>
                 </div>

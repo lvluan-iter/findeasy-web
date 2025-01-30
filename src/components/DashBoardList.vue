@@ -26,7 +26,7 @@
         </div>
         <div class="text-sm">
           <span class="text-green-500">
-            <i class="fas fa-arrow-up mr-1" />+{{ stats.propertyGrowth }}%
+            <i class="fas fa-arrow-up mr-1" />+{{ stats.propertiesGrowth }}%
           </span>
           <span class="text-slate-500 dark:text-slate-400 ml-1">so với tháng trước</span>
         </div>
@@ -42,13 +42,13 @@
               Người dùng mới
             </p>
             <p class="text-2xl font-semibold text-slate-800 dark:text-slate-100">
-              {{ isLoading ? '-' : stats.newUsers }}
+              {{ isLoading ? '-' : stats.totalUsers }}
             </p>
           </div>
         </div>
         <div class="text-sm">
           <span class="text-green-500">
-            <i class="fas fa-arrow-up mr-1" />+{{ stats.userGrowth }}%
+            <i class="fas fa-arrow-up mr-1" />+{{ stats.usersGrowth }}%
           </span>
           <span class="text-slate-500 dark:text-slate-400 ml-1">so với tháng trước</span>
         </div>
@@ -70,7 +70,7 @@
         </div>
         <div class="text-sm">
           <span class="text-green-500">
-            <i class="fas fa-arrow-up mr-1" />+{{ stats.viewGrowth }}%
+            <i class="fas fa-arrow-up mr-1" />+{{ stats.viewsGrowth }}%
           </span>
           <span class="text-slate-500 dark:text-slate-400 ml-1">so với tháng trước</span>
         </div>
@@ -86,7 +86,7 @@
               Doanh thu
             </p>
             <p class="text-2xl font-semibold text-slate-800 dark:text-slate-100">
-              {{ isLoading ? '-' : formatCurrency(stats.revenue) }}
+              {{ isLoading ? '-' : formatCurrency(stats.totalRevenues) }}
             </p>
           </div>
         </div>
@@ -206,12 +206,12 @@ import { ref, onMounted } from 'vue'
 const isLoading = ref(true)
 const stats = ref({
   totalProperties: 0,
-  propertyGrowth: 0,
-  newUsers: 0,
-  userGrowth: 0,
+  propertiesGrowth: 0,
+  totalUsers: 0,
+  usersGrowth: 0,
   totalViews: 0,
-  viewGrowth: 0,
-  revenue: 0,
+  viewsGrowth: 0,
+  totalRevenues: 0,
   revenueGrowth: 0
 })
 
@@ -241,7 +241,7 @@ const fetchDashboardData = async () => {
   try {
     isLoading.value = true
 
-    const response = await fetch('https://roombooking-fa3a.onrender.com/api/admin/quick-stats', {
+    const response = await fetch('https://roombooking-fa3a.onrender.com/api/properties/admin/quick-stats', {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
@@ -254,15 +254,16 @@ const fetchDashboardData = async () => {
     }
 
     const data = await response.json()
+    console.log('API response:', data)
 
     stats.value = {
       totalProperties: data.totalProperties || 0,
-      propertyGrowth: data.propertiesGrowth || 0,
+      propertiesGrowth: data.propertiesGrowth || 0,
       totalUsers: data.totalUsers || 0,
       usersGrowth: data.usersGrowth || 0,
       totalViews: data.totalViews || 0,
       viewsGrowth: data.viewsGrowth || 0,
-      revenue: data.currentMonthRevenue || 0, 
+      totalRevenues: data.totalRevenues || 0,
       revenueGrowth: data.revenueGrowth || 0
     }
 
