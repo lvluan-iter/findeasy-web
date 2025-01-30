@@ -9,7 +9,6 @@
       </p>
     </div>
 
-    <!-- Stats Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
       <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-4">
         <div class="flex items-center justify-between mb-3">
@@ -100,7 +99,6 @@
       </div>
     </div>
 
-    <!-- Recent Properties -->
     <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm">
       <div class="p-4 border-b border-slate-200 dark:border-slate-700">
         <h3 class="font-semibold text-slate-800 dark:text-slate-100">
@@ -242,20 +240,32 @@ const formatDate = (date) => {
 const fetchDashboardData = async () => {
   try {
     isLoading.value = true
-    
-    await new Promise(resolve => setTimeout(resolve, 1500))
-    
-    stats.value = {
-      totalProperties: 1234,
-      propertyGrowth: 12.5,
-      newUsers: 256,
-      userGrowth: 8.3,
-      totalViews: 45678,
-      viewGrowth: 15.7,
-      revenue: 123456789,
-      revenueGrowth: 2.4
+
+    const response = await fetch('https://roombooking-fa3a.onrender.com/api/admin/quick-stats', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+        'Content-Type': 'application/json'
+      }
+    })
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok')
     }
-    
+
+    const data = await response.json()
+
+    stats.value = {
+      totalProperties: data.totalProperties || 0,
+      propertyGrowth: data.propertiesGrowth || 0,
+      totalUsers: data.totalUsers || 0,
+      usersGrowth: data.usersGrowth || 0,
+      totalViews: data.totalViews || 0,
+      viewsGrowth: data.viewsGrowth || 0,
+      revenue: data.currentMonthRevenue || 0, 
+      revenueGrowth: data.revenueGrowth || 0
+    }
+
     recentProperties.value = [
       {
         id: 1,
@@ -341,7 +351,7 @@ const fetchDashboardData = async () => {
         timestamp: '2024-03-27T16:30:00'
       }
     ]
-    
+
   } catch (error) {
     console.error('Error fetching dashboard data:', error)
   } finally {

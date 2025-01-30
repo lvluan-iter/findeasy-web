@@ -330,7 +330,13 @@ const fetchUserProperties = async () => {
   }
   
   try {
-    const response = await fetch(`https://roombooking-fa3a.onrender.com/api/properties/user/${user.value.id}`)
+    const response = await fetch(`https://roombooking-fa3a.onrender.com/api/properties/user/${user.value.id}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+        'Content-Type': 'application/json'
+      }
+    })
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`)
     }
