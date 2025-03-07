@@ -525,7 +525,7 @@
       <ChatComponent
         v-if="showChat && user"
         :sender-id="user.id"
-        :recipient-id="property.userId"
+        :recipient-id="property.user.id"
         @close="showChat = false"
       />
     </div>

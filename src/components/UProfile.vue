@@ -1,17 +1,22 @@
 <template>
   <div class="flex flex-col items-start px-4 md:px-12 lg:px-20 lg:py-12 xl:px-32 py-5">
-    <div
-      class="mb-2 text-blue-600 font-medium cursor-pointer hover:underline flex items-center"
-      @click="$router.push('/')"
-    >
-      <i class="fas fa-chevron-left mr-2" />
-      Back To Home
+    <div class="flex flex-wrap items-center gap-4">
+      <button
+        class="text-blue-600 hover:text-blue-800 hover:underline font-medium flex items-center gap-2 transition duration-300"
+        @click="$router.go(-1)"
+      >
+        <i class="fas fa-angle-left" />
+        <span>Quay lại</span>
+      </button>
+      <div class="hidden sm:block w-px h-6 bg-gray-300" />
+      <h1 class="text-xl sm:text-2xl font-bold text-gray-800">
+        Trang cá nhân
+      </h1>
     </div>
     <hr class="w-full mb-5">
     <div class="w-full max-w-4xl mx-auto">
       <div class="bg-gradient-to-br from-slate-50 to-slate-100 shadow-2xl rounded-3xl overflow-hidden">
         <div class="relative">
-          <!-- Background Pattern -->
           <div class="absolute inset-0 bg-indigo-100 opacity-50">
             <svg
               class="w-full h-full"
@@ -93,7 +98,6 @@
                 </div>
               </div>
             
-              <!-- Details -->
               <div class="border-t border-gray-200 pt-6">
                 <dl class="grid grid-cols-2 gap-x-6 gap-y-4 text-sm">
                   <div

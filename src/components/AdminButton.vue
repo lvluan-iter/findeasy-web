@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="canAccessAdmin"
-    class="fixed right-6 bottom-20 z-50 flex flex-col gap-2"
+    class="fixed right-6 bottom-20 z-10 flex flex-col gap-2"
   >
     <router-link
       :to="isInAdmin ? '/' : '/admin'"
