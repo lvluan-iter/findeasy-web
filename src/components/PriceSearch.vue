@@ -1,11 +1,26 @@
 <template>
   <div class="dropdown-container">
-    <div class="select" title="Giá cả" @mouseover="showDropdown" @mouseleave="hideDropdown">
+    <div
+      class="select"
+      title="Giá cả"
+      @mouseover="showDropdown"
+      @mouseleave="hideDropdown"
+    >
       <span>{{ selectedPriceText }}</span>
-      <i class="fa-solid fa-chevron-down"></i>
+      <i class="fa-solid fa-chevron-down" />
     </div>
-    <div class="pricedropdown" v-show="isOpen" @mouseover="showDropdown" @mouseleave="hideDropdown">
-      <div class="priceitem" v-for="(price, index) in priceOptions" :key="index" @click="selectPrice(price)">
+    <div
+      v-show="isOpen"
+      class="pricedropdown"
+      @mouseover="showDropdown"
+      @mouseleave="hideDropdown"
+    >
+      <div
+        v-for="(price, index) in priceOptions"
+        :key="index"
+        class="priceitem"
+        @click="selectPrice(price)"
+      >
         {{ price.text }}
       </div>
     </div>
@@ -54,7 +69,7 @@ export default {
     async searchPrice() {
       const minPrice = parseFloat(this.selectedPrice.value) - 500000;
       try {
-        const response = await fetch(`http://localhost:8080/api/properties/search?minPrice=${minPrice}&maxPrice=${this.selectedPrice.value}`);
+        const response = await fetch(`https://roombooking-fa3a.onrender.com/api/properties/search?minPrice=${minPrice}&maxPrice=${this.selectedPrice.value}`);
         if (!response.ok) {
           console.error("Lỗi khi tải dữ liệu từ server");
           return;

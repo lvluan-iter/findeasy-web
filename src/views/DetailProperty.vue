@@ -2,12 +2,15 @@
   <div id="app">
     <header class="relative">
       <IconHeader />
-      <div class="nav" id="nav">
+      <div class="nav">
         <NavBar />
       </div>
     </header>
     <main>
-      <PropertyDetail :id="id" @loadNearbyProperty="updatePropertiesNearBy" />
+      <PropertyDetail
+        :id="Number(route.params.id)"
+        @load-nearby-property="updatePropertiesNearBy"
+      />
       <NearbyArea :info="info" />
     </main>
     <footer class="footer">
@@ -16,34 +19,21 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref } from 'vue';
+import { useRoute } from 'vue-router';
 import IconHeader from '../components/IconHeader.vue';
 import PropertyDetail from '../components/PropertyDetail.vue';
 import WebFooter from '@/components/WebFooter.vue';
 import NavBar from '@/components/NavBar.vue';
 import NearbyArea from '@/components/NearbyArea.vue';
 
-export default {
-  props: ['id'],
-  components: {
-    IconHeader,
-    PropertyDetail,
-    WebFooter,
-    NavBar,
-    NearbyArea
-  },
-  data() {
-    return {
-      info: {},
-    }
-  },
-  methods: {
-    updatePropertiesNearBy(newinfo) {
-      console.log(newinfo);
-      this.info = newinfo;
-    }
-  }
-}
+const route = useRoute();
+const info = ref({});
+
+const updatePropertiesNearBy = (newInfo) => {
+  info.value = newInfo;
+};
 </script>
 
 <style scoped>
@@ -54,6 +44,6 @@ export default {
   right: 0;
   margin: 0 auto;
   width: calc(100% - 240px);
-  z-index: 9999;
+  z-index: 50;
 }
 </style>

@@ -1,45 +1,91 @@
 <template>
-    <div class="container">
-        <h3>Top 10 bài đăng phổ biến</h3>
-        <button @click="scrollLeft" class="scroll-btn left"><i class="fa-solid fa-angles-left"></i></button>
-        <div class="properties">
-            <div v-for="property in properties" :key="property.id" class="property" @click="linktoDetail(property.id)">
-                <div class="image-container">
-                    <img class="image" :src="getImageUrl(property.imageUrls[0])" :alt="property.title">
-                    <div class="overlay">
-                        <button class="btn btn-bookmark" @click.stop>
-                            <i class="fa-solid fa-bookmark"></i> Lưu
-                        </button>
-                        <button class="btn btn-view" @click.stop="linktoDetail(property.id)">
-                            <i class="fa-regular fa-eye"></i> Xem chi tiết
-                        </button>
-                    </div>
-                </div>
-                <div class="details">
-                    <h3 class="title">{{ property.title }}</h3>
-                    <div class="info">
-                        <div class="info-item">
-                            <i class="fa-solid fa-dollar-sign"></i>
-                            <div class="price">{{ property.price / 1000000 }} Triệu/tháng</div>
-                        </div>
-                        <div class="info-item">
-                            <i class="fa-solid fa-location-dot"></i>
-                            <div class="location">{{ getCleanLocation(property.location) }}</div>
-                        </div>
-                    </div>
-                    <div class="updated-at">Cập nhật: {{ formatUpdatedAt(property.updatedAt) }}</div>
-                </div>
-                <div class="bottom-btn">
-                    <div class="menu-icon"><i class="fa-solid fa-ellipsis-v"></i></div>
-                    <div class="menu-items">
-                        <div class="menu-item" title="Report"><i class="fa-solid fa-flag"></i></div>
-                        <div class="menu-item" title="Share" @click.stop="shareProperty(property)"><i class="fa-solid fa-share-nodes"></i></div>
-                    </div>
-                </div>
-            </div>
+  <div class="container">
+    <h3>Top 10 bài đăng phổ biến</h3>
+    <button
+      class="scroll-btn left"
+      @click="scrollLeft"
+    >
+      <i class="fa-solid fa-angles-left" />
+    </button>
+    <div class="properties">
+      <div
+        v-for="property in properties"
+        :key="property.id"
+        class="property"
+        @click="linktoDetail(property.id)"
+      >
+        <div class="image-container">
+          <img
+            class="image"
+            :src="getImageUrl(property.imageUrls[0])"
+            :alt="property.title"
+          >
+          <div class="overlay">
+            <button
+              class="btn btn-bookmark"
+              @click.stop
+            >
+              <i class="fa-solid fa-bookmark" /> Lưu
+            </button>
+            <button
+              class="btn btn-view"
+              @click.stop="linktoDetail(property.id)"
+            >
+              <i class="fa-regular fa-eye" /> Xem chi tiết
+            </button>
+          </div>
         </div>
-        <button @click="scrollRight" class="scroll-btn right"><i class="fa-solid fa-angles-right"></i></button>
+        <div class="details">
+          <h3 class="title">
+            {{ property.title }}
+          </h3>
+          <div class="info">
+            <div class="info-item">
+              <i class="fa-solid fa-dollar-sign" />
+              <div class="price">
+                {{ property.price / 1000000 }} Triệu/tháng
+              </div>
+            </div>
+            <div class="info-item">
+              <i class="fa-solid fa-location-dot" />
+              <div class="location">
+                {{ getCleanLocation(property.location) }}
+              </div>
+            </div>
+          </div>
+          <div class="updated-at">
+            Cập nhật: {{ formatUpdatedAt(property.updatedAt) }}
+          </div>
+        </div>
+        <div class="bottom-btn">
+          <div class="menu-icon">
+            <i class="fa-solid fa-ellipsis-v" />
+          </div>
+          <div class="menu-items">
+            <div
+              class="menu-item"
+              title="Report"
+            >
+              <i class="fa-solid fa-flag" />
+            </div>
+            <div
+              class="menu-item"
+              title="Share"
+              @click.stop="shareProperty(property)"
+            >
+              <i class="fa-solid fa-share-nodes" />
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+    <button
+      class="scroll-btn right"
+      @click="scrollRight"
+    >
+      <i class="fa-solid fa-angles-right" />
+    </button>
+  </div>
 </template>
 
 <script>
@@ -61,7 +107,7 @@ export default {
         },
         async fetchAvailableProperties() {
             try {
-                const response = await fetch(`http://localhost:8080/api/properties/popular`);
+                const response = await fetch(`https://roombooking-fa3a.onrender.com/api/properties/popular`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch properties');
                 }

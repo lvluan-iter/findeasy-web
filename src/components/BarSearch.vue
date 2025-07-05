@@ -1,7 +1,12 @@
 <template>
-    <div class="search-container">
-        <input type="search" v-model="searchValue" @input="barSearch" placeholder="Tìm kiếm thông tin theo mô tả">
-    </div>
+  <div class="search-container">
+    <input
+      v-model="searchValue"
+      type="search"
+      placeholder="Tìm kiếm thông tin theo mô tả"
+      @input="barSearch"
+    >
+  </div>
 </template>
 
 <script>
@@ -21,7 +26,7 @@ export default {
         },
         async fetchData() {
             try {
-                const response = await fetch(`http://localhost:8080/api/properties/search?keyword=${this.searchValue.toLowerCase()}`);
+                const response = await fetch(`https://roombooking-fa3a.onrender.com/api/properties/search?keyword=${this.searchValue.toLowerCase()}`);
                 if (!response.ok) {
                     console.log("Lỗi khi tải dữ liệu từ server");
                     return;

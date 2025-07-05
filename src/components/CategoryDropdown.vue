@@ -6,15 +6,36 @@
     <div class="dropdown">
       <div class="dropdown-content">
         <div class="category-item">
-          <div class="icon"><img src="@/assets/location.jpg" alt="location"></div>
+          <div class="icon">
+            <img
+              src="@/assets/location.jpg"
+              alt="location"
+            >
+          </div>
           <span>Vị trí</span>
-          <select v-model="filters.location" @change="debouncedApplyFilters">
-            <option value="">Chọn vị trí</option>
-            <option v-for="location in uniqueLocations" :key="location" :value="location">{{ location }}</option>
+          <select
+            v-model="filters.location"
+            @change="debouncedApplyFilters"
+          >
+            <option value="">
+              Chọn vị trí
+            </option>
+            <option
+              v-for="location in uniqueLocations"
+              :key="location"
+              :value="location"
+            >
+              {{ location }}
+            </option>
           </select>
         </div>
         <div class="category-item">
-          <div class="icon"><img src="@/assets/S.jpg" alt="price"></div>
+          <div class="icon">
+            <img
+              src="@/assets/S.jpg"
+              alt="price"
+            >
+          </div>
           <span>Giá cả</span>
           <div class="range-slider">
             <div class="range-values">
@@ -22,24 +43,67 @@
             </div>
             <div class="range-inputs">
               <span class="range-label">Min</span>
-              <input type="range" v-model="filters.priceMin" @input="debouncedApplyFilters" min="0" max="50" step="1">
+              <input
+                v-model="filters.priceMin"
+                type="range"
+                min="0"
+                max="50"
+                step="1"
+                @input="debouncedApplyFilters"
+              >
               <span class="range-label">Max</span>
-              <input type="range" v-model="filters.priceMax" @input="debouncedApplyFilters" min="0" max="50" step="1">
+              <input
+                v-model="filters.priceMax"
+                type="range"
+                min="0"
+                max="50"
+                step="1"
+                @input="debouncedApplyFilters"
+              >
             </div>
           </div>
         </div>
         <div class="category-item">
-          <div class="icon"><img src="@/assets/bedroom.png" alt="bedroom"></div>
+          <div class="icon">
+            <img
+              src="@/assets/bedroom.png"
+              alt="bedroom"
+            >
+          </div>
           <span>Phòng ngủ</span>
-          <input type="number" v-model="filters.bedroom" @input="debouncedApplyFilters" min="1" max="10" placeholder="Số phòng ngủ">
+          <input
+            v-model="filters.bedroom"
+            type="number"
+            min="1"
+            max="10"
+            placeholder="Số phòng ngủ"
+            @input="debouncedApplyFilters"
+          >
         </div>
         <div class="category-item">
-          <div class="icon"><img src="@/assets/toilet.png" alt="bathroom"></div>
+          <div class="icon">
+            <img
+              src="@/assets/toilet.png"
+              alt="bathroom"
+            >
+          </div>
           <span>Nhà tắm</span>
-          <input type="number" v-model="filters.bathroom" @input="debouncedApplyFilters" min="1" max="10" placeholder="Số nhà tắm">
+          <input
+            v-model="filters.bathroom"
+            type="number"
+            min="1"
+            max="10"
+            placeholder="Số nhà tắm"
+            @input="debouncedApplyFilters"
+          >
         </div>
         <div class="category-item">
-          <div class="icon"><img src="@/assets/dientich.png" alt="area"></div>
+          <div class="icon">
+            <img
+              src="@/assets/dientich.png"
+              alt="area"
+            >
+          </div>
           <span>Diện tích (m²)</span>
           <div class="range-slider">
             <div class="range-values">
@@ -47,20 +111,59 @@
             </div>
             <div class="range-inputs">
               <span class="range-label">Min</span>
-              <input type="range" v-model="filters.areaMin" @input="debouncedApplyFilters" min="0" max="200" step="10">
+              <input
+                v-model="filters.areaMin"
+                type="range"
+                min="0"
+                max="200"
+                step="10"
+                @input="debouncedApplyFilters"
+              >
               <span class="range-label">Max</span>
-              <input type="range" v-model="filters.areaMax" @input="debouncedApplyFilters" min="0" max="200" step="10">
+              <input
+                v-model="filters.areaMax"
+                type="range"
+                min="0"
+                max="200"
+                step="10"
+                @input="debouncedApplyFilters"
+              >
             </div>
           </div>
         </div>
         <div class="category-item">
-          <div class="icon"><img src="@/assets/tienich.png" alt="amenities"></div>
+          <div class="icon">
+            <img
+              src="@/assets/tienich.png"
+              alt="amenities"
+            >
+          </div>
           <span>Tiện ích</span>
           <div class="checkbox-group">
-            <label><input type="checkbox" v-model="filters.amenities" value="gym" @change="debouncedApplyFilters"> Phòng Gym</label>
-            <label><input type="checkbox" v-model="filters.amenities" value="pool" @change="debouncedApplyFilters"> Hồ bơi</label>
-            <label><input type="checkbox" v-model="filters.amenities" value="parking" @change="debouncedApplyFilters"> Bãi đỗ xe</label>
-            <label><input type="checkbox" v-model="filters.amenities" value="security" @change="debouncedApplyFilters"> An ninh 24/7</label>
+            <label><input
+              v-model="filters.amenities"
+              type="checkbox"
+              value="gym"
+              @change="debouncedApplyFilters"
+            > Phòng Gym</label>
+            <label><input
+              v-model="filters.amenities"
+              type="checkbox"
+              value="pool"
+              @change="debouncedApplyFilters"
+            > Hồ bơi</label>
+            <label><input
+              v-model="filters.amenities"
+              type="checkbox"
+              value="parking"
+              @change="debouncedApplyFilters"
+            > Bãi đỗ xe</label>
+            <label><input
+              v-model="filters.amenities"
+              type="checkbox"
+              value="security"
+              @change="debouncedApplyFilters"
+            > An ninh 24/7</label>
           </div>
         </div>
       </div>
@@ -88,14 +191,14 @@ export default {
       }
     };
   },
-  created() {
-    this.debounceSearch = debounce(this.applyFilters,1000)
-  },
   computed: {
     uniqueLocations() {
       const unique = [...new Set(this.properties.map(property => property.location))]
       return unique;
     }
+  },
+  created() {
+    this.debounceSearch = debounce(this.applyFilters,1000)
   },
   methods: {
     cleanInput(input) {
@@ -115,7 +218,7 @@ export default {
         const priceMin = this.filters.priceMin * 1000000; // Chuyển đổi từ triệu sang VND
         const priceMax = this.filters.priceMax * 1000000; // Chuyển đổi từ triệu sang VND
 
-        const url = `http://localhost:8080/api/properties/search?location=${location}&minPrice=${priceMin}&maxPrice=${priceMax}&bedrooms=${bedrooms !== '' ? bedrooms : ''}&bathrooms=${bathrooms !== '' ? bathrooms : ''}&minArea=${minArea !== '' ? minArea : 0}&maxArea=${maxArea !== '' ? maxArea : 200}&amenities=${this.filters.amenities.join(',')}`;
+        const url = `https://roombooking-fa3a.onrender.com/api/properties/search?location=${location}&minPrice=${priceMin}&maxPrice=${priceMax}&bedrooms=${bedrooms !== '' ? bedrooms : ''}&bathrooms=${bathrooms !== '' ? bathrooms : ''}&minArea=${minArea !== '' ? minArea : 0}&maxArea=${maxArea !== '' ? maxArea : 200}&amenities=${this.filters.amenities.join(',')}`;
         console.log("Request URL:", url); // Debug URL
 
         const response = await fetch(url);

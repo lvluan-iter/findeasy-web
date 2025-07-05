@@ -3,6 +3,7 @@ module.exports = {
   content: [
     "./src/**/*.{html,js,vue,ts}",
   ],
+  darkMode: 'class',
   theme: {
     extend: {
       keyframes: {

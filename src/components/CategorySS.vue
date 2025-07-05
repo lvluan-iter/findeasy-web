@@ -2,38 +2,84 @@
   <div class="con">
     <h3>Bạn muốn tìm kiếm loại phòng nào ? </h3>
     <div class="category">
-      <div v-for="category in categories" :key="category.id" class="category-item" @click="updateAvaiblewithCate(category.id)">
+      <div
+        v-for="category in categories"
+        :key="category.id"
+        class="category-item"
+        @click="updateAvaiblewithCate(category.id)"
+      >
         <div class="image-container">
-          <img :src="category.imageUrl" :alt="category.categoryName">
+          <img
+            :src="category.imageUrl"
+            :alt="category.categoryName"
+          >
         </div>
         <div><span>{{ category.categoryName }}</span></div>
         <div class="icons">
-          <div @click.stop="editCategory(category)"><i class="fa-solid fa-pen-to-square" title="Edit"></i></div>
-          <div @click.stop="deleteCategory(category.id)"><i class="fa-solid fa-trash" title="Delete"></i></div>
+          <div @click.stop="editCategory(category)">
+            <i
+              class="fa-solid fa-pen-to-square"
+              title="Edit"
+            />
+          </div>
+          <div @click.stop="deleteCategory(category.id)">
+            <i
+              class="fa-solid fa-trash"
+              title="Delete"
+            />
+          </div>
         </div>
       </div>
-      <div class="addbutton" @click="showModal = true" title="Add Category">
-        <i class="fa-solid fa-circle-plus"></i>
+      <div
+        class="addbutton"
+        title="Add Category"
+        @click="showModal = true"
+      >
+        <i class="fa-solid fa-circle-plus" />
       </div>
     </div>
-    <div v-if="showModal" class="modal">
+    <div
+      v-if="showModal"
+      class="modal"
+    >
       <div class="modal-content">
-        <button class="close" @click="showModal = false"><i class="fa-solid fa-xmark"></i></button>
+        <button
+          class="close"
+          @click="showModal = false"
+        >
+          <i class="fa-solid fa-xmark" />
+        </button>
         <h2>Thêm Loại Phòng</h2>
         <form @submit.prevent="addCategory">
           <div class="form-group">
             <label for="categoryName">Category Name:</label>
-            <input type="text" v-model="newCategoryName" required>
+            <input
+              v-model="newCategoryName"
+              type="text"
+              required
+            >
           </div>
           <div class="form-group">
             <label for="imgUrl">Image URL:</label>
-            <input type="text" v-model="newCategoryImgUrl" required>
+            <input
+              v-model="newCategoryImgUrl"
+              type="text"
+              required
+            >
           </div>
           <div class="form-group">
             <label for="img">Image:</label>
-            <div style="width: 100%; height: 400px; box-sizing: border-box;"><img :src="newCategoryImgUrl" alt="Picture" style="width: 100%; height: 100%; object-fit: cover;"></div>
+            <div style="width: 100%; height: 400px; box-sizing: border-box;">
+              <img
+                :src="newCategoryImgUrl"
+                alt="Picture"
+                style="width: 100%; height: 100%; object-fit: cover;"
+              >
+            </div>
           </div>
-          <button type="submit">Thêm</button>
+          <button type="submit">
+            Thêm
+          </button>
         </form>
       </div>
     </div>
@@ -62,7 +108,7 @@ export default {
   methods: {
     async loadCategory() {
       try {
-        const response = await fetch(`http://localhost:8080/api/categories/`);
+        const response = await fetch(`https://roombooking-fa3a.onrender.com/api/categories/`);
         if (!response.ok) {
           console.log("Lỗi khi tải dữ liệu từ server!");
           return;
@@ -75,7 +121,7 @@ export default {
     async updateAvaiblewithCate(categoryId) {
       try {
         console.log(this.categoryId);
-        const response = await fetch(`http://localhost:8080/api/properties/search?categoryId=${categoryId}`);
+        const response = await fetch(`https://roombooking-fa3a.onrender.com/api/properties/search?categoryId=${categoryId}`);
         if (!response.ok) {
           console.log("Lỗi trong quá trình lấy dữ liệu từ serve !")
         }
@@ -87,7 +133,7 @@ export default {
     },
     async addCategory() {
       try {
-        const response = await fetch('http://localhost:8080/api/categories', {
+        const response = await fetch('https://roombooking-fa3a.onrender.com/api/categories', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -123,7 +169,7 @@ export default {
     },
     async deleteCategory(categoryId) {
       try {
-        const response = await fetch(`http://localhost:8080/api/categories/${categoryId}`, {
+        const response = await fetch(`https://roombooking-fa3a.onrender.com/api/categories/${categoryId}`, {
           method: 'DELETE'
         });
         if (response.ok) {

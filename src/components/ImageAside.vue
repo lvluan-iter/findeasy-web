@@ -1,26 +1,54 @@
 <template>
   <div id="contact-aside">
     <div class="banner">
-      <i class="fa-solid fa-image"></i>
+      <i class="fa-solid fa-image" />
       <span>Hình ảnh:</span>
     </div>
     <div class="image-main">
-      <img :src="getImageUrl(imageUrls[0])" alt="Main Image" @click="openImage(0)">
+      <img
+        :src="getImageUrl(imageUrls[0])"
+        alt="Main Image"
+        @click="openImage(0)"
+      >
     </div>
     <div class="image-gallery">
-      <div v-for="(url, index) in imageUrls.slice(1)" :key="index" class="image-thumbnail" @click="openImage(index)">
-        <img :src="getImageUrl(url)" alt="Thumbnail">
+      <div
+        v-for="(url, index) in imageUrls.slice(1)"
+        :key="index"
+        class="image-thumbnail"
+        @click="openImage(index)"
+      >
+        <img
+          :src="getImageUrl(url)"
+          alt="Thumbnail"
+        >
       </div>
     </div>
-    <div class="modal" v-show="isOpen" @click.self="closeImage">
+    <div
+      v-show="isOpen"
+      class="modal"
+      @click.self="closeImage"
+    >
       <div class="modalcontent">
-        <div class="btnclose" @click="closeImage"><i class="fa-solid fa-xmark"></i></div>
+        <div
+          class="btnclose"
+          @click="closeImage"
+        >
+          <i class="fa-solid fa-xmark" />
+        </div>
         <div class="image">
-          <img :src="getImageUrl(imageUrls[dialogIndex])" alt="Dialog Image">
+          <img
+            :src="getImageUrl(imageUrls[dialogIndex])"
+            alt="Dialog Image"
+          >
         </div>
         <div class="nav-buttons">
-          <button @click="prevImage"><i class="fa-solid fa-angle-left"></i></button>
-          <button @click="nextImage"><i class="fa-solid fa-angle-right"></i></button>
+          <button @click="prevImage">
+            <i class="fa-solid fa-angle-left" />
+          </button>
+          <button @click="nextImage">
+            <i class="fa-solid fa-angle-right" />
+          </button>
         </div>
       </div>
     </div>
