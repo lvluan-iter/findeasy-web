@@ -25,12 +25,12 @@
 
 <script setup>
 import { markRaw } from 'vue'
-import IconHeader from '../components/IconHeader.vue'
-import NavBar from '../components/NavBar.vue'
+import IconHeader from '@/components/IconHeader.vue'
+import NavBar from '@/components/NavBar.vue'
 import WebFooter from '@/components/WebFooter.vue'
 import FirstBanner from '@/components/FirstBanner.vue'
-import HomeSOne from '../components/HomeSOne.vue'
-import HomeSTwo from '../components/HomeSTwo.vue'
+import HomeSOne from '@/components/HomeSOne.vue'
+import HomeSTwo from '@/components/HomeSTwo.vue'
 import JoinUs from '@/components/JoinUs.vue'
 import HomeSThree from '@/components/HomeSThree.vue'
 import LocationComponent from '@/components/LocationComponent.vue'

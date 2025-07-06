@@ -30,7 +30,7 @@
         </button>
         <div class="mt-auto">
           <img
-            src="@/assets/map.png"
+            src="@/assets/images/map.png"
             alt="Map"
             class="hidden lg:block w-full h-auto opacity-50"
           >

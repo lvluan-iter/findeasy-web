@@ -76,7 +76,7 @@
 
 <script setup>
 import { ref, watch, onMounted, onUnmounted } from 'vue'
-import { webSocketService } from '@/services/websocketService'
+import { webSocketService } from '@/api/websocketClient'
 import ConversationManagement from './ConversationManagement.vue'
 import { useUserStore } from '@/stores/userStore'
 

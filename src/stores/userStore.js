@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { webSocketService } from '../services/websocketService'
+import { webSocketService } from '../api/websocketClient'
 import { jwtDecode } from 'jwt-decode'
 
 export const useUserStore = defineStore('user', {

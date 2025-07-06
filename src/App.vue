@@ -13,13 +13,13 @@
 
 <script setup>
 import { onMounted, watch } from 'vue';
-import { useUserStore } from './stores/userStore'
-import { webSocketService } from './services/websocketService'
-import { useCategoryStore } from './stores/categoryStore'
-import ScolltoTop from './components/ScolltoTop.vue'
-import HeartbeatComponent from './components/HeartbeatComponent.vue'
-import MessComponent from './components/MessComponent.vue';
-import AdminButton from './components/AdminButton.vue'
+import { useUserStore } from '@/stores/userStore'
+import { webSocketService } from '@/api/websocketClient'
+import { useCategoryStore } from '@/stores/categoryStore'
+import ScolltoTop from '@/components/ScolltoTop.vue'
+import HeartbeatComponent from '@/components/HeartbeatComponent.vue'
+import MessComponent from '@/components/MessComponent.vue';
+import AdminButton from '@/components/AdminButton.vue'
 
 const userStore = useUserStore()
 const categoryStore = useCategoryStore()
