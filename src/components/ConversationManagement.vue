@@ -117,7 +117,7 @@ import { ref, computed, watch, onMounted } from 'vue';
 import { useUserStore } from '@/stores/userStore';
 import { format, isToday, isYesterday } from 'date-fns';
 import ChatComponent from './ChatComponent.vue';
-import { webSocketService } from '@/services/websocketService';
+import { webSocketService } from '@/api/websocketClient';
 
 const props = defineProps({
   isOpen: {

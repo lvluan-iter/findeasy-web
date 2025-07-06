@@ -102,20 +102,22 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { Endpoint } from '@/constants/Endpoint'
+import { getCurrentInstance } from 'vue'
+
 
 const router = useRouter()
 const users = ref([])
 const isLoading = ref(true)
+const { proxy } = getCurrentInstance()
 
-const fetchUsers = async () => {
+async function fetchUsers() {
   try {
-    const response = await fetch('https://roombooking-fa3a.onrender.com/api/users')
-    if (!response.ok) {
-      throw new Error('Network response was not ok')
-    }
-    users.value = await response.json()
-  } catch (error) {
-    console.error('Error fetching users:', error)
+    isLoading.value = true
+    const res = await proxy.$http.get(Endpoint.getUsers)
+    users.value = res.data 
+  } catch (err) {
+    console.error('Failed to fetch users:', err)
   } finally {
     isLoading.value = false
   }

@@ -117,7 +117,7 @@
 <script setup>
 import { ref, onMounted, nextTick, onUnmounted } from 'vue'
 import { format, parseISO } from 'date-fns'
-import { webSocketService } from '@/services/websocketService'
+import { webSocketService } from '@/api/websocketClient'
 
 const props = defineProps({
   senderId: {

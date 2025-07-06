@@ -5,7 +5,7 @@
       <div class="flex flex-col md:flex-row justify-between items-center mb-8">
         <div class="mb-6 md:mb-0">
           <img
-            src="@/assets/logo.png.png"
+            src="@/assets/images/logo.png.png"
             alt="FindEasy Logo"
             class="w-48 h-auto mb-4"
           >
@@ -160,17 +160,17 @@
           </h4>
           <div class="flex space-x-2">
             <img
-              src="@/assets/visa.png"
+              src="@/assets/images/visa.png"
               alt="Visa"
               class="h-8"
             >
             <img
-              src="@/assets/mastercard.png"
+              src="@/assets/images/mastercard.png"
               alt="Mastercard"
               class="h-8"
             >
             <img
-              src="@/assets/paypal.png"
+              src="@/assets/images/paypal.png"
               alt="PayPal"
               class="h-8"
             >
@@ -182,12 +182,12 @@
           </h4>
           <div class="flex space-x-2">
             <img
-              src="@/assets/iso.png"
+              src="@/assets/images/iso.png"
               alt="ISO Certified"
               class="h-12"
             >
             <img
-              src="@/assets/gdpr.png"
+              src="@/assets/images/gdpr.png"
               alt="GDPR Compliant"
               class="h-12"
             >

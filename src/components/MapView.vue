@@ -53,7 +53,7 @@
 <script setup>
 import { ref, watch, computed } from 'vue';
 import { LMap, LTileLayer, LMarker, LPopup } from '@vue-leaflet/vue-leaflet';
-import homeIcon from '@/assets/home.png';
+import homeIcon from '@/assets/images/home.png';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 

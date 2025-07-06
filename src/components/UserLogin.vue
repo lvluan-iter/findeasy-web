@@ -15,7 +15,7 @@
       <div class="w-full md:w-1/2 lg:w-2/5">
         <img
           class="w-full h-auto object-contain"
-          src="@/assets/login.png"
+          src="@/assets/images/login.png"
           alt="login-image"
         >
       </div>

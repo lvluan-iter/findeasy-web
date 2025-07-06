@@ -1,12 +1,15 @@
 import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
-import { createPinia } from 'pinia'
+import { createPinia } from 'pinia';
 import '@fortawesome/fontawesome-free/css/all.css';
-import '@fortawesome/fontawesome-free/js/all.js';
 import './assets/styles/global.css';
+import http from '@/api/httpClient.js';
 
-createApp(App)
-  .use(router)
-  .use(createPinia())
-  .mount('#app');
+const app = createApp(App);
+
+app.config.globalProperties.$http = http;
+
+app.use(router)
+   .use(createPinia())
+   .mount('#app');

@@ -6,7 +6,7 @@
 
 <script setup>
 import { onMounted, onUnmounted } from 'vue'
-import { webSocketService } from '../services/websocketService'
+import { webSocketService } from '../api/websocketClient'
 import { useUserStore } from '../stores/userStore'  // Import userStore
 
 const userStore = useUserStore()  // Use the userStore

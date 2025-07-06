@@ -1,18 +1,18 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import WebHome from '../views/WebHome.vue';
-import WebLogin from '../views/WebLogin';
-import WebRegister from '../views/WebRegister';
-import WebProfile from '../views/WebProfile';
-import WUpNew from '../views/WUpNew';
-import DetailProperty from '../views/DetailProperty';
-import WebPassword from '../views/WebPassword';
-import WebReset from '../views/WebReset';
-import WebSearch from '../views/WebSearch';
-import WebDashboard from '../views/WebDashboard'
-import WebRequest from '../views/WebRequest'
-import ClientRequests from '../views/ClientRequests'
-import UserProperty from '../views/UserProperty'
-import WMyProperty from '../views/WMyProperty'
+import WebHome from '@/views/WebHome.vue';
+import WebLogin from '@/views/WebLogin.vue';
+import WebRegister from '@/views/WebRegister.vue';
+import WebProfile from '@/views/WebProfile.vue';
+import WUpNew from '@/views/WUpNew.vue';
+import DetailProperty from '@/views/DetailProperty.vue';
+import WebPassword from '@/views/WebPassword.vue';
+import WebReset from '@/views/WebReset.vue';
+import WebSearch from '@/views/WebSearch.vue';
+import WebDashboard from '@/views/WebDashboard.vue';
+import WebRequest from '@/views/WebRequest.vue';
+import ClientRequests from '@/views/ClientRequests.vue';
+import UserProperty from '@/views/UserProperty.vue';
+import WMyProperty from '@/views/WMyProperty.vue';
 
 const routes = [
   {
