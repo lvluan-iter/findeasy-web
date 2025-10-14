@@ -1,28 +1,20 @@
 <template>
-  <div class="px-4 py-5 sm:px-6 md:px-12 lg:px-[120px] lg:py-12">
-    <div class="flex flex-wrap items-center gap-4">
-      <button
-        class="text-blue-600 hover:text-blue-800 font-medium flex items-center gap-2 transition duration-300"
-        @click="$router.go(-1)"
-      >
-        <i class="fas fa-angle-left" />
-        <span>Quay lại</span>
-      </button>
+  <div class="px-4 sm:px-6 md:px-8 lg:px-[120px] py-6 sm:py-8 md:py-10 lg:py-12">
+    <BackHeader title="Trang cá nhân" />
 
-      <div class="hidden sm:block w-px h-6 bg-gray-300" />
-      <h1 class="text-xl sm:text-2xl font-bold text-gray-800">Trang Cá Nhân</h1>
-    </div>
-    
-    <hr class="w-full mb-5">
     <div class="flex flex-col lg:flex-row gap-5">
       <div class="w-full lg:w-1/3 bg-white rounded-xl shadow-md overflow-hidden">
         <div class="bg-gradient-to-r from-blue-500 to-purple-600 px-6 py-8 text-white">
           <div class="flex flex-col items-center">
             <div class="relative w-32 h-32 mb-4 group" @click="openAvatarModal">
-              <img :src="selectedAvatar || user.avatar" alt="Avatar"
-                class="w-full h-full object-cover rounded-full border-4 border-white">
+              <img
+                :src="selectedAvatar || user.avatar"
+                alt="Avatar"
+                class="w-full h-full object-cover rounded-full border-4 border-white"
+              />
               <div
-                class="absolute inset-0 bg-black bg-opacity-50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                class="absolute inset-0 bg-black bg-opacity-50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              >
                 <i class="fas fa-camera text-2xl" />
               </div>
             </div>
@@ -36,9 +28,7 @@
         </div>
 
         <div class="p-6">
-          <h2 class="text-xl font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200">
-            Thông Tin Cá Nhân
-          </h2>
+          <h2 class="text-xl font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200">Thông Tin Cá Nhân</h2>
           <div class="space-y-4">
             <div class="flex items-center text-gray-700">
               <i class="fas fa-user w-6 text-blue-500" />
@@ -72,10 +62,9 @@
       <div class="w-full lg:w-2/3">
         <div>
           <div
-            class="bg-gray-50 px-6 py-4 flex flex-wrap items-center justify-between border-b border-gray-200 rounded-t-xl">
-            <div class="text-lg font-semibold text-gray-800">
-              Chỉnh Sửa Thông Tin
-            </div>
+            class="bg-gray-50 px-6 py-4 flex flex-wrap items-center justify-between border-b border-gray-200 rounded-t-xl"
+          >
+            <div class="text-lg font-semibold text-gray-800">Chỉnh Sửa Thông Tin</div>
             <div class="flex items-center gap-4 text-sm text-gray-600">
               <span>{{ currentDate }}</span>
               <i class="fas fa-calendar-alt text-blue-600" />
@@ -83,9 +72,7 @@
           </div>
           <div class="p-6 space-y-8 bg-white rounded-b-xl shadow-md">
             <section>
-              <h2 class="text-xl font-semibold text-gray-800 mb-4">
-                Thông Tin Cơ Bản
-              </h2>
+              <h2 class="text-xl font-semibold text-gray-800 mb-4">Thông Tin Cơ Bản</h2>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="space-y-2">
                   <label for="fullname" class="block text-sm font-medium text-gray-700">Họ và Tên</label>
@@ -93,8 +80,13 @@
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                       <i class="fas fa-user text-gray-400 group-focus-within:text-blue-500 transition duration-300" />
                     </div>
-                    <input id="fullname" v-model="user.fullname" type="text" required
-                      class="block w-full pl-10 pr-3 py-2 text-sm border-b border-gray-300 focus:border-blue-500 focus:outline-none transition duration-300 bg-transparent">
+                    <input
+                      id="fullname"
+                      v-model="user.fullname"
+                      type="text"
+                      required
+                      class="block w-full pl-10 pr-3 py-2 text-sm border-b border-gray-300 focus:border-blue-500 focus:outline-none transition duration-300 bg-transparent"
+                    />
                   </div>
                 </div>
 
@@ -103,10 +95,18 @@
                   <div class="relative group">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                       <i
-                        class="fas fa-envelope text-gray-400 group-focus-within:text-blue-500 transition duration-300" />
+                        class="fas fa-envelope text-gray-400 group-focus-within:text-blue-500 transition duration-300"
+                      />
                     </div>
-                    <input id="email" v-model="user.email" type="email" required disabled readonly
-                      class="block w-full pl-10 pr-3 py-2 text-sm border-b border-gray-300 focus:border-blue-500 focus:outline-none transition duration-300 bg-transparent cursor-not-allowed opacity-75">
+                    <input
+                      id="email"
+                      v-model="user.email"
+                      type="email"
+                      required
+                      disabled
+                      readonly
+                      class="block w-full pl-10 pr-3 py-2 text-sm border-b border-gray-300 focus:border-blue-500 focus:outline-none transition duration-300 bg-transparent cursor-not-allowed opacity-75"
+                    />
                   </div>
                 </div>
 
@@ -115,19 +115,17 @@
                   <div class="relative group">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                       <i
-                        class="fas fa-venus-mars text-gray-400 group-focus-within:text-blue-500 transition duration-300" />
+                        class="fas fa-venus-mars text-gray-400 group-focus-within:text-blue-500 transition duration-300"
+                      />
                     </div>
-                    <select id="gender" v-model="user.gender"
-                      class="block w-full pl-10 pr-3 py-2 text-sm border-b border-gray-300 focus:border-blue-500 focus:outline-none transition duration-300 bg-transparent appearance-none">
-                      <option value="Nam">
-                        Nam
-                      </option>
-                      <option value="Nữ">
-                        Nữ
-                      </option>
-                      <option value="Khác">
-                        Khác
-                      </option>
+                    <select
+                      id="gender"
+                      v-model="user.gender"
+                      class="block w-full pl-10 pr-3 py-2 text-sm border-b border-gray-300 focus:border-blue-500 focus:outline-none transition duration-300 bg-transparent appearance-none"
+                    >
+                      <option value="Nam">Nam</option>
+                      <option value="Nữ">Nữ</option>
+                      <option value="Khác">Khác</option>
                     </select>
                   </div>
                 </div>
@@ -137,10 +135,15 @@
                   <div class="relative group">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                       <i
-                        class="fas fa-birthday-cake text-gray-400 group-focus-within:text-blue-500 transition duration-300" />
+                        class="fas fa-birthday-cake text-gray-400 group-focus-within:text-blue-500 transition duration-300"
+                      />
                     </div>
-                    <input id="birthdate" v-model="user.birthdate" type="date"
-                      class="block w-full pl-10 pr-3 py-2 text-sm border-b border-gray-300 focus:border-blue-500 focus:outline-none transition duration-300 bg-transparent">
+                    <input
+                      id="birthdate"
+                      v-model="user.birthdate"
+                      type="date"
+                      class="block w-full pl-10 pr-3 py-2 text-sm border-b border-gray-300 focus:border-blue-500 focus:outline-none transition duration-300 bg-transparent"
+                    />
                   </div>
                 </div>
 
@@ -150,37 +153,39 @@
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                       <i class="fas fa-phone text-gray-400 group-focus-within:text-blue-500 transition duration-300" />
                     </div>
-                    <input id="phoneNumber" v-model="user.phoneNumber" type="tel"
+                    <input
+                      id="phoneNumber"
+                      v-model="user.phoneNumber"
+                      type="tel"
                       class="block w-full pl-10 pr-3 py-2 text-sm border-b border-gray-300 focus:border-blue-500 focus:outline-none transition duration-300 bg-transparent"
-                      placeholder="Phone Number">
+                      placeholder="Phone Number"
+                    />
                   </div>
                 </div>
               </div>
             </section>
 
             <section>
-              <h2 class="text-xl font-semibold text-gray-800 mb-4">
-                Cài Đặt Bảo Mật
-              </h2>
+              <h2 class="text-xl font-semibold text-gray-800 mb-4">Cài Đặt Bảo Mật</h2>
               <div class="space-y-4">
                 <div class="flex items-center justify-between">
                   <span class="text-sm font-medium text-gray-700">Hiển thị email công khai</span>
                   <label class="switch">
-                    <input v-model="user.publicEmail" type="checkbox">
+                    <input v-model="user.publicEmail" type="checkbox" />
                     <span class="slider round" />
                   </label>
                 </div>
                 <div class="flex items-center justify-between">
                   <span class="text-sm font-medium text-gray-700">Hiển thị số điện thoại công khai</span>
                   <label class="switch">
-                    <input v-model="user.publicPhone" type="checkbox">
+                    <input v-model="user.publicPhone" type="checkbox" />
                     <span class="slider round" />
                   </label>
                 </div>
                 <div class="flex items-center justify-between">
                   <span class="text-sm font-medium text-gray-700">Hiển thị ngày sinh công khai</span>
                   <label class="switch">
-                    <input v-model="user.publicProfile" type="checkbox">
+                    <input v-model="user.publicProfile" type="checkbox" />
                     <span class="slider round" />
                   </label>
                 </div>
@@ -188,12 +193,16 @@
             </section>
 
             <div class="flex justify-end space-x-4">
-              <button class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition duration-300"
-                @click="cancelEditing">
+              <button
+                class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition duration-300"
+                @click="cancelEditing"
+              >
                 <i class="fas fa-times mr-2" /> Hủy
               </button>
-              <button class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-300"
-                @click="saveProfile">
+              <button
+                class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-300"
+                @click="saveProfile"
+              >
                 <i class="fas fa-save mr-2" /> Lưu thay đổi
               </button>
             </div>
@@ -203,10 +212,9 @@
 
         <div class="mt-5">
           <div
-            class="bg-gray-50 px-6 py-4 flex flex-wrap items-center justify-between border-b border-gray-200 rounded-t-xl">
-            <h1 class="text-xl font-semibold text-gray-800">
-              Đổi Mật Khẩu
-            </h1>
+            class="bg-gray-50 px-6 py-4 flex flex-wrap items-center justify-between border-b border-gray-200 rounded-t-xl"
+          >
+            <h1 class="text-xl font-semibold text-gray-800">Đổi Mật Khẩu</h1>
           </div>
           <div class="p-6 space-y-6 bg-white rounded-b-xl shadow-md">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -216,9 +224,13 @@
                   <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <i class="fas fa-lock text-gray-400 group-focus-within:text-blue-500 transition duration-300" />
                   </div>
-                  <input id="currentPassword" v-model="passwordChange.currentPassword" type="password"
+                  <input
+                    id="currentPassword"
+                    v-model="passwordChange.currentPassword"
+                    type="password"
                     class="block w-full pl-10 pr-3 py-2 text-sm border-b border-gray-300 focus:border-blue-500 focus:outline-none transition duration-300 bg-transparent"
-                    placeholder="Current Password">
+                    placeholder="Current Password"
+                  />
                 </div>
               </div>
               <div class="space-y-2">
@@ -227,9 +239,13 @@
                   <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <i class="fas fa-key text-gray-400 group-focus-within:text-blue-500 transition duration-300" />
                   </div>
-                  <input id="newPassword" v-model="passwordChange.newPassword" type="password"
+                  <input
+                    id="newPassword"
+                    v-model="passwordChange.newPassword"
+                    type="password"
                     class="block w-full pl-10 pr-3 py-2 text-sm border-b border-gray-300 focus:border-blue-500 focus:outline-none transition duration-300 bg-transparent"
-                    placeholder="New Password">
+                    placeholder="New Password"
+                  />
                 </div>
               </div>
               <div class="space-y-2">
@@ -238,9 +254,13 @@
                   <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <i class="fas fa-check text-gray-400 group-focus-within:text-blue-500 transition duration-300" />
                   </div>
-                  <input id="confirmPassword" v-model="passwordChange.confirmPassword" type="password"
+                  <input
+                    id="confirmPassword"
+                    v-model="passwordChange.confirmPassword"
+                    type="password"
                     class="block w-full pl-10 pr-3 py-2 text-sm border-b border-gray-300 focus:border-blue-500 focus:outline-none transition duration-300 bg-transparent"
-                    placeholder="Confirm New Password">
+                    placeholder="Confirm New Password"
+                  />
                 </div>
               </div>
             </div>
@@ -248,8 +268,10 @@
               {{ passwordChangeError }}
             </div>
             <div class="flex justify-end">
-              <button class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition duration-300"
-                @click="changePassword">
+              <button
+                class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition duration-300"
+                @click="changePassword"
+              >
                 <i class="fas fa-key mr-2" /> Đổi mật khẩu
               </button>
             </div>
@@ -261,48 +283,56 @@
     <!-- Avatar Modal -->
     <div v-if="showAvatarModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div class="bg-white rounded-lg p-6 w-full max-w-md">
-        <h2 class="text-xl font-semibold mb-4">
-          Update Avatar
-        </h2>
+        <h2 class="text-xl font-semibold mb-4">Update Avatar</h2>
 
         <div class="mb-4">
           <input ref="fileInput" type="file" accept="image/*" class="hidden" @change="onFileSelected" />
-          <button class="w-full py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-300"
-            @click="$refs.fileInput.click()">
+          <button
+            class="w-full py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-300"
+            @click="$refs.fileInput.click()"
+          >
             Select Image
           </button>
         </div>
 
         <div v-if="imageUrl" class="mb-4 max-h-96 overflow-auto">
-          <img ref="imageElement" :src="imageUrl" alt="To be cropped"
-            class="max-w-full max-h-80 object-contain mx-auto border" />
+          <img
+            ref="imageElement"
+            :src="imageUrl"
+            alt="To be cropped"
+            class="max-w-full max-h-80 object-contain mx-auto border"
+          />
         </div>
 
         <div class="flex justify-end space-x-2">
-          <button class="py-2 px-4 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition duration-300"
-            @click="closeAvatarModal">
+          <button
+            class="py-2 px-4 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition duration-300"
+            @click="closeAvatarModal"
+          >
             Cancel
           </button>
-          <button class="py-2 px-4 bg-green-500 text-white rounded hover:bg-green-600 transition duration-300"
-            @click="cropImage">
+          <button
+            class="py-2 px-4 bg-green-500 text-white rounded hover:bg-green-600 transition duration-300"
+            @click="cropImage"
+          >
             Save
           </button>
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
 <script setup>
-import { ref, reactive, watch, onMounted, getCurrentInstance } from 'vue';
-import Cropper from 'cropperjs'
-import 'cropperjs/dist/cropper.css'
-import { useUserStore } from '../stores/userStore'
-import { Endpoint } from '@/constants/Endpoint'
+import {ref, reactive, watch, onMounted, getCurrentInstance} from 'vue';
+import Cropper from 'cropperjs';
+import 'cropperjs/dist/cropper.css';
+import {useUserStore} from '../stores/userStore';
+import {Endpoint} from '@/constants/Endpoint';
+import BackHeader from '@/components/BackHeader.vue';
 
-const userStore = useUserStore()
-const { proxy } = getCurrentInstance()
+const userStore = useUserStore();
+const {proxy} = getCurrentInstance();
 
 const user = reactive({});
 const isEditing = ref(false);
@@ -323,12 +353,16 @@ const passwordChange = reactive({
 
 const setCurrentDate = () => {
   const today = new Date();
-  currentDate.value = today.toLocaleDateString('vi-VN', { year: 'numeric', month: 'long', day: 'numeric' });
+  currentDate.value = today.toLocaleDateString('vi-VN', {year: 'numeric', month: 'long', day: 'numeric'});
 };
 
-watch(() => userStore.user, (newUser) => {
-  Object.assign(user, newUser);
-}, { deep: true });
+watch(
+  () => userStore.user,
+  (newUser) => {
+    Object.assign(user, newUser);
+  },
+  {deep: true}
+);
 
 onMounted(() => {
   Object.assign(user, userStore.user);
@@ -339,7 +373,7 @@ const cancelEditing = () => {
   isEditing.value = false;
   Object.assign(user, originalUser.value);
   selectedAvatar.value = null;
-  console.log(privacySettings)
+  console.log(privacySettings);
 };
 
 const saveProfile = async () => {
@@ -357,7 +391,7 @@ const saveProfile = async () => {
       if (uploadResponse.success) {
         user.avatar = uploadResponse.data[0];
       } else {
-        alert("Có lỗi xảy ra khi tải lên ảnh.");
+        alert('Có lỗi xảy ra khi tải lên ảnh.');
         return;
       }
     }
@@ -366,7 +400,7 @@ const saveProfile = async () => {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('jwt')}`
+        Authorization: `Bearer ${localStorage.getItem('jwt')}`
       },
       body: JSON.stringify(user)
     });
@@ -376,18 +410,18 @@ const saveProfile = async () => {
     }
 
     isEditing.value = false;
-    alert("Thông tin cá nhân đã được cập nhật!");
+    alert('Thông tin cá nhân đã được cập nhật!');
     userStore.updateUser(user);
     selectedAvatar.value = null;
   } catch (error) {
-    console.error("Lỗi trong quá trình xử lý dữ liệu", error);
-    alert("Có lỗi xảy ra khi cập nhật thông tin.");
+    console.error('Lỗi trong quá trình xử lý dữ liệu', error);
+    alert('Có lỗi xảy ra khi cập nhật thông tin.');
   }
 };
 
 const changePassword = async () => {
   if (passwordChange.newPassword !== passwordChange.confirmPassword) {
-    passwordChangeError.value = "Mật khẩu mới và xác nhận mật khẩu không khớp.";
+    passwordChangeError.value = 'Mật khẩu mới và xác nhận mật khẩu không khớp.';
     return;
   }
 
@@ -402,7 +436,7 @@ const changePassword = async () => {
     }
 
     passwordChangeError.value = '';
-    alert("Mật khẩu đã được thay đổi thành công!");
+    alert('Mật khẩu đã được thay đổi thành công!');
     passwordChange.currentPassword = '';
     passwordChange.newPassword = '';
     passwordChange.confirmPassword = '';
@@ -421,29 +455,29 @@ const closeAvatarModal = () => {
 };
 
 const onFileSelected = (event) => {
-  const file = event.target.files[0]
+  const file = event.target.files[0];
   if (file) {
-    imageUrl.value = URL.createObjectURL(file)
+    imageUrl.value = URL.createObjectURL(file);
     nextTick(() => {
       cropper.value = new Cropper(imageElement.value, {
         aspectRatio: 1,
         viewMode: 1,
-        autoCropArea: 1,
-      })
-    })
+        autoCropArea: 1
+      });
+    });
   }
-}
+};
 
 const cropImage = () => {
   if (cropper.value) {
-    const canvas = cropper.value.getCroppedCanvas()
+    const canvas = cropper.value.getCroppedCanvas();
     canvas.toBlob((blob) => {
-      selectedAvatar.value = URL.createObjectURL(blob)
-      selectedAvatarFile.value = new File([blob], "avatar.jpg", { type: "image/jpeg" })
-      closeAvatarModal()
-    }, 'image/jpeg')
+      selectedAvatar.value = URL.createObjectURL(blob);
+      selectedAvatarFile.value = new File([blob], 'avatar.jpg', {type: 'image/jpeg'});
+      closeAvatarModal();
+    }, 'image/jpeg');
   }
-}
+};
 
 const formattedDate = (dateString) => {
   const date = new Date(dateString);
@@ -479,29 +513,29 @@ const formattedDate = (dateString) => {
   right: 0;
   bottom: 0;
   background-color: #ccc;
-  transition: .4s;
+  transition: 0.4s;
 }
 
 .slider:before {
   position: absolute;
-  content: "";
+  content: '';
   height: 26px;
   width: 26px;
   left: 4px;
   bottom: 4px;
   background-color: white;
-  transition: .4s;
+  transition: 0.4s;
 }
 
-input:checked+.slider {
-  background-color: #2196F3;
+input:checked + .slider {
+  background-color: #2196f3;
 }
 
-input:focus+.slider {
-  box-shadow: 0 0 1px #2196F3;
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196f3;
 }
 
-input:checked+.slider:before {
+input:checked + .slider:before {
   transform: translateX(26px);
 }
 

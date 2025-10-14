@@ -9,16 +9,10 @@
         <span>Quay lại</span>
       </button>
       <div class="hidden sm:block w-px h-6 bg-gray-300" />
-      <h1 class="text-xl sm:text-2xl font-bold text-gray-800">
-        Đăng Tin
-      </h1>
+      <h1 class="text-xl sm:text-2xl font-bold text-gray-800">Đăng Tin</h1>
     </div>
-    <hr class="w-full mb-5">
-    <form
-      class="space-y-8"
-      @submit.prevent="submitProperty"
-      @keydown.enter.prevent
-    >
+    <hr class="w-full mb-5" />
+    <form class="space-y-8" @submit.prevent="submitProperty" @keydown.enter.prevent>
       <div class="bg-white shadow-md rounded-lg overflow-visible">
         <div class="bg-gray-50 px-6 py-4 flex flex-wrap items-center justify-end border-b border-gray-200">
           <div class="flex items-center gap-4 text-sm text-gray-600">
@@ -29,9 +23,7 @@
 
         <div class="p-6 space-y-8">
           <section>
-            <h2 class="text-xl font-semibold text-gray-800 mb-4">
-              Thông Tin Cơ Bản
-            </h2>
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Thông Tin Cơ Bản</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               <CreativeInput
                 id="title"
@@ -49,9 +41,9 @@
                 :is-select="true"
                 :show-tooltip="false"
                 :options="[
-                  { value: '', label: 'Select Type' },
-                  { value: 'For Rent', label: 'For Rent' },
-                  { value: 'For Sale', label: 'For Sale' }
+                  {value: '', label: 'Select Type'},
+                  {value: 'For Rent', label: 'For Rent'},
+                  {value: 'For Sale', label: 'For Sale'}
                 ]"
                 :input-icon-class="'fas fa-building text-gray-400'"
               />
@@ -86,20 +78,14 @@
                 label-class="text-gray-700"
               >
                 <template #default>
-                  <tag-input
-                    id="tags"
-                    v-model="property.keywords"
-                    required
-                  />
+                  <tag-input id="tags" v-model="property.keywords" required />
                 </template>
               </CreativeInput>
             </div>
           </section>
 
           <section>
-            <h2 class="text-xl font-semibold text-gray-800 mb-4">
-              Thông Tin Mô Tả
-            </h2>
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Thông Tin Mô Tả</h2>
             <div class="space-y-2">
               <textarea
                 id="description"
@@ -113,9 +99,7 @@
           </section>
 
           <section>
-            <h2 class="text-xl font-semibold text-gray-800 mb-4">
-              Vị Trí
-            </h2>
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Vị Trí</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               <CreativeInput
                 id="address"
@@ -140,16 +124,8 @@
                 input-icon-class="fas fa-location-arrow text-gray-400"
               />
             </div>
-            <div
-              id="map"
-              class="h-96 rounded-lg overflow-hidden shadow-md"
-            >
-              <l-map
-                style="height: 100%"
-                :zoom="zoom"
-                :center="center"
-                @click="updateAddress"
-              >
+            <div id="map" class="h-96 rounded-lg overflow-hidden shadow-md">
+              <l-map style="height: 100%" :zoom="zoom" :center="center" @click="updateAddress">
                 <l-tile-layer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                 <l-marker :lat-lng="marker" />
               </l-map>
@@ -157,9 +133,7 @@
           </section>
 
           <section>
-            <h2 class="text-xl font-semibold text-gray-800 mb-4">
-              Bộ Siêu Tập
-            </h2>
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Bộ Siêu Tập</h2>
             <div
               class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-500 transition-colors duration-300"
               @click="triggerFileUpload"
@@ -174,29 +148,21 @@
                 multiple
                 class="hidden"
                 @change="previewImages"
-              >
+              />
               <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4" />
-              <p class="text-sm text-gray-600">
-                Nhấn vào đây hoặc kéo thả tệp để tải lên
-              </p>
-              <p class="text-xs text-gray-500 mt-2">
-                Hỗ trợ định dạng: JPG, PNG, GIF (Tối đa 5MB)
-              </p>
+              <p class="text-sm text-gray-600">Nhấn vào đây hoặc kéo thả tệp để tải lên</p>
+              <p class="text-xs text-gray-500 mt-2">Hỗ trợ định dạng: JPG, PNG, GIF (Tối đa 5MB)</p>
             </div>
             <div
               v-if="images.length > 0"
               class="mt-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4"
             >
-              <div
-                v-for="(image, index) in images"
-                :key="index"
-                class="relative group"
-              >
+              <div v-for="(image, index) in images" :key="index" class="relative group">
                 <img
                   :src="image.url"
                   :alt="`Property Image ${index + 1}`"
                   class="w-full h-24 object-cover rounded-lg shadow-md"
-                >
+                />
                 <button
                   class="absolute top-1 right-1 bg-red-500 text-white rounded-full w-4 h-4 text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                   @click="removeImage(index)"
@@ -209,9 +175,7 @@
 
           <!-- Property Details -->
           <section>
-            <h2 class="text-xl font-semibold text-gray-800 mb-4">
-              Thống Số Chi Tiết
-            </h2>
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Thống Số Chi Tiết</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               <CreativeInput
                 id="area"
@@ -250,25 +214,17 @@
 
           <!-- Amenities -->
           <section>
-            <h2 class="text-xl font-semibold text-gray-800 mb-4">
-              Tiện Ích Sẵn Có
-            </h2>
-            <AmenitiesCheckbox
-              v-model="property.amenities"
-            />
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Tiện Ích Sẵn Có</h2>
+            <AmenitiesCheckbox v-model="property.amenities" />
           </section>
 
           <section>
-            <h2 class="text-xl font-semibold text-gray-800 mb-4">
-              Khu Vực Lân Cận
-            </h2>
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Khu Vực Lân Cận</h2>
             <NearbyPlacesInput v-model="property.nearbyPlaces" />
           </section>
 
           <section>
-            <ListingPlans
-              v-model="selectedPlan"
-            />
+            <ListingPlans v-model="selectedPlan" />
           </section>
         </div>
 
@@ -293,34 +249,35 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, watch, computed, getCurrentInstance } from 'vue';
-import { useRouter } from 'vue-router';
-import { LMap, LTileLayer, LMarker } from '@vue-leaflet/vue-leaflet';
-import "leaflet/dist/leaflet.css";
-import { useToast } from 'vue-toast-notification';
-import { Endpoint } from '@/constants/Endpoint';
-import TagInput from './TagInput.vue';
-import CreativeInput from './CreativeInput.vue';
-import AmenitiesCheckbox from './AmenitiesCheckbox.vue';
-import NearbyPlacesInput from './NearbyPlacesInput.vue';
-import { useUserStore } from '../stores/userStore'
-import { useCategoryStore } from '../stores/categoryStore'
-import ListingPlans from './ListingPlans.vue';
+import {ref, reactive, onMounted, watch, computed, getCurrentInstance} from 'vue';
+import {useRouter} from 'vue-router';
+import {LMap, LTileLayer, LMarker} from '@vue-leaflet/vue-leaflet';
+import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
+import {useToast} from 'vue-toast-notification';
+import {Endpoint} from '@/constants/Endpoint';
+import TagInput from '../components/TagInput.vue';
+import CreativeInput from '../components/CreativeInput.vue';
+import AmenitiesCheckbox from '../components/AmenitiesCheckbox.vue';
+import NearbyPlacesInput from '../components/NearbyPlacesInput.vue';
+import {useUserStore} from '../stores/userStore';
+import {useCategoryStore} from '../stores/categoryStore';
+import ListingPlans from '../components/ListingPlans.vue';
 
 const router = useRouter();
 const toast = useToast();
-const userStore = useUserStore()
-const categoryStore = useCategoryStore()
+const userStore = useUserStore();
+const categoryStore = useCategoryStore();
 const selectedPlan = ref('free');
-const { proxy } = getCurrentInstance()
+const {proxy} = getCurrentInstance();
 
-const categoryOptions = computed(() => categoryStore.getCategoryOptions)
+const categoryOptions = computed(() => categoryStore.getCategoryOptions);
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
   iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png'
 });
 
 const property = reactive({
@@ -355,12 +312,12 @@ const nearbyPlaces = ref([]);
 
 const setCurrentDate = () => {
   const today = new Date();
-  currentDate.value = today.toLocaleDateString('vi-VN', { year: 'numeric', month: 'long', day: 'numeric' });
+  currentDate.value = today.toLocaleDateString('vi-VN', {year: 'numeric', month: 'long', day: 'numeric'});
 };
 
 const triggerFileUpload = () => {
   fileInput.value.click();
-  console.log(property.amenities)
+  console.log(property.amenities);
 };
 
 const previewImages = (event) => {
@@ -380,19 +337,19 @@ const handleFileDrop = (event) => {
 
 const addImagesToPreview = (files) => {
   const maxImages = selectedPlan.value === 'premium' ? Infinity : 5;
-  
+
   if (images.value.length >= maxImages) {
     toast.error(`Free plan allows maximum ${maxImages} images`);
     return;
   }
-  
-  Array.from(files).forEach(file => {
+
+  Array.from(files).forEach((file) => {
     if (images.value.length >= maxImages) return;
-    
+
     if (file.type.startsWith('image/') && file.size <= 5 * 1024 * 1024) {
       const reader = new FileReader();
-      reader.onload = e => {
-        images.value.push({ file, url: e.target.result });
+      reader.onload = (e) => {
+        images.value.push({file, url: e.target.result});
       };
       reader.readAsDataURL(file);
     } else {
@@ -403,13 +360,13 @@ const addImagesToPreview = (files) => {
 
 const removeImage = (index) => {
   images.value.splice(index, 1);
-  console.log(property.userId)
-  console.log(property)
+  console.log(property.userId);
+  console.log(property);
 };
 
 const submitProperty = async () => {
   const formData = new FormData();
-  images.value.forEach(image => {
+  images.value.forEach((image) => {
     formData.append('images', image.file);
   });
 
@@ -423,9 +380,9 @@ const submitProperty = async () => {
     property.imageUrls = imageResponse.data;
 
     property.isPaid = selectedPlan.value === 'premium';
-    
+
     const propertyResponse = await proxy.$http.post(Endpoint.createProperty, property);
-    
+
     if (propertyResponse.success) {
       if (propertyResponse.data.paymentUrl) {
         window.location.href = propertyResponse.data.paymentUrl;
@@ -475,32 +432,32 @@ const updateMapByAddress = () => {
         'Accept-Language': 'vi'
       }
     })
-      .then(response => response.json())
-      .then(data => {
+      .then((response) => response.json())
+      .then((data) => {
         if (data.length > 0) {
-          const { lat, lon } = data[0];
+          const {lat, lon} = data[0];
           center.value = [parseFloat(lat), parseFloat(lon)];
           marker.value = [parseFloat(lat), parseFloat(lon)];
         }
       })
-      .catch(error => console.error('Error fetching map coordinates:', error));
+      .catch((error) => console.error('Error fetching map coordinates:', error));
   }
 };
 
 const updateAddress = (e) => {
-  const { lat, lng } = e.latlng;
+  const {lat, lng} = e.latlng;
   marker.value = [lat, lng];
   fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`, {
     headers: {
       'Accept-Language': 'vi'
     }
   })
-    .then(response => response.json())
-    .then(data => {
+    .then((response) => response.json())
+    .then((data) => {
       property.address = data.display_name;
-      
+
       const bigCities = ['Hồ Chí Minh', 'Hà Nội', 'Đà Nẵng', 'Hải Phòng', 'Cần Thơ', 'Khánh Hòa'];
-      
+
       const processLocationName = (name) => {
         name = name.replace(/^Tỉnh /, '').replace(/^Thành phố /, '');
         return name.trim();
@@ -518,21 +475,25 @@ const updateAddress = (e) => {
           break;
         }
       }
-      
+
       if (!location) {
         location = processLocationName(data.address.state || data.address.city || data.address.county || '');
       }
-      
+
       property.location = location;
     })
-    .catch(error => console.error('Error fetching address:', error));
+    .catch((error) => console.error('Error fetching address:', error));
 };
 
-watch(() => userStore.user, (newUser) => {
-  if (newUser) {
-    property.userId = newUser.id;
-  }
-}, { immediate: true });
+watch(
+  () => userStore.user,
+  (newUser) => {
+    if (newUser) {
+      property.userId = newUser.id;
+    }
+  },
+  {immediate: true}
+);
 
 onMounted(() => {
   setCurrentDate();

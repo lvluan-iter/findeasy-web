@@ -9,30 +9,33 @@
 </template>
 
 <script setup>
-import { onMounted, watch } from 'vue';
-import { useUserStore } from '@/stores/userStore'
-import { webSocketService } from '@/api/websocketClient'
-import { useCategoryStore } from '@/stores/categoryStore'
-import ScolltoTop from '@/components/ScolltoTop.vue'
-import HeartbeatComponent from '@/components/HeartbeatComponent.vue'
+import {onMounted, watch} from 'vue';
+import {useUserStore} from '@/stores/userStore';
+import {webSocketService} from '@/api/websocketClient';
+import {useCategoryStore} from '@/stores/categoryStore';
+import ScolltoTop from '@/components/ScolltoTop.vue';
+import HeartbeatComponent from '@/components/HeartbeatComponent.vue';
 import MessComponent from '@/components/MessComponent.vue';
-import AdminButton from '@/components/AdminButton.vue'
+import AdminButton from '@/components/AdminButton.vue';
 
-const userStore = useUserStore()
-const categoryStore = useCategoryStore()
+const userStore = useUserStore();
+const categoryStore = useCategoryStore();
 
 onMounted(async () => {
   await userStore.initializeAuth();
   await categoryStore.fetchCategories();
 });
 
-watch(() => userStore.isAuthenticated, (newValue) => {
-  if (newValue && userStore.user) {
-    webSocketService.connect(userStore.user.id)
-  } else {
-    webSocketService.disconnect()
+watch(
+  () => userStore.isAuthenticated,
+  (newValue) => {
+    if (newValue && userStore.user) {
+      webSocketService.connect(userStore.user.id);
+    } else {
+      webSocketService.disconnect();
+    }
   }
-})
+);
 </script>
 
 <style>
@@ -96,7 +99,7 @@ body {
   max-width: 100%;
   margin: 0;
   padding: 0;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   color: #2c3e50;
 }
 </style>
