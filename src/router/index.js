@@ -8,7 +8,7 @@ const routes = [
       {
         path: '',
         name: 'WebHome',
-        component: () => import('@/views/WebHome.vue')
+        component: () => import('@/layouts/HomeLayout.vue')
       },
       {
         path: 'login',
@@ -23,17 +23,17 @@ const routes = [
       {
         path: 'profile',
         name: 'WebProfile',
-        component: () => import('@/views/WebProfile.vue')
+        component: () => import('@/layouts/UserProfileLayout.vue')
       },
       {
         path: 'upnew',
         name: 'WUpNew',
-        component: () => import('@/views/WUpNew.vue')
+        component: () => import('@/layouts/PushPropertyLayout.vue')
       },
       {
         path: 'propertydetail/:id',
         name: 'DetailProperty',
-        component: () => import('@/views/DetailProperty.vue'),
+        component: () => import('@/layouts/PropertyDetailLayout.vue'),
         props: true
       },
       {
@@ -44,43 +44,43 @@ const routes = [
       {
         path: 'reset-password',
         name: 'WebReset',
-        component: () => import('@/views/WebReset.vue')
+        component: () => import('@/layouts/ResetPasswordLayout.vue')
       },
       {
         path: 'search',
         name: 'WebSearch',
-        component: () => import('@/views/WebSearch.vue')
+        component: () => import('@/layouts/SearchLayout.vue')
       },
       {
         path: 'dashboard',
         name: 'WebDashboard',
-        component: () => import('@/views/WebDashboard.vue')
+        component: () => import('@/layouts/DashBoardLayout.vue')
       },
       {
         path: 'tourrequest',
         name: 'WebRequest',
-        component: () => import('@/views/WebRequest.vue')
+        component: () => import('@/layouts/TourRequestLayout.vue')
       },
       {
         path: 'client-requests',
         name: 'ClientRequests',
-        component: () => import('@/views/ClientRequests.vue')
+        component: () => import('@/layouts/ClientRequestsLayout.vue')
       },
       {
         path: 'user-property/:id',
         name: 'UserProperty',
-        component: () => import('@/views/UserProperty.vue'),
+        component: () => import('@/layouts/CustomerProfileLayout.vue'),
         props: true
       },
       {
         path: 'compare/:ids',
         name: 'WebCompare',
-        component: () => import('@/views/WebCompare.vue')
+        component: () => import('@/layouts/PropertyCompareLayout.vue')
       },
       {
         path: 'yourproperty',
         name: 'WMyProperty',
-        component: () => import('@/views/WMyProperty.vue')
+        component: () => import('@/layouts/MyPropertyLayout.vue')
       },
       {
         path: 'payment-result',
@@ -99,7 +99,7 @@ const routes = [
   },
   {
     path: '/admin',
-    component: () => import('@/views/WebAdmin.vue'),
+    component: () => import('@/pages/AdminPage.vue'),
     children: [
       {
         path: '',

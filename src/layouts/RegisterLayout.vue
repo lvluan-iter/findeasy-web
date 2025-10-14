@@ -19,7 +19,8 @@
 
         <!-- Đăng nhập Google -->
         <div
-          class="my-4 bg-gray-100 text-gray-700 shadow-md px-5 py-3 flex items-center gap-4 rounded-lg text-sm md:text-base cursor-pointer">
+          class="my-4 bg-gray-100 text-gray-700 shadow-md px-5 py-3 flex items-center gap-4 rounded-lg text-sm md:text-base cursor-pointer"
+        >
           <i class="fa-brands fa-google" />
           Đăng nhập bằng tài khoản Google
         </div>
@@ -41,8 +42,13 @@
 
           <BaseInput id="username" v-model="username" label="Tên đăng nhập" required />
           <BaseInput id="password" v-model="password" label="Mật khẩu" type="password" required />
-          <BaseInput id="rewritepassword" v-model="rewritepassword" label="Nhập lại mật khẩu" type="password"
-            required />
+          <BaseInput
+            id="rewritepassword"
+            v-model="rewritepassword"
+            label="Nhập lại mật khẩu"
+            type="password"
+            required
+          />
           <span v-if="passwordMismatch" class="text-red-600 text-xs">Nhập lại mật khẩu không khớp</span>
         </fieldset>
 
@@ -54,16 +60,22 @@
           <BaseInput id="fullname" v-model="fullname" label="Tên đầy đủ" required />
 
           <div class="flex gap-4">
-            <BaseSelect class="flex-1" id="gender" v-model="gender" label="Giới tính" :options="genderOptions"
-              required />
-            <BaseInput class="flex-1" id="birthdate" v-model="birthdate" type="date" required />
+            <BaseSelect
+              id="gender"
+              v-model="gender"
+              class="flex-1"
+              label="Giới tính"
+              :options="genderOptions"
+              required
+            />
+            <BaseInput id="birthdate" v-model="birthdate" class="flex-1" type="date" required />
           </div>
 
           <BaseInput id="phoneNumber" v-model="phoneNumber" label="Số điện thoại" type="tel" />
         </fieldset>
 
         <!-- Submit -->
-        <SubmitButton :loading="isSubmitting" text="Đăng ký" loadingText="Đang đăng ký..." />
+        <SubmitButton :loading="isSubmitting" text="Đăng ký" loading-text="Đang đăng ký..." />
 
         <!-- Error -->
         <p v-if="errorMessage" class="text-red-500 mt-4 text-center">
@@ -75,9 +87,9 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { useToast } from 'vue-toast-notification';
+import {ref} from 'vue';
+import {useRouter} from 'vue-router';
+import {useToast} from 'vue-toast-notification';
 import 'vue-toast-notification/dist/theme-default.css';
 import BackHeader from '@/components/BackHeader.vue';
 import BaseInput from '@/components/BaseInput.vue';
@@ -97,9 +109,9 @@ const gender = ref('');
 const birthdate = ref('');
 const passwordMismatch = ref(false);
 const genderOptions = ref([
-  { value: 'male', label: 'Nam' },
-  { value: 'female', label: 'Nữ' },
-  { value: 'other', label: 'Khác' },
+  {value: 'male', label: 'Nam'},
+  {value: 'female', label: 'Nữ'},
+  {value: 'other', label: 'Khác'}
 ]);
 
 const handleUserRegister = async () => {
@@ -109,7 +121,7 @@ const handleUserRegister = async () => {
       const response = await fetch('https://roombooking-fa3a.onrender.com/api/auth/register', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           username: username.value,
@@ -118,8 +130,8 @@ const handleUserRegister = async () => {
           fullname: fullname.value,
           phoneNumber: phoneNumber.value,
           gender: gender.value,
-          birthday: birthdate.value,
-        }),
+          birthday: birthdate.value
+        })
       });
 
       const results = await response.text();
@@ -130,7 +142,7 @@ const handleUserRegister = async () => {
           type: 'error',
           duration: 5000,
           dismissible: true,
-          position: 'top',
+          position: 'top'
         });
       } else {
         $toast.open({
@@ -138,7 +150,7 @@ const handleUserRegister = async () => {
           type: 'success',
           duration: 5000,
           dismissible: true,
-          position: 'top-right',
+          position: 'top-right'
         });
         router.push('/login');
       }
@@ -150,7 +162,6 @@ const handleUserRegister = async () => {
   }
 };
 </script>
-
 
 <style scoped>
 .form-group-inline .form-group {

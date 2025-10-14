@@ -1,38 +1,21 @@
 <template>
-  <div id="app">
-    <header class="relative">
-      <IconHeader />
-      <nav class="nav">
-        <NavBar />
-      </nav>
-    </header>
-    <main>
-      <UProfile 
-        :user="user" 
-        :property-count="properties.length"
-      />
-      <PropertyCard :properties="properties" />
-    </main>
-    <footer>
-      <WebFooter />
-    </footer>
+  <div>
+    <UProfile :user="user" :property-count="properties.length" />
+    <PropertyCard :properties="properties" />
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, getCurrentInstance } from 'vue';
-import { useRoute } from 'vue-router';
-import { Endpoint } from '@/constants/Endpoint';
-import IconHeader from '../components/IconHeader.vue'
-import WebFooter from '@/components/WebFooter.vue'
-import NavBar from '@/components/NavBar.vue'
+import {ref, onMounted, getCurrentInstance} from 'vue';
+import {useRoute} from 'vue-router';
+import {Endpoint} from '@/constants/Endpoint';
 import UProfile from '@/components/UProfile.vue';
 import PropertyCard from '@/components/PropertyCard.vue';
 
 const route = useRoute();
 const user = ref({});
 const properties = ref([]);
-const { proxy } = getCurrentInstance();
+const {proxy} = getCurrentInstance();
 
 const fetchData = async () => {
   try {
