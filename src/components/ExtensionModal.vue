@@ -200,12 +200,15 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, watch, getCurrentInstance } from 'vue'
 import { useUserStore } from '../stores/userStore'
 import { storeToRefs } from 'pinia'
 import ConfirmModal from './ConfirmModal.vue'
 import { useToast } from 'vue-toast-notification'
 import { useRouter } from 'vue-router'
+import { Endpoint } from '@/constants/Endpoint'
+
+const { proxy } = getCurrentInstance()
 
 const router = useRouter()
 const toast = useToast()
@@ -228,12 +231,11 @@ onMounted(() => {
 const fetchMyProperties = async () => {
   if (!user.value) return
   try {
-    const response = await fetch(`https://roombooking-fa3a.onrender.com/api/properties/user/${user.value.id}`)
-    if (!response.ok) {
+    const response = await proxy.$http.get(Endpoint.getPropertiesByUser(user.value.id))
+    if (!response.success) {
       throw new Error('Network response was not ok')
     }
-    const data = await response.json()
-    properties.value = data
+    properties.value = response.data
   } catch (error) {
     console.error('Error fetching properties:', error)
   }
@@ -270,14 +272,9 @@ const toggleVisibility = async (property) => {
   const confirmed = await confirmModal.value.showModal()
   if (confirmed) {
     try {
-      const response = await fetch(`https://roombooking-fa3a.onrender.com/api/properties/${property.id}/toggle-visibility`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
+      const response = await proxy.$http.patch(Endpoint.togglePropertyVisibility(property.id))
       
-      if (response.ok) {
+      if (response.success) {
         window.location.reload()
         const message = property.available ? 'Tin đăng đã được hiển thị!' : 'Tin đăng đã bị ẩn!'
         toast.success(message) 
@@ -302,21 +299,14 @@ const confirmExtend = async () => {
   
   try {
     isLoading.value = true
-    const response = await fetch(`https://roombooking-fa3a.onrender.com/api/properties/${selectedProperty.value.id}/extend`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
+    const response = await proxy.$http.post(Endpoint.extendProperty(selectedProperty.value.id))
 
-    if (!response.ok) {
+    if (!response.success) {
       throw new Error('Failed to extend property')
     }
-
-    const data = await response.json()
     
-    if (data.paymentUrl) {
-      window.location.href = data.paymentUrl
+    if (response.data.paymentUrl) {
+      window.location.href = response.data.paymentUrl
     }
 
   } catch (error) {

@@ -229,10 +229,12 @@
 </template>
 
 <script setup>
-import { ref, reactive, watch } from 'vue'
+import { ref, reactive, watch, getCurrentInstance } from 'vue'
+import { Endpoint } from '@/constants/Endpoint'
 import AmenitiesCheckbox from './AmenitiesCheckbox.vue';
 
 const emit = defineEmits(['search-results', 'searchTerm'])
+const { proxy } = getCurrentInstance()
 
 const activeTab = ref('For Rent')
 const moreOptionsVisible = ref(false)
@@ -284,22 +286,17 @@ const search = async () => {
       (Array.isArray(searchData[key]) && searchData[key].length === 0)) && delete searchData[key]
     )
 
-    const response = await fetch('https://roombooking-fa3a.onrender.com/api/properties/search?page=0&size=10', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(searchData)
-    })
+    const response = await proxy.$http.post(`${Endpoint.searchProperties}?page=0&size=10`, searchData)
 
-    if (!response.ok) {
+    if (response.success) {
+      const data = response.data
+      const searchTerm = Object.entries(searchData).map(([key, value]) => `${key}:${value}`).join(', ')
+      console.log(searchTerm)
+      emit('search-results', data.content || data)
+      emit('searchTerm', searchTerm)
+    } else {
       throw new Error('Search request failed')
     }
-    const data = await response.json()
-    const searchTerm = Object.entries(searchData).map(([key, value]) => `${key}:${value}`).join(', ')
-    console.log(searchTerm)
-    emit('search-results', data.content)
-    emit('searchTerm', searchTerm)
   } catch (error) {
     console.error('Error searching properties:', error)
     errorMessage.value = error.message || 'An error occurred while searching. Please try again.'

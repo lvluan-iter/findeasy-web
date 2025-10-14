@@ -293,11 +293,12 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, watch, computed } from 'vue';
+import { ref, reactive, onMounted, watch, computed, getCurrentInstance } from 'vue';
 import { useRouter } from 'vue-router';
 import { LMap, LTileLayer, LMarker } from '@vue-leaflet/vue-leaflet';
 import "leaflet/dist/leaflet.css";
 import { useToast } from 'vue-toast-notification';
+import { Endpoint } from '@/constants/Endpoint';
 import TagInput from './TagInput.vue';
 import CreativeInput from './CreativeInput.vue';
 import AmenitiesCheckbox from './AmenitiesCheckbox.vue';
@@ -311,6 +312,7 @@ const toast = useToast();
 const userStore = useUserStore()
 const categoryStore = useCategoryStore()
 const selectedPlan = ref('free');
+const { proxy } = getCurrentInstance()
 
 const categoryOptions = computed(() => categoryStore.getCategoryOptions)
 
@@ -412,32 +414,28 @@ const submitProperty = async () => {
   });
 
   try {
-    const imageResponse = await fetch('https://roombooking-fa3a.onrender.com/api/upload-images', {
-      method: 'POST',
-      body: formData,
+    const imageResponse = await proxy.$http.post(Endpoint.uploadImages, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
     });
-    if (!imageResponse.ok) throw new Error('Failed to upload images');
-    const imageUrls = await imageResponse.json();
-    property.imageUrls = imageUrls;
+    if (!imageResponse.success) throw new Error('Failed to upload images');
+    property.imageUrls = imageResponse.data;
 
     property.isPaid = selectedPlan.value === 'premium';
     
-    const propertyResponse = await fetch('https://roombooking-fa3a.onrender.com/api/properties', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      body: JSON.stringify(property),
-    });
+    const propertyResponse = await proxy.$http.post(Endpoint.createProperty, property);
     
-    const response = await propertyResponse.json();
-    
-    if (response.paymentUrl) {
-      window.location.href = response.paymentUrl;
+    if (propertyResponse.success) {
+      if (propertyResponse.data.paymentUrl) {
+        window.location.href = propertyResponse.data.paymentUrl;
+      } else {
+        resetForm();
+        toast.success('Property added successfully!');
+        router.push('/');
+      }
     } else {
-      resetForm();
-      toast.success('Property added successfully!');
-      router.push('/');
+      throw new Error('Failed to create property');
     }
   } catch (error) {
     console.error('Error:', error);

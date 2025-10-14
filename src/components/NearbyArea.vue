@@ -31,8 +31,11 @@
 </template>
 
 <script setup>
-import { ref, watch, onMounted } from 'vue';
+import { ref, watch, onMounted, getCurrentInstance } from 'vue';
 import AvaibleProperty from './AvaibleProperty.vue';
+import { Endpoint } from '@/constants/Endpoint';
+
+const { proxy } = getCurrentInstance();
 
 const props = defineProps({
   info: {
@@ -51,12 +54,11 @@ const fetchPropertyNearBy = async (info) => {
   loading.value = true;
   error.value = false;
   try {
-    const response = await fetch(`https://roombooking-fa3a.onrender.com/api/properties/searchNearby?location=${info.location}&propertyId=${info.id}`);
-    if (!response.ok) {
+    const response = await proxy.$http.get(`${Endpoint.searchNearbyProperties}?location=${info.location}&propertyId=${info.id}`);
+    if (!response.success) {
       throw new Error('Failed to fetch properties');
     }
-    const data = await response.json();
-    properties.value = data.content;
+    properties.value = response.data.content;
   } catch (err) {
     error.value = true;
     console.error('Error fetching data:', err);

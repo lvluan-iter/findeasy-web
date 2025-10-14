@@ -86,103 +86,97 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref, onMounted, getCurrentInstance } from 'vue';
+import { Endpoint } from '@/constants/Endpoint';
 import Vue from 'vue';
 import VueToast from 'vue-toast-notification';
 import 'vue-toast-notification/dist/theme-default.css';
   
 Vue.use(VueToast);
 
-export default {
-  data() {
-    return {
-      categories: [],
-      showModal: false,
-      newCategoryName: '',
-      newCategoryImgUrl: '',
-    };
-  },
-  created() {
-    this.loadCategory();
-  },
-  methods: {
-    async loadCategory() {
-      try {
-        const response = await fetch(`https://roombooking-fa3a.onrender.com/api/categories/`);
-        if (!response.ok) {
-          console.log("Lỗi khi tải dữ liệu từ server!");
-          return;
-        }
-        this.categories = await response.json();
-      } catch (error) {
-        console.log("Lỗi trong quá trình xử lý dữ liệu!", error);
-      }
-    },
-    async updateAvaiblewithCate(categoryId) {
-      try {
-        console.log(this.categoryId);
-        const response = await fetch(`https://roombooking-fa3a.onrender.com/api/properties/search?categoryId=${categoryId}`);
-        if (!response.ok) {
-          console.log("Lỗi trong quá trình lấy dữ liệu từ serve !")
-        }
-        const results = await response.json();
-        this.$emit('loadavaibycate', results)
-      } catch (error) {
-        console.log("Lỗi trong quá trình xử lý dữ liệu !", error)
-      }
-    },
-    async addCategory() {
-      try {
-        const response = await fetch('https://roombooking-fa3a.onrender.com/api/categories', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            categoryName: this.newCategoryName,
-            imageUrl: this.newCategoryImgUrl
-          })
-        });
-        if (response.ok) {
-          this.loadCategory();
-          this.showModal = false;
-          this.newCategoryName ='';
-          this.newCategoryImgUrl = '';
-        } else {
-          const results = await response.text();
-          this.$toast.open({
-            message: results,
-            type: 'error',
-            duration: 5000,
-            dismissible: true,
-            position: 'top'
-          })
-        }
-      } catch (error) {
-        console.log('Lỗi trong quá trình xử lý dữ liệu!', error);
-      }
-    },
-    editCategory(category) {
-      this.showModal = true;
-      this.newCategoryName = category.categoryName;
-      this.newCategoryImgUrl = category.imageUrl;
-    },
-    async deleteCategory(categoryId) {
-      try {
-        const response = await fetch(`https://roombooking-fa3a.onrender.com/api/categories/${categoryId}`, {
-          method: 'DELETE'
-        });
-        if (response.ok) {
-          this.loadCategory();
-        } else {
-          console.log('Lỗi khi xóa category');
-        }
-      } catch (error) {
-        console.log('Lỗi trong quá trình xử lý dữ liệu!', error);
-      }
+const emit = defineEmits(['loadavaibycate']);
+const { proxy } = getCurrentInstance();
+
+const categories = ref([]);
+const showModal = ref(false);
+const newCategoryName = ref('');
+const newCategoryImgUrl = ref('');
+
+const loadCategory = async () => {
+  try {
+    const response = await proxy.$http.get(Endpoint.getCategories);
+    if (response.success) {
+      categories.value = response.data;
+    } else {
+      console.log("Lỗi khi tải dữ liệu từ server!");
     }
+  } catch (error) {
+    console.log("Lỗi trong quá trình xử lý dữ liệu!", error);
   }
 };
+
+const updateAvaiblewithCate = async (categoryId) => {
+  try {
+    console.log(categoryId);
+    const response = await proxy.$http.get(`${Endpoint.searchProperties}?categoryId=${categoryId}`);
+    if (response.success) {
+      emit('loadavaibycate', response.data);
+    } else {
+      console.log("Lỗi trong quá trình lấy dữ liệu từ serve !");
+    }
+  } catch (error) {
+    console.log("Lỗi trong quá trình xử lý dữ liệu !", error);
+  }
+};
+
+const addCategory = async () => {
+  try {
+    const response = await proxy.$http.post(Endpoint.createCategory, {
+      categoryName: newCategoryName.value,
+      imageUrl: newCategoryImgUrl.value
+    });
+    if (response.success) {
+      loadCategory();
+      showModal.value = false;
+      newCategoryName.value = '';
+      newCategoryImgUrl.value = '';
+    } else {
+      Vue.$toast.open({
+        message: response.data,
+        type: 'error',
+        duration: 5000,
+        dismissible: true,
+        position: 'top'
+      });
+    }
+  } catch (error) {
+    console.log('Lỗi trong quá trình xử lý dữ liệu!', error);
+  }
+};
+
+const editCategory = (category) => {
+  showModal.value = true;
+  newCategoryName.value = category.categoryName;
+  newCategoryImgUrl.value = category.imageUrl;
+};
+
+const deleteCategory = async (categoryId) => {
+  try {
+    const response = await proxy.$http.delete(Endpoint.deleteCategory(categoryId));
+    if (response.success) {
+      loadCategory();
+    } else {
+      console.log('Lỗi khi xóa category');
+    }
+  } catch (error) {
+    console.log('Lỗi trong quá trình xử lý dữ liệu!', error);
+  }
+};
+
+onMounted(() => {
+  loadCategory();
+});
 </script>
 
 <style scoped>

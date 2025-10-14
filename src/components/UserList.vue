@@ -420,9 +420,10 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, getCurrentInstance } from 'vue'
+import { Endpoint } from '@/constants/Endpoint'
 
-const API_URL = 'https://roombooking-fa3a.onrender.com/api/users'
+const { proxy } = getCurrentInstance()
 
 const users = ref([])
 const isLoading = ref(false)

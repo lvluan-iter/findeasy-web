@@ -328,12 +328,14 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, watch, getCurrentInstance } from 'vue'
 import { useUserStore } from '../stores/userStore'
 import { storeToRefs } from 'pinia'
+import { Endpoint } from '@/constants/Endpoint'
 
 const userStore = useUserStore()
 const { user } = storeToRefs(userStore)
+const { proxy } = getCurrentInstance()
 const tourRequests = ref([])
 const searchQuery = ref('')
 const filterStatus = ref('all')
@@ -391,32 +393,27 @@ const fetchTourRequests = async () => {
   if (!user.value) return
   isLoading.value = true
   try {
-    const response = await fetch(`https://roombooking-fa3a.onrender.com/api/tour-requests/user/${user.value.id}`)
-    if (!response.ok) {
-      throw new Error('Network response was not ok')
+    const response = await proxy.$http.get(Endpoint.getTourRequestsByUser(user.value.id))
+    if (response.success) {
+      tourRequests.value = response.data
+    } else {
+      throw new Error('Failed to fetch tour requests')
     }
-    const data = await response.json()
-    tourRequests.value = data
   } catch (error) {
     console.error('Error fetching tour requests:', error)
   } finally {
-    isLoading.value = false 
+    isLoading.value = false
   }
 }
 
 const updateStatus = async (id, newStatus) => {
   try {
-    const response = await fetch(`https://roombooking-fa3a.onrender.com/api/tour-requests/${id}/status`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(newStatus),
-    })
-    if (!response.ok) {
-      throw new Error('Network response was not ok')
+    const response = await proxy.$http.patch(Endpoint.updateTourRequestStatus(id), newStatus)
+    if (response.success) {
+      await fetchTourRequests()
+    } else {
+      throw new Error('Failed to update status')
     }
-    await fetchTourRequests()
   } catch (error) {
     console.error('Error updating tour request status:', error)
   }
@@ -439,17 +436,11 @@ const closeRescheduleModal = () => {
 const submitReschedule = async () => {
   if (currentRequest.value) {
     try {
-      const response = await fetch(`https://roombooking-fa3a.onrender.com/api/tour-requests/${currentRequest.value.id}/reschedule`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          appointmentDate: rescheduleDate.value,
-          appointmentTime: rescheduleTime.value
-        }),
+      const response = await proxy.$http.put(Endpoint.rescheduleTourRequest(currentRequest.value.id), {
+        appointmentDate: rescheduleDate.value,
+        appointmentTime: rescheduleTime.value
       })
-      if (!response.ok) {
+      if (!response.success) {
         throw new Error('Network response was not ok')
       }
       await fetchTourRequests()

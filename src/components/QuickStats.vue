@@ -107,9 +107,12 @@
 </template>
 
 <script setup>
-import { ref, watch, onMounted } from 'vue'
+import { ref, watch, onMounted, getCurrentInstance } from 'vue'
 import { useUserStore } from '../stores/userStore'
 import { storeToRefs } from 'pinia'
+import { Endpoint } from '@/constants/Endpoint'
+
+const { proxy } = getCurrentInstance()
 
 const userStore = useUserStore()
 const { user } = storeToRefs(userStore)
@@ -127,25 +130,17 @@ const fetchQuickStats = async () => {
   quickStats.value = []
   
   try {
-    const response = await fetch(
-      `https://roombooking-fa3a.onrender.com/api/properties/quick-stats/${user.value.id}`,
-      {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('jwt')}`
-        }
-      }
-    )
+    const response = await proxy.$http.get(Endpoint.getQuickStats(user.value.id))
     
-    if (!response.ok) {
+    if (!response.success) {
       throw new Error('Failed to fetch quick stats')
     }
 
-    const data = await response.json()
     quickStats.value = [
-      { name: 'Total Properties', value: data.totalProperties, change: data.propertiesGrowth },
-      { name: 'Total Requests', value: data.totalRequests, change: data.requestsGrowth },
-      { name: 'Total Views', value: data.totalViews, change: data.viewsGrowth },
-      { name: 'Total Favorites', value: data.totalFavorites, change: data.favoritesGrowth }
+      { name: 'Total Properties', value: response.data.totalProperties, change: response.data.propertiesGrowth },
+      { name: 'Total Requests', value: response.data.totalRequests, change: response.data.requestsGrowth },
+      { name: 'Total Views', value: response.data.totalViews, change: response.data.viewsGrowth },
+      { name: 'Total Favorites', value: response.data.totalFavorites, change: response.data.favoritesGrowth }
     ]
   } catch (error) {
     console.error('Error fetching quick stats:', error)

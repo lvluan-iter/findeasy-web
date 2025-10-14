@@ -150,9 +150,10 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, computed } from 'vue';
+import { ref, onMounted, onUnmounted, computed, getCurrentInstance } from 'vue';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Navigation } from 'swiper/modules';
+import { Endpoint } from '@/constants/Endpoint';
 import 'swiper/css';
 import 'swiper/css/navigation';
 
@@ -160,15 +161,17 @@ const cities = ref([]);
 const isLoading = ref(true);
 const activeIndex = ref(0);
 const windowWidth = ref(window.innerWidth);
+const { proxy } = getCurrentInstance();
 
 const fetchData = async () => {
   try {
     isLoading.value = true;
-    const response = await fetch(`https://roombooking-fa3a.onrender.com/api/location`);
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+    const response = await proxy.$http.get(Endpoint.getLocations);
+    if (response.success) {
+      cities.value = response.data;
+    } else {
+      throw new Error('Failed to fetch locations');
     }
-    cities.value = await response.json();
   } catch (error) {
     console.error('Error:', error);
     cities.value = [];

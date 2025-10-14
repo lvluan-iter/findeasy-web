@@ -88,73 +88,78 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref, onMounted, getCurrentInstance } from 'vue';
 import { formatDistanceToNow, parseISO } from 'date-fns';
 import { vi } from 'date-fns/locale';
+import { Endpoint } from '@/constants/Endpoint';
 
-export default {
-    data() {
-        return {
-            properties: [],
-        };
-    },
-    created() {
-        this.fetchAvailableProperties();
-    },
-    methods: {
-        getImageUrl(imagePath) {
-            return `http://localhost:8080${imagePath}`;
-        },
-        async fetchAvailableProperties() {
-            try {
-                const response = await fetch(`https://roombooking-fa3a.onrender.com/api/properties/popular`);
-                if (!response.ok) {
-                    throw new Error('Failed to fetch properties');
-                }
-                const data = await response.json();
-                this.properties = data;
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        },
-        formatUpdatedAt(dateString) {
-            const date = parseISO(dateString);
-            return formatDistanceToNow(date, { addSuffix: true, locale: vi });
-        },
-        getCleanLocation(location) {
-            return location.replace(/City|Province/g, '').trim();
-        },
-        linktoDetail(id) {
-            this.$router.push(`/propertydetail/${id}`);
-        },
-        shareProperty(property) {
-            if (navigator.share) {
-                navigator.share({
-                    title: property.title,
-                    text: property.description,
-                    url: window.location.href + `/propertydetail/${property.id}`
-                }).then(() => {
-                    console.log('Thanks for sharing!');
-                }).catch(console.error);
-            } else {
-                const shareUrl = window.location.href + `/propertydetail/${property.id}`;
-                navigator.clipboard.writeText(shareUrl).then(() => {
-                    alert('Link đã được sao chép vào clipboard!');
-                }).catch(err => {
-                    console.error('Could not copy text: ', err);
-                });
-            }
-        },
-        scrollLeft() {
-            const container = this.$el.querySelector('.properties');
-            container.scrollBy({ left: -300, behavior: 'smooth' });
-        },
-        scrollRight() {
-            const container = this.$el.querySelector('.properties');
-            container.scrollBy({ left: 300, behavior: 'smooth' });
+const properties = ref([]);
+const { proxy } = getCurrentInstance();
+
+const getImageUrl = (imagePath) => {
+    return `http://localhost:8080${imagePath}`;
+};
+
+const fetchAvailableProperties = async () => {
+    try {
+        const response = await proxy.$http.get(Endpoint.getPopularProperties);
+        if (response.success) {
+            properties.value = response.data;
+        } else {
+            throw new Error('Failed to fetch properties');
         }
+    } catch (error) {
+        console.error('Error fetching data:', error);
     }
-}
+};
+
+const formatUpdatedAt = (dateString) => {
+    const date = parseISO(dateString);
+    return formatDistanceToNow(date, { addSuffix: true, locale: vi });
+};
+
+const getCleanLocation = (location) => {
+    return location.replace(/City|Province/g, '').trim();
+};
+
+const linktoDetail = (id) => {
+    // Note: You'll need to import useRouter from 'vue-router' and use it
+    window.location.href = `/propertydetail/${id}`;
+};
+
+const shareProperty = (property) => {
+    if (navigator.share) {
+        navigator.share({
+            title: property.title,
+            text: property.description,
+            url: window.location.href + `/propertydetail/${property.id}`
+        }).then(() => {
+            console.log('Thanks for sharing!');
+        }).catch(console.error);
+    } else {
+        const shareUrl = window.location.href + `/propertydetail/${property.id}`;
+        navigator.clipboard.writeText(shareUrl).then(() => {
+            alert('Link đã được sao chép vào clipboard!');
+        }).catch(err => {
+            console.error('Could not copy text: ', err);
+        });
+    }
+};
+
+const scrollLeft = () => {
+    const container = document.querySelector('.properties');
+    container.scrollBy({ left: -300, behavior: 'smooth' });
+};
+
+const scrollRight = () => {
+    const container = document.querySelector('.properties');
+    container.scrollBy({ left: 300, behavior: 'smooth' });
+};
+
+onMounted(() => {
+    fetchAvailableProperties();
+});
 </script>
 
 <style scoped>
@@ -351,6 +356,7 @@ h3 {
     color: #4682B4;
     display: -webkit-box;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;

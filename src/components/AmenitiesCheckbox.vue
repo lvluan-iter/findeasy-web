@@ -31,7 +31,8 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue';
+import { ref, computed, onMounted, watch, getCurrentInstance } from 'vue';
+import { Endpoint } from '@/constants/Endpoint';
 
 const props = defineProps({
   modelValue: {
@@ -41,6 +42,7 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['update:modelValue']);
+const { proxy } = getCurrentInstance();
 
 const features = ref([]);
 const selectedFeatures = computed({
@@ -52,8 +54,10 @@ const isSelected = (feature) => selectedFeatures.value.some(f => f.id === featur
 
 const fetchAmenities = async () => {
   try {
-    const response = await fetch('https://roombooking-fa3a.onrender.com/api/amenities');
-    features.value = await response.json();
+    const response = await proxy.$http.get(Endpoint.getAmenities);
+    if (response.success) {
+      features.value = response.data;
+    }
   } catch (error) {
     console.error('Failed to fetch amenities:', error);
   }

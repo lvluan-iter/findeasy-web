@@ -277,9 +277,10 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, getCurrentInstance } from 'vue'
 import { useUserStore } from '../stores/userStore'
 import { storeToRefs } from 'pinia'
+import { Endpoint } from '@/constants/Endpoint'
 import QuickStats from './QuickStats.vue';
 import PropertyStatsChart from './PropertyStatsChart.vue';
 import MapView from './MapView.vue';
@@ -288,6 +289,7 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 const userStore = useUserStore()
 const { user } = storeToRefs(userStore)
+const { proxy } = getCurrentInstance()
 const currentDate = ref('')
 const currentTime = ref('')
 const currentDay = ref('')
@@ -330,18 +332,10 @@ const fetchUserProperties = async () => {
   }
   
   try {
-    const response = await fetch(`https://roombooking-fa3a.onrender.com/api/properties/user/${user.value.id}`, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
-        'Content-Type': 'application/json'
-      }
-    })
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
+    const response = await proxy.$http.get(Endpoint.getPropertiesByUser(user.value.id))
+    if (response.success) {
+      properties.value = response.data
     }
-    const data = await response.json()
-    properties.value = data
   } catch (err) {
     console.error('Error fetching property stats:', err)
   }

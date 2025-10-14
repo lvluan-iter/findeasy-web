@@ -38,7 +38,8 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, getCurrentInstance } from 'vue';
+import { Endpoint } from '@/constants/Endpoint';
 import IconHeader from '../components/IconHeader.vue'
 import WebFooter from '@/components/WebFooter.vue'
 import NavBar from '@/components/NavBar.vue'
@@ -51,20 +52,21 @@ const properties = ref([])
 const searchTerm = ref('All Properties')
 const sortBy = ref('relevance')
 const isMapView = ref(false)
+const { proxy } = getCurrentInstance()
 
 const handleSortChange = async (newSortBy) => {
   sortBy.value = newSortBy
   if (properties.value.length > 100) {
     // Nếu có nhiều hơn 100 kết quả, gọi API để sắp xếp
     try {
-      const response = await fetch(`https://roombooking-fa3a.onrender.com/api/properties/search?sort=${newSortBy}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(/* các tham số tìm kiếm hiện tại */)
+      const response = await proxy.$http.post(`${Endpoint.searchProperties}?sort=${newSortBy}`, {
+        /* các tham số tìm kiếm hiện tại */
       })
-      if (!response.ok) throw new Error('Sort request failed')
-      const data = await response.json()
-      properties.value = data.content
+      if (response.success) {
+        properties.value = response.data.content
+      } else {
+        throw new Error('Sort request failed')
+      }
     } catch (error) {
       console.error('Error sorting properties:', error)
     }

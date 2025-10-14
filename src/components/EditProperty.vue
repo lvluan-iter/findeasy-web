@@ -236,10 +236,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed, onBeforeUnmount } from 'vue'
+import { ref, onMounted, computed, onBeforeUnmount, getCurrentInstance } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useToast } from 'vue-toast-notification'
 import { useCategoryStore } from '../stores/categoryStore'
+import { Endpoint } from '@/constants/Endpoint'
 import AmenitiesCheckbox from '../components/AmenitiesCheckbox.vue'
 import NearbyPlacesInput from '../components/NearbyPlacesInput.vue'
 import EditImage from '../components/EditImage.vue'
@@ -248,6 +249,7 @@ const router = useRouter()
 const route = useRoute()
 const toast = useToast()
 const categoryStore = useCategoryStore()
+const { proxy } = getCurrentInstance()
 
 const isLoading = ref(false)
 const showImageDialog = ref(false)
@@ -273,16 +275,19 @@ const categoryOptions = computed(() => categoryStore.getCategoryOptions)
 
 const fetchProperty = async () => {
   try {
-    const response = await fetch(`https://roombooking-fa3a.onrender.com/api/properties/${route.params.id}`)
-    if (!response.ok) throw new Error('Failed to fetch property')
-    const property = await response.json()
-    if (isComponentMounted.value) {
-      formData.value = {
-        ...property,
-        categoryId: property.categoryId || '',
-        amenities: property.amenities || [],
-        nearbyPlaces: property.nearbyPlaces || []
+    const response = await proxy.$http.get(Endpoint.getPropertyById(route.params.id))
+    if (response.success) {
+      const property = response.data
+      if (isComponentMounted.value) {
+        formData.value = {
+          ...property,
+          categoryId: property.categoryId || '',
+          amenities: property.amenities || [],
+          nearbyPlaces: property.nearbyPlaces || []
+        }
       }
+    } else {
+      throw new Error('Failed to fetch property')
     }
   } catch (error) {
     console.error('Error fetching property:', error)
@@ -309,26 +314,22 @@ const removeImage = (index) => {
 const handleSubmit = async () => {
   try {
     isLoading.value = true
-    const response = await fetch(`https://roombooking-fa3a.onrender.com/api/properties/${route.params.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(formData.value)
-    })
+    const response = await proxy.$http.put(Endpoint.updateProperty(route.params.id), formData.value)
 
-    if (!response.ok) throw new Error('Failed to update property')
-
-    if (isComponentMounted.value) {
-      toast.success('Cập nhật thành công!', {
-        duration: 1500
-      })
-      
-      setTimeout(() => {
-        if (isComponentMounted.value) {
-          router.push('/yourproperty')
-        }
-      }, 1600)
+    if (response.success) {
+      if (isComponentMounted.value) {
+        toast.success('Cập nhật thành công!', {
+          duration: 1500
+        })
+        
+        setTimeout(() => {
+          if (isComponentMounted.value) {
+            router.push('/yourproperty')
+          }
+        }, 1500)
+      }
+    } else {
+      throw new Error('Failed to update property')
     }
   } catch (error) {
     console.error('Error updating property:', error)

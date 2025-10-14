@@ -256,9 +256,10 @@
 </template>
   
   <script setup>
-  import { ref, computed, onMounted } from 'vue'
+  import { ref, computed, onMounted, getCurrentInstance } from 'vue'
+  import { Endpoint } from '@/constants/Endpoint'
   
-  const API_URL = 'https://roombooking-fa3a.onrender.com/api/amenities'
+  const { proxy } = getCurrentInstance()
   
   const commonIcons = [
     'fas fa-wifi',
@@ -312,10 +313,10 @@
       isLoading.value = true
       error.value = null
   
-      const response = await fetch(`${API_URL}`)
-      if (!response.ok) throw new Error()
+      const response = await proxy.$http.get(Endpoint.getAmenities)
+      if (!response.success) throw new Error()
   
-      amenities.value = await response.json()
+      amenities.value = response.data
       
     } catch (err) {
       error.value = 'Không thể tải danh sách tiện ích'
@@ -403,11 +404,9 @@
     
     isDeleting.value = true
     try {
-      const response = await fetch(`${API_URL}/${amenityToDelete.value.id}`, {
-        method: 'DELETE'
-      })
+      const response = await proxy.$http.delete(Endpoint.deleteAmenity(amenityToDelete.value.id))
 
-      if (!response.ok) throw new Error('Không thể xóa tiện ích')
+      if (!response.success) throw new Error('Không thể xóa tiện ích')
 
       await fetchAmenities()
       showDeleteConfirm.value = false

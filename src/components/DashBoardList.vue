@@ -201,7 +201,10 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, getCurrentInstance } from 'vue'
+import { Endpoint } from '@/constants/Endpoint'
+
+const { proxy } = getCurrentInstance()
 
 const isLoading = ref(true)
 const stats = ref({
@@ -241,19 +244,13 @@ const fetchDashboardData = async () => {
   try {
     isLoading.value = true
 
-    const response = await fetch('https://roombooking-fa3a.onrender.com/api/properties/admin/quick-stats', {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
-        'Content-Type': 'application/json'
-      }
-    })
+    const response = await proxy.$http.get(Endpoint.getAdminQuickStats)
 
-    if (!response.ok) {
+    if (!response.success) {
       throw new Error('Network response was not ok')
     }
 
-    const data = await response.json()
+    const data = response.data
     console.log('API response:', data)
 
     stats.value = {

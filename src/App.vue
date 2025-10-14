@@ -1,10 +1,7 @@
 <template>
   <div id="app">
     <router-view />
-    <HeartbeatComponent 
-      v-if="userStore.user"
-      :user-id="userStore.user.id"
-    />
+    <HeartbeatComponent v-if="userStore.user" :user-id="userStore.user.id" />
     <AdminButton />
     <MessComponent />
     <ScolltoTop />
@@ -40,6 +37,7 @@ watch(() => userStore.isAuthenticated, (newValue) => {
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Lato:wght@400;500;600;700&display=swap');
+
 :root {
   --font-primary: 'Lato', sans-serif;
   --font-heading: 'Playfair Display', serif;
@@ -52,7 +50,13 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-h1, h2, h3, h4, h5, h6, .heading-text {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.heading-text {
   font-family: var(--font-heading);
 }
 
@@ -80,7 +84,8 @@ h1, h2, h3, h4, h5, h6, .heading-text {
   font-weight: 700;
 }
 
-html, body {
+html,
+body {
   overflow-x: hidden;
   margin: 0;
   padding: 0;

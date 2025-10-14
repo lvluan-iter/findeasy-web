@@ -1,16 +1,18 @@
 <template>
   <div class="px-4 py-5 sm:px-6 md:px-12 lg:px-[120px] lg:py-12">
     <div class="flex flex-wrap items-center gap-4">
-      <button class="text-blue-600 hover:text-blue-800 font-medium flex items-center gap-2 transition duration-300"
-        @click="$router.go(-1)">
+      <button
+        class="text-blue-600 hover:text-blue-800 font-medium flex items-center gap-2 transition duration-300"
+        @click="$router.go(-1)"
+      >
         <i class="fas fa-angle-left" />
         <span>Quay lại</span>
       </button>
+
       <div class="hidden sm:block w-px h-6 bg-gray-300" />
-      <h1 class="text-xl sm:text-2xl font-bold text-gray-800">
-        Trang Cá Nhân
-      </h1>
+      <h1 class="text-xl sm:text-2xl font-bold text-gray-800">Trang Cá Nhân</h1>
     </div>
+    
     <hr class="w-full mb-5">
     <div class="flex flex-col lg:flex-row gap-5">
       <div class="w-full lg:w-1/3 bg-white rounded-xl shadow-md overflow-hidden">
@@ -293,12 +295,14 @@
 </template>
 
 <script setup>
-import { ref, reactive, watch, onMounted } from 'vue';
+import { ref, reactive, watch, onMounted, getCurrentInstance } from 'vue';
 import Cropper from 'cropperjs'
 import 'cropperjs/dist/cropper.css'
 import { useUserStore } from '../stores/userStore'
+import { Endpoint } from '@/constants/Endpoint'
 
 const userStore = useUserStore()
+const { proxy } = getCurrentInstance()
 
 const user = reactive({});
 const isEditing = ref(false);
@@ -344,17 +348,14 @@ const saveProfile = async () => {
       const formData = new FormData();
       formData.append('images', selectedAvatarFile.value);
 
-      const uploadResponse = await fetch('https://roombooking-fa3a.onrender.com/api/upload-images', {
-        method: 'POST',
+      const uploadResponse = await proxy.$http.post(Endpoint.uploadImages, formData, {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('jwt')}`
-        },
-        body: formData
+          'Content-Type': 'multipart/form-data'
+        }
       });
 
-      if (uploadResponse.ok) {
-        const result = await uploadResponse.json();
-        user.avatar = result[0];
+      if (uploadResponse.success) {
+        user.avatar = uploadResponse.data[0];
       } else {
         alert("Có lỗi xảy ra khi tải lên ảnh.");
         return;
@@ -391,22 +392,13 @@ const changePassword = async () => {
   }
 
   try {
-    const response = await fetch(`https://roombooking-fa3a.onrender.com/api/users/${user.id}/password`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('jwt')}`
-      },
-      body: JSON.stringify({
-        currentPassword: passwordChange.currentPassword,
-        newPassword: passwordChange.newPassword
-      })
+    const response = await proxy.$http.put(Endpoint.updateUserPassword(user.id), {
+      currentPassword: passwordChange.currentPassword,
+      newPassword: passwordChange.newPassword
     });
 
-    const data = await response.text();
-
-    if (!response.ok) {
-      throw new Error(data || 'Đã xảy ra lỗi khi thay đổi mật khẩu.');
+    if (!response.success) {
+      throw new Error(response.message || 'Đã xảy ra lỗi khi thay đổi mật khẩu.');
     }
 
     passwordChangeError.value = '';
