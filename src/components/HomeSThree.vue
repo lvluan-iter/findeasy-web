@@ -133,9 +133,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, getCurrentInstance } from 'vue';
+import { Endpoint } from '@/constants/Endpoint';
 import AvaibleProperty from './AvaibleProperty.vue';
 
+const { proxy } = getCurrentInstance();
 const properties = ref([]);
 const totalPages = ref(0);
 const currentPage = ref(0);
@@ -147,16 +149,16 @@ const fetchProperties = async (page = currentPage.value) => {
   loading.value = true;
   error.value = null;
   try {
-    const response = await fetch(
-      `https://roombooking-fa3a.onrender.com/api/properties/available?page=${page}&size=${pageSize.value}`
+    const response = await proxy.$http.get(
+      `${Endpoint.getAvailableProperties}?page=${page}&size=${pageSize.value}`
     );
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+    if (response.success) {
+      properties.value = response.data.content;
+      totalPages.value = response.data.totalPages;
+      currentPage.value = page;
+    } else {
+      throw new Error(`Failed to fetch properties`);
     }
-    const data = await response.json();
-    properties.value = data.content;
-    totalPages.value = data.totalPages;
-    currentPage.value = page;
   } catch (err) {
     console.error('Error fetching properties:', err);
     error.value = err.message;

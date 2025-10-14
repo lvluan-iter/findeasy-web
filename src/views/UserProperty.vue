@@ -20,8 +20,9 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, getCurrentInstance } from 'vue';
 import { useRoute } from 'vue-router';
+import { Endpoint } from '@/constants/Endpoint';
 import IconHeader from '../components/IconHeader.vue'
 import WebFooter from '@/components/WebFooter.vue'
 import NavBar from '@/components/NavBar.vue'
@@ -31,18 +32,19 @@ import PropertyCard from '@/components/PropertyCard.vue';
 const route = useRoute();
 const user = ref({});
 const properties = ref([]);
+const { proxy } = getCurrentInstance();
 
 const fetchData = async () => {
   try {
     const userId = Number(route.params.id);
     const [userResponse, propertiesResponse] = await Promise.all([
-      fetch(`https://roombooking-fa3a.onrender.com/api/users/id/${userId}`),
-      fetch(`https://roombooking-fa3a.onrender.com/api/properties/user/${userId}`)
+      proxy.$http.get(Endpoint.getUserById(userId)),
+      proxy.$http.get(Endpoint.getPropertiesByUser(userId))
     ]);
 
-    if (userResponse.ok && propertiesResponse.ok) {
-      user.value = await userResponse.json();
-      properties.value = await propertiesResponse.json();
+    if (userResponse.success && propertiesResponse.success) {
+      user.value = userResponse.data;
+      properties.value = propertiesResponse.data;
     }
   } catch (error) {
     console.error('Error fetching data:', error);

@@ -115,9 +115,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick, onUnmounted } from 'vue'
+import { ref, onMounted, nextTick, onUnmounted, getCurrentInstance } from 'vue'
 import { format, parseISO } from 'date-fns'
 import { webSocketService } from '@/api/websocketClient'
+import { Endpoint } from '@/constants/Endpoint'
+
+const { proxy } = getCurrentInstance()
 
 const props = defineProps({
   senderId: {
@@ -254,7 +257,7 @@ function updateConversationStatus(status) {
 
 function loadConversation() {
   conversationId.value = generateConversationId(props.senderId, props.recipientId)
-  fetch(`https://roombooking-fa3a.onrender.com/conversations/${conversationId.value}`)
+  fetch(`https://roombooking-fa3a.onrender.com${Endpoint.getConversation(conversationId.value)}`)
     .then(response => response.json())
     .then(data => {
       messages.value = data.map(msg => ({
@@ -268,11 +271,10 @@ function loadConversation() {
 
 async function fetchRecipientUser() {
   try {
-    const response = await fetch(`https://roombooking-fa3a.onrender.com/api/users/id/${props.recipientId}`)
-    if (response.ok) {
-      const data = await response.json()
-      recipientName.value = data.fullname
-      recipientAvatar.value = data.avatar
+    const response = await proxy.$http.get(Endpoint.getUserById(props.recipientId))
+    if (response.success) {
+      recipientName.value = response.data.fullname
+      recipientAvatar.value = response.data.avatar
     }
   } catch (error) {
     console.error('Error fetching user contact:', error)

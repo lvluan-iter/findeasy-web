@@ -200,10 +200,12 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, watch, getCurrentInstance } from 'vue'
 import { useRoute } from 'vue-router'
+import { Endpoint } from '@/constants/Endpoint'
 
 const route = useRoute()
+const { proxy } = getCurrentInstance()
 const tourRequests = ref([])
 const searchQuery = ref('')
 const filterStatus = ref('all')
@@ -255,12 +257,10 @@ const email = computed(() => route.query.email);
 const fetchTourRequests = async () => {
   if (!email.value) return
   try {
-    const response = await fetch(`https://roombooking-fa3a.onrender.com/api/tour-requests/email/${email.value}`)
-    if (!response.ok) {
-      throw new Error('Network response was not ok')
+    const response = await proxy.$http.get(Endpoint.getTourRequestsByEmail(email.value))
+    if (response.success) {
+      tourRequests.value = response.data
     }
-    const data = await response.json()
-    tourRequests.value = data
   } catch (error) {
     console.error('Error fetching tour requests:', error)
   }
@@ -269,13 +269,10 @@ const fetchTourRequests = async () => {
 const deleteRequest = async (id) => {
   if (confirm('Are you sure you want to delete this request?')) {
     try {
-      const response = await fetch(`https://roombooking-fa3a.onrender.com/api/tour-requests/${id}`, {
-        method: 'DELETE',
-      })
-      if (!response.ok) {
-        throw new Error('Network response was not ok')
+      const response = await proxy.$http.delete(Endpoint.deleteTourRequest(id))
+      if (response.success) {
+        await fetchTourRequests()
       }
-      await fetchTourRequests()
     } catch (error) {
       console.error('Error deleting tour request:', error)
     }
@@ -299,21 +296,14 @@ const closeRescheduleModal = () => {
 const submitReschedule = async () => {
   if (currentRequest.value) {
     try {
-      const response = await fetch(`https://roombooking-fa3a.onrender.com/api/tour-requests/${currentRequest.value.id}/date`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          appointmentDate: rescheduleDate.value,
-          appointmentTime: rescheduleTime.value
-        }),
+      const response = await proxy.$http.patch(Endpoint.updateTourRequestDate(currentRequest.value.id), {
+        appointmentDate: rescheduleDate.value,
+        appointmentTime: rescheduleTime.value
       })
-      if (!response.ok) {
-        throw new Error('Network response was not ok')
+      if (response.success) {
+        await fetchTourRequests()
+        closeRescheduleModal()
       }
-      await fetchTourRequests()
-      closeRescheduleModal()
     } catch (error) {
       console.error('Error rescheduling tour request:', error)
     }

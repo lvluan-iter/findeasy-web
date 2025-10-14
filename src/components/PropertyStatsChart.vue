@@ -42,9 +42,10 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, watch, getCurrentInstance } from 'vue'
 import { useUserStore } from '../stores/userStore'
 import { storeToRefs } from 'pinia'
+import { Endpoint } from '@/constants/Endpoint'
 import VChart from 'vue-echarts'
 import { use } from 'echarts/core'
 import { CanvasRenderer } from 'echarts/renderers'
@@ -61,6 +62,7 @@ use([
 
 const userStore = useUserStore()
 const { user } = storeToRefs(userStore)
+const { proxy } = getCurrentInstance()
 const statsData = ref([])
 const loading = ref(true)
 const error = ref(null)
@@ -78,12 +80,11 @@ const fetchData = async () => {
   error.value = null
   
   try {
-    const response = await fetch(`https://roombooking-fa3a.onrender.com/api/properties/stats/${user.value.id}?yearMonth=${selectedMonth.value}`)
-    if (!response.ok) {
+    const response = await proxy.$http.get(`${Endpoint.getPropertyStats(user.value.id)}?yearMonth=${selectedMonth.value}`)
+    if (!response.success) {
       throw new Error(`HTTP error! status: ${response.status}`)
     }
-    const data = await response.json()
-    statsData.value = data
+    statsData.value = response.data
   } catch (err) {
     console.error('Error fetching property stats:', err)
     error.value = 'Failed to fetch data. Please try again.'

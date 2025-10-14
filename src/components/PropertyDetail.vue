@@ -539,8 +539,9 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch} from 'vue';
+import { ref, computed, onMounted, watch, getCurrentInstance} from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { Endpoint } from '@/constants/Endpoint';
 import ChatComponent from './ChatComponent.vue';
 import AmenitiesCheckbox from './AmenitiesCheckbox.vue';
 import NearbyPlacesInput from './NearbyPlacesInput.vue';
@@ -562,6 +563,7 @@ const router = useRouter();
 const userStore = useUserStore()
 const categoryStore = useCategoryStore()
 const { user } = storeToRefs(userStore)
+const { proxy } = getCurrentInstance()
 
 const showChat = ref(false);
 const property = ref(null);
@@ -667,11 +669,14 @@ const getPlaceIcon = (placeName) => {
 
 const fetchProperty = async () => {
   try {
-    const response = await fetch(`https://roombooking-fa3a.onrender.com/api/properties/${route.params.id}`);
-    if (!response.ok) throw new Error('Failed to fetch property');
-    property.value = await response.json();
-    editedProperty.value = JSON.parse(JSON.stringify(property.value));
-    emit('loadNearbyProperty', info.value);
+    const response = await proxy.$http.get(Endpoint.getPropertyById(route.params.id));
+    if (response.success) {
+      property.value = response.data;
+      editedProperty.value = JSON.parse(JSON.stringify(property.value));
+      emit('loadNearbyProperty', info.value);
+    } else {
+      throw new Error('Failed to fetch property');
+    }
   } catch (error) {
     console.error('Error fetching property:', error);
   }
@@ -692,12 +697,8 @@ const getCoordinates = async (address) => {
 
 const updateProperty = async () => {
   try {
-    const response = await fetch(`https://roombooking-fa3a.onrender.com/api/properties/${property.value.id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(editedProperty.value)
-    });
-    if (!response.ok) throw new Error('Failed to update property');
+    const response = await proxy.$http.put(Endpoint.updateProperty(property.value.id), editedProperty.value);
+    if (!response.success) throw new Error('Failed to update property');
     property.value = JSON.parse(JSON.stringify(editedProperty.value));
     isEditing.value = false;
     await fetchAllData();
@@ -710,14 +711,10 @@ const fetchUserStatus = async () => {
   if (!user.value) {
     return;
   }
-  const token = localStorage.getItem('jwt');
   try {
-    const response = await fetch(`https://roombooking-fa3a.onrender.com/api/users/status/${contact.value.id}`, {
-      headers: { 'Authorization': `Bearer ${token}` }
-    });
-    if (response.ok) {
-      const data = await response.json();
-      isAgentOnline.value = data.status === "online";
+    const response = await proxy.$http.get(Endpoint.updateUserStatus(contact.value.id));
+    if (response.success) {
+      isAgentOnline.value = response.data.status === "online";
     }
   } catch (error) {
     console.error('Error fetching user status:', error);
@@ -734,15 +731,9 @@ const handleSubmit = async () => {
       appointmentTime: formData.value.appointmentTime,
     };
 
-    const response = await fetch('https://roombooking-fa3a.onrender.com/api/tour-requests', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(tourRequestDTO)
-    });
+    const response = await proxy.$http.post(Endpoint.createTourRequest, tourRequestDTO);
 
-    if (!response.ok) {
+    if (!response.success) {
       const errorData = await response.json();
       throw new Error(errorData.message || 'Failed to submit tour request');
     }

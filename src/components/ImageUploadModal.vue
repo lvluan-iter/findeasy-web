@@ -90,7 +90,7 @@ export default {
       });
       
       try {
-        const response = await fetch('https://roombooking-fa3a.onrender.com/api/upload-images', {
+        const response = await fetch(`${process.env.VUE_APP_API_BASE_URL || 'https://roombooking-fa3a.onrender.com'}/api/upload-images`, {
           method: 'POST',
           body: formData
         });

@@ -200,9 +200,10 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, getCurrentInstance } from 'vue'
+import { Endpoint } from '@/constants/Endpoint'
 
-const API_URL = 'https://roombooking-fa3a.onrender.com/api/categories'
+const { proxy } = getCurrentInstance()
 
 const categories = ref([])
 const isLoading = ref(false)
@@ -226,10 +227,10 @@ const fetchCategories = async () => {
     isLoading.value = true
     error.value = null
 
-    const response = await fetch(`${API_URL}/`)
-    if (!response.ok) throw new Error()
+    const response = await proxy.$http.get(Endpoint.getCategories)
+    if (!response.success) throw new Error()
 
-    categories.value = await response.json()
+    categories.value = response.data
     
   } catch (err) {
     error.value = 'Không thể tải danh sách danh mục'
@@ -318,11 +319,9 @@ const deleteCategory = async () => {
   
   isDeleting.value = true
   try {
-    const response = await fetch(`${API_URL}/${categoryToDelete.value.id}`, {
-      method: 'DELETE'
-    })
+    const response = await proxy.$http.delete(Endpoint.deleteCategory(categoryToDelete.value.id))
 
-    if (!response.ok) throw new Error('Không thể xóa danh mục')
+    if (!response.success) throw new Error('Không thể xóa danh mục')
 
     await fetchCategories()
     showDeleteConfirm.value = false

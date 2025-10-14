@@ -205,11 +205,13 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, getCurrentInstance } from 'vue';
 import { useRouter } from 'vue-router';
 import { useUserStore } from '../stores/userStore';
 import { usePropertyStore } from '../stores/propertyStore';
+import { Endpoint } from '@/constants/Endpoint';
 
+const { proxy } = getCurrentInstance();
 const userStore = useUserStore();
 const propertyStore = usePropertyStore();
 const router = useRouter();
@@ -286,27 +288,19 @@ const shareProperty = (property) => {
   }
 };
 
-const addToFavorites = (propertyId) => {
-  const url = `https://roombooking-fa3a.onrender.com/api/users/${userStore.user.id}/favorites/${propertyId}`;
-  fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${localStorage.getItem('jwt')}`
-    }
-  })
-    .then(response => response.text().then(text => ({ text, status: response.status })))
-    .then(({ text, status }) => {
-      const message = status === 200 ? 'Added to favorites!' :
-        status === 409 ? `Error: ${text}` :
-          status === 404 ? `Resource not found: ${text}` :
-            'An error occurred. Please try again later.';
-      alert(message);
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      alert('An error occurred. Please try again later.');
-    });
+const addToFavorites = async (propertyId) => {
+  try {
+    const response = await proxy.$http.post(Endpoint.addToFavorites(userStore.user.id, propertyId));
+    
+    const message = response.success ? 'Added to favorites!' :
+      response.status === 409 ? `Error: ${response.message}` :
+        response.status === 404 ? `Resource not found: ${response.message}` :
+          'An error occurred. Please try again later.';
+    alert(message);
+  } catch (error) {
+    console.error('Error:', error);
+    alert('An error occurred. Please try again later.');
+  }
 };
 
 const toggleCompare = (property) => {

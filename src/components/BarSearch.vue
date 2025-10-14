@@ -9,36 +9,37 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref, getCurrentInstance, onMounted } from 'vue';
 import { debounce } from 'lodash';
-export default {
-    data() {
-        return {
-            searchValue: ''
+import { Endpoint } from '@/constants/Endpoint';
+
+const { proxy } = getCurrentInstance();
+const emit = defineEmits(['barsearch']);
+
+const searchValue = ref('');
+let debouncedSearch;
+
+const barSearch = () => {
+    debouncedSearch();
+};
+
+const fetchData = async () => {
+    try {
+        const response = await proxy.$http.get(`${Endpoint.searchProperties}?keyword=${searchValue.value.toLowerCase()}`);
+        if (!response.success) {
+            console.log("Lỗi khi tải dữ liệu từ server");
+            return;
         }
-    },
-    created() {
-        this.debouncedSearch = debounce(this.fetchData, 500);
-    },
-    methods: {
-        barSearch() {
-            this.debouncedSearch();
-        },
-        async fetchData() {
-            try {
-                const response = await fetch(`https://roombooking-fa3a.onrender.com/api/properties/search?keyword=${this.searchValue.toLowerCase()}`);
-                if (!response.ok) {
-                    console.log("Lỗi khi tải dữ liệu từ server");
-                    return;
-                }
-                const results = await response.json();
-                this.$emit('barsearch', results);
-            } catch (error) {
-                console.log("Lỗi trong quá trình xử lý dữ liệu", error);
-            }
-        }
+        emit('barsearch', response.data);
+    } catch (error) {
+        console.log("Lỗi trong quá trình xử lý dữ liệu", error);
     }
 };
+
+onMounted(() => {
+    debouncedSearch = debounce(fetchData, 500);
+});
 </script>
 
 <style scoped>

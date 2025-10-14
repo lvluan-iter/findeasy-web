@@ -435,9 +435,10 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, getCurrentInstance } from 'vue'
+import { Endpoint } from '@/constants/Endpoint'
 
-const API_URL = 'https://roombooking-fa3a.onrender.com/api/properties'
+const { proxy } = getCurrentInstance()
 
 const listings = ref([])
 const isLoading = ref(false)
@@ -502,10 +503,10 @@ const fetchListings = async () => {
     isLoading.value = true
     error.value = null
 
-    const response = await fetch(API_URL)
-    if (!response.ok) throw new Error()
+    const response = await proxy.$http.get(Endpoint.getProperties)
+    if (!response.success) throw new Error()
 
-    listings.value = await response.json()
+    listings.value = response.data
     
   } catch (err) {
     error.value = 'Không thể tải danh sách tin đăng'
@@ -517,14 +518,9 @@ const fetchListings = async () => {
 
 const approveListing = async (listing) => {
   try {
-    const response = await fetch(`${API_URL}/${listing.id}/approve`, {
-      method: 'PATCH',
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('jwt')}`
-      }
-    })
+    const response = await proxy.$http.patch(Endpoint.approveProperty(listing.id))
 
-    if (!response.ok) throw new Error()
+    if (!response.success) throw new Error()
 
     await fetchListings()
   } catch (err) {
@@ -536,16 +532,11 @@ const rejectListing = async () => {
   if (!selectedListing.value) return
 
   try {
-    const response = await fetch(`${API_URL}/${selectedListing.value.id}/reject`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('jwt')}`
-      },
-      body: JSON.stringify({ reason: rejectForm.value.reason })
+    const response = await proxy.$http.delete(Endpoint.rejectProperty(selectedListing.value.id), {
+      reason: rejectForm.value.reason
     })
 
-    if (!response.ok) throw new Error()
+    if (!response.success) throw new Error()
 
     await fetchListings()
     closeRejectModal()
@@ -559,16 +550,9 @@ const lockListing = async () => {
 
   try {
     isRunning.value = true
-    const response = await fetch(`${API_URL}/${selectedListing.value.id}/lock`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('jwt')}`
-      },
-      body: JSON.stringify(lockForm.value)
-    })
+    const response = await proxy.$http.patch(Endpoint.lockProperty(selectedListing.value.id), lockForm.value)
 
-    if (!response.ok) throw new Error()
+    if (!response.success) throw new Error()
 
     await fetchListings()
     closeLockModal()
@@ -581,14 +565,9 @@ const lockListing = async () => {
 
 const unlockListing = async (listing) => {
   try {
-    const response = await fetch(`${API_URL}/${listing.id}/unlock`, {
-      method: 'PATCH',
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('jwt')}`
-      }
-    })
+    const response = await proxy.$http.patch(Endpoint.unlockProperty(listing.id))
 
-    if (!response.ok) throw new Error()
+    if (!response.success) throw new Error()
 
     await fetchListings()
   } catch (err) {

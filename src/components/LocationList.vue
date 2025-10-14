@@ -276,9 +276,10 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, getCurrentInstance } from 'vue'
+import { Endpoint } from '@/constants/Endpoint'
 
-const API_URL = 'https://roombooking-fa3a.onrender.com/api/location'
+const { proxy } = getCurrentInstance()
 
 const locations = ref([])
 const isLoading = ref(false)

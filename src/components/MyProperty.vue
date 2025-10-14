@@ -1,19 +1,6 @@
 <template>
   <div class="px-4 sm:px-6 md:px-8 lg:px-[120px] py-6 sm:py-8 md:py-10 lg:py-12">
-    <div class="flex flex-wrap items-center gap-4">
-      <button
-        class="text-blue-600 hover:text-blue-800 hover:underline font-medium flex items-center gap-2 transition duration-300"
-        @click="$router.go(-1)"
-      >
-        <i class="fas fa-angle-left" />
-        <span>Quay lại</span>
-      </button>
-      <div class="hidden sm:block w-px h-6 bg-gray-300" />
-      <h1 class="text-xl sm:text-2xl font-bold text-gray-800">
-        Bất Động Sản Của Tôi
-      </h1>
-    </div>
-    <hr class="w-full mb-5">
+    <BackHeader title="Bất Động Sản Của Tôi" />
 
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 space-y-4 sm:space-y-0">
       <div class="relative w-full sm:w-64 md:w-72 lg:w-96">
@@ -277,9 +264,11 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue'
+import BackHeader from './BackHeader.vue'
+import { ref, computed, onMounted, watch, getCurrentInstance } from 'vue'
 import { useUserStore } from '../stores/userStore'
 import { storeToRefs } from 'pinia'
+import { Endpoint } from '@/constants/Endpoint'
 import ConfirmModal from './ConfirmModal.vue'
 import { useToast } from 'vue-toast-notification'
 import { useRouter } from 'vue-router'
@@ -288,6 +277,7 @@ const router = useRouter()
 const toast = useToast()
 const userStore = useUserStore()
 const { user } = storeToRefs(userStore)
+const { proxy } = getCurrentInstance()
 const properties = ref([])
 const searchQuery = ref('')
 const currentDate = ref('')
@@ -306,16 +296,12 @@ const fetchMyProperties = async () => {
   if (!user.value) return
   isLoading.value = true 
   try {
-    const response = await fetch(`https://roombooking-fa3a.onrender.com/api/properties/user/${user.value.id}`, {
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('jwt')}`
-      }
-    })
-    if (!response.ok) {
-      throw new Error('Network response was not ok')
+    const response = await proxy.$http.get(Endpoint.getPropertiesByUser(user.value.id))
+    if (response.success) {
+      properties.value = response.data
+    } else {
+      throw new Error('Failed to fetch properties')
     }
-    const data = await response.json()
-    properties.value = data
   } catch (error) {
     console.error('Error fetching properties:', error)
     toast.error('Có lỗi xảy ra khi tải dữ liệu. Vui lòng thử lại sau.')
@@ -359,15 +345,9 @@ const toggleVisibility = async (property) => {
   const confirmed = await confirmModal.value.showModal()
   if (confirmed) {
     try {
-      const response = await fetch(`https://roombooking-fa3a.onrender.com/api/properties/${property.id}/toggle-visibility`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('jwt')}`
-        }
-      })
+      const response = await proxy.$http.patch(Endpoint.togglePropertyVisibility(property.id))
       
-      if (response.ok) {
+      if (response.success) {
         window.location.reload()
         const message = property.available ? 'Tin đăng đã được hiển thị!' : 'Tin đăng đã bị ẩn!'
         toast.success(message) 
@@ -392,22 +372,14 @@ const confirmExtend = async () => {
   
   try {
     isLoading.value = true
-    const response = await fetch(`https://roombooking-fa3a.onrender.com/api/properties/${selectedProperty.value.id}/extend`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('jwt')}`
-      }
-    })
+    const response = await proxy.$http.post(Endpoint.extendProperty(selectedProperty.value.id))
 
-    if (!response.ok) {
+    if (!response.success) {
       throw new Error('Failed to extend property')
     }
-
-    const data = await response.json()
     
-    if (data.paymentUrl) {
-      window.location.href = data.paymentUrl
+    if (response.data.paymentUrl) {
+      window.location.href = response.data.paymentUrl
     }
 
   } catch (error) {
@@ -426,15 +398,9 @@ const handleDelete = async (property) => {
   
   if (confirmed) {
     try {
-      const response = await fetch(`https://roombooking-fa3a.onrender.com/api/properties/${property.id}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('jwt')}`
-        }
-      })
+      const response = await proxy.$http.delete(Endpoint.deleteProperty(property.id))
       
-      if (response.ok) {
+      if (response.success) {
         properties.value = properties.value.filter(p => p.id !== property.id)
         toast.success('Tin đăng đã được xóa thành công!')
       } else {

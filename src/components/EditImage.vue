@@ -71,7 +71,8 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue';
+import { ref, watch, getCurrentInstance } from 'vue';
+import { Endpoint } from '@/constants/Endpoint';
 
 const props = defineProps({
   show: Boolean,
@@ -79,6 +80,7 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['update:show', 'save']);
+const { proxy } = getCurrentInstance();
 
 const images = ref([]);
 
@@ -98,12 +100,14 @@ const handleFileUpload = async (event) => {
       formData.append('images', file);
     });
     try {
-      const response = await fetch('https://roombooking-fa3a.onrender.com/api/upload-images', {
-        method: 'POST',
-        body: formData,
+      const response = await proxy.$http.post(Endpoint.uploadImages, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
       });
-      const imageUrls = await response.json();
-      images.value.push(...imageUrls);
+      if (response.success) {
+        images.value.push(...response.data);
+      }
     } catch (error) {
       console.error('Error uploading images:', error);
     }
