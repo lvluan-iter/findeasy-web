@@ -64,7 +64,7 @@
 <script setup>
 import {ref} from 'vue';
 import {useRouter} from 'vue-router';
-import {useToast} from 'vue-toast-notification';
+import {useToast} from '@/stores/useToast';
 import {useUserStore} from '@/stores/userStore';
 import BackHeader from '@/components/BackHeader.vue';
 import BaseInput from '@/components/BaseInput.vue';
@@ -72,7 +72,7 @@ import SubmitButton from '@/components/SubmitButton.vue';
 
 const router = useRouter();
 const userStore = useUserStore();
-const $toast = useToast();
+const {showToast} = useToast();
 
 const username = ref('');
 const password = ref('');
@@ -92,35 +92,14 @@ const handleUserSubmit = async () => {
       localStorage.removeItem('redirectAfterLogin');
       router.push(redirectTo);
 
-      $toast.open({
-        message: 'Đăng nhập thành công!',
-        type: 'success',
-        duration: 3000,
-        dismissible: true,
-        position: 'bottom-right',
-        className: 'toast-message'
-      });
+      showToast('Đăng nhập thành công!', 'success');
     } else {
       errorMessage.value = 'Tên đăng nhập hoặc mật khẩu không đúng.';
-      $toast.open({
-        message: errorMessage.value,
-        type: 'error',
-        duration: 3000,
-        dismissible: true,
-        position: 'bottom-right',
-        className: 'toast-message'
-      });
+      showToast(errorMessage.value, 'error');
     }
   } catch (error) {
     errorMessage.value = 'Đã xảy ra lỗi, vui lòng thử lại sau.';
-    $toast.open({
-      message: errorMessage.value,
-      type: 'error',
-      duration: 3000,
-      dismissible: true,
-      position: 'bottom-right',
-      className: 'toast-message'
-    });
+    showToast(errorMessage.value, 'error');
   } finally {
     isSubmitting.value = false;
   }
