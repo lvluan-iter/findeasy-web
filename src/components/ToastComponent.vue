@@ -2,6 +2,7 @@
   <transition name="fade">
     <div
       v-if="visible"
+      id="toast"
       :class="[
         'fixed top-6 left-1/2 transform -translate-x-1/2 z-[9999] min-w-[250px] px-4 py-3 rounded-2xl shadow-lg text-white text-center font-semibold',
         typeClass
