@@ -1,8 +1,5 @@
 <template>
-  <div
-    v-if="canAccessAdmin"
-    class="fixed right-6 bottom-20 z-10 flex flex-col gap-2"
-  >
+  <div v-if="canAccessAdmin" id="admin-icon" class="fixed right-6 bottom-20 z-10 flex flex-col gap-2">
     <router-link
       :to="isInAdmin ? '/' : '/admin'"
       class="admin-float-btn group flex flex-col items-center justify-center bg-white rounded-full w-12 h-12 shadow-lg hover:shadow-xl transition-all duration-300"
@@ -20,15 +17,11 @@
         stroke-linejoin="round"
       >
         <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-        <circle 
-          cx="9" 
-          cy="7" 
-          r="4" 
-        />
+        <circle cx="9" cy="7" r="4" />
         <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
         <path d="M16 3.13a4 4 0 0 1 0 7.75" />
       </svg>
-      
+
       <svg
         v-else
         xmlns="http://www.w3.org/2000/svg"
@@ -43,13 +36,8 @@
         <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
         <polyline points="9 22 9 12 15 12 15 22" />
       </svg>
-      
-      <div 
-        :class="[
-          'tooltip-box',
-          { 'show-tooltip': isTooltipVisible || shouldShowPeriodicTooltip }
-        ]"
-      >
+
+      <div :class="['tooltip-box', {'show-tooltip': isTooltipVisible || shouldShowPeriodicTooltip}]">
         <div class="relative">
           <div class="bg-gray-800 text-white text-sm py-2 px-3 rounded-lg shadow-xl">
             <p class="whitespace-nowrap font-medium">
@@ -64,53 +52,53 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
-import { useUserStore } from '../stores/userStore.js'
-import { useRoute } from 'vue-router'
+import {ref, computed, onMounted, onBeforeUnmount} from 'vue';
+import {useUserStore} from '../stores/userStore.js';
+import {useRoute} from 'vue-router';
 
-const userStore = useUserStore()
-const route = useRoute()
+const userStore = useUserStore();
+const route = useRoute();
 
-const isTooltipVisible = ref(false)
-const shouldShowPeriodicTooltip = ref(false)
-let tooltipTimer = null
-let periodicTimer = null
+const isTooltipVisible = ref(false);
+const shouldShowPeriodicTooltip = ref(false);
+let tooltipTimer = null;
+let periodicTimer = null;
 
 const isInAdmin = computed(() => {
-  return route.path.startsWith('/admin')
-})
+  return route.path.startsWith('/admin');
+});
 
 const canAccessAdmin = computed(() => {
-  return userStore.user?.roles?.some(role => 
-    role.toLowerCase() === 'admin' || role.toLowerCase() === 'owner'
-  ) ?? false
-})
+  return (
+    userStore.user?.roles?.some((role) => role.toLowerCase() === 'admin' || role.toLowerCase() === 'owner') ?? false
+  );
+});
 
 const showTooltip = () => {
-  isTooltipVisible.value = true
-  if (tooltipTimer) clearTimeout(tooltipTimer)
+  isTooltipVisible.value = true;
+  if (tooltipTimer) clearTimeout(tooltipTimer);
   tooltipTimer = setTimeout(() => {
-    isTooltipVisible.value = false
-  }, 2000)
-}
+    isTooltipVisible.value = false;
+  }, 2000);
+};
 
 const startPeriodicTooltip = () => {
   periodicTimer = setInterval(() => {
-    shouldShowPeriodicTooltip.value = true
+    shouldShowPeriodicTooltip.value = true;
     setTimeout(() => {
-      shouldShowPeriodicTooltip.value = false
-    }, 2000)
-  }, 300000)
-}
+      shouldShowPeriodicTooltip.value = false;
+    }, 2000);
+  }, 300000);
+};
 
 onMounted(() => {
-  startPeriodicTooltip()
-})
+  startPeriodicTooltip();
+});
 
 onBeforeUnmount(() => {
-  if (tooltipTimer) clearTimeout(tooltipTimer)
-  if (periodicTimer) clearInterval(periodicTimer)
-})
+  if (tooltipTimer) clearTimeout(tooltipTimer);
+  if (periodicTimer) clearInterval(periodicTimer);
+});
 </script>
 
 <style scoped>
@@ -139,8 +127,16 @@ onBeforeUnmount(() => {
 }
 
 @keyframes fadeInOut {
-  0%, 100% { opacity: 0; transform: translateX(10px); }
-  20%, 80% { opacity: 1; transform: translateX(0); }
+  0%,
+  100% {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+  20%,
+  80% {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .show-periodic {
