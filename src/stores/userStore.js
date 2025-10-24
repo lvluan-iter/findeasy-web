@@ -1,138 +1,125 @@
-import { defineStore } from 'pinia'
-import { webSocketService } from '../api/websocketClient'
-import { jwtDecode } from 'jwt-decode'
+import {defineStore} from 'pinia';
+import {webSocketService} from '../api/websocketClient';
+import {useToast} from '@/stores/useToast';
+import {Endpoint} from '@/constants/Endpoint';
+import {http} from '@/api/httpClient';
+
+const {showToast} = useToast();
 
 export const useUserStore = defineStore('user', {
   state: () => ({
     user: null,
     isLoading: false,
     isAuthenticated: false,
-    refreshTokenTimeout: null,
+    refreshTokenTimeout: null
   }),
+
   actions: {
     async login(credentials) {
-      this.isLoading = true
+      this.isLoading = true;
       try {
-        const response = await fetch('https://roombooking-fa3a.onrender.com/api/auth/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(credentials),
-        })
+        const res = await http.post(Endpoint.login, credentials);
+        if (res.succeeded === true) {
+          this.setToken(res.result.token, res.result.expire);
+          this.scheduleTokenRefresh();
+          await this.fetchUserInfo();
 
-        if (!response.ok) {
-          throw new Error('Login failed')
-        }
+          if (this.user) webSocketService.connect(this.user.id);
 
-        const data = await response.json()
-        this.setToken(data.token)
-        this.scheduleTokenRefresh()
-        
-        await this.fetchUserInfo()
-        
-        if (this.user) {
-          webSocketService.connect(this.user.id)
+          showToast('Đăng nhập thành công!', 'success');
+
+          return true;
         }
-        
-        return true
-      } catch (error) {
-        console.error('Login error:', error)
-        return false
+      } catch (err) {
+        showToast(err?.response?.data?.errors?.[0], 'error');
+        return false;
       } finally {
-        this.isLoading = false
+        this.isLoading = false;
       }
     },
-    setToken(token) {
-      localStorage.setItem('jwt', token)
+
+    setToken(token, expire) {
+      localStorage.setItem('jwt', token);
+      if (expire) localStorage.setItem('jwt_expire', expire);
     },
+
     getToken() {
-      return localStorage.getItem('jwt')
+      return localStorage.getItem('jwt');
     },
+
+    getTokenexpire() {
+      return parseInt(localStorage.getItem('jwt_expire') || '0');
+    },
+
     scheduleTokenRefresh() {
-      const token = this.getToken()
-      if (token) {
-        try {
-          const decodedToken = jwtDecode(token)
-          const expiresIn = decodedToken.exp * 1000 - Date.now() - 60000
-          this.refreshTokenTimeout = setTimeout(() => this.refreshToken(), expiresIn)
-        } catch (error) {
-          console.error('Error decoding token:', error)
-          this.logout() 
-        }
+      const token = this.getToken();
+      const expire = this.getTokenexpire();
+      if (!token || !expire) return;
+
+      const timeout = expire - Date.now() - 60000;
+      if (timeout > 0) {
+        this.refreshTokenTimeout = setTimeout(() => this.refreshToken(), timeout);
+      } else {
+        this.refreshToken();
       }
     },
+
     async refreshToken() {
       try {
-        const response = await fetch('https://roombooking-fa3a.onrender.com/api/auth/refresh', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${this.getToken()}`,
-          },
-        })
-
-        if (!response.ok) {
-          throw new Error('Token refresh failed')
+        const res = await http.post(Endpoint.refreshToken);
+        if (res.succeeded) {
+          this.setToken(res.result.token, res.result.expire);
+          this.scheduleTokenRefresh();
         }
-
-        const data = await response.json()
-        this.setToken(data.token)
-        this.scheduleTokenRefresh()
-      } catch (error) {
-        console.error('Token refresh error:', error)
-        this.logout()
+      } catch (err) {
+        showToast(err?.response?.data?.errors?.[0], 'error');
+        this.logout();
       }
     },
+
     async fetchUserInfo() {
-      const token = this.getToken()
-      if (!token) {
-        this.user = null
-        this.isAuthenticated = false
-        return
-      }
-      
-      this.isLoading = true
+      const token = this.getToken();
+      if (!token) return this.logout();
+
+      this.isLoading = true;
       try {
-        const response = await fetch('https://roombooking-fa3a.onrender.com/api/users/info', {
-          headers: { 'Authorization': `Bearer ${token}` }
-        })
-        if (response.ok) {
-          this.user = await response.json()
-          this.isAuthenticated = true
-        } else if (response.status === 401) {
-          await this.refreshToken()
-          return this.fetchUserInfo() 
-        } else {
-          throw new Error('Failed to fetch user info')
+        const res = await http.get(Endpoint.getUserInfo);
+        if (res.succeeded) {
+          this.user = res.result;
+          this.isAuthenticated = true;
         }
-      } catch (error) {
-        console.error('Error fetching user info:', error)
-        this.logout()
+      } catch (err) {
+        if (err.response?.status === 401) {
+          await this.refreshToken();
+          return this.fetchUserInfo();
+        }
+        showToast(err?.response?.data?.errors?.[0], 'error');
+        this.logout();
       } finally {
-        this.isLoading = false
+        this.isLoading = false;
       }
     },
+
     logout() {
-      localStorage.removeItem('jwt')
-      this.user = null
-      this.isAuthenticated = false
-      webSocketService.disconnect()
-      if (this.refreshTokenTimeout) {
-        clearTimeout(this.refreshTokenTimeout)
-      }
+      localStorage.removeItem('jwt');
+      localStorage.removeItem('jwt_expire');
+      this.user = null;
+      this.isAuthenticated = false;
+      webSocketService.disconnect();
+      if (this.refreshTokenTimeout) clearTimeout(this.refreshTokenTimeout);
+      showToast('Logout successfully!', 'info');
     },
+
     async initializeAuth() {
-      const token = this.getToken()
-      if (token) {
-        this.scheduleTokenRefresh()
-        await this.fetchUserInfo()
-        if (this.user) {
-          webSocketService.connect(this.user.id)
-        }
-      }
+      const token = this.getToken();
+      if (!token) return;
+      this.scheduleTokenRefresh();
+      await this.fetchUserInfo();
+      if (this.user) webSocketService.connect(this.user.id);
     },
+
     updateUser(updatedUser) {
-      this.user = { ...this.user, ...updatedUser };
+      this.user = {...this.user, ...updatedUser};
     }
-  },
-})
+  }
+});

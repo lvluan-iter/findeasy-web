@@ -1,32 +1,22 @@
 <template>
-  <div
-    v-if="show"
-    class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4"
-  >
+  <div v-if="show" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
     <div class="bg-white rounded-lg shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
       <div class="flex justify-between items-center p-6 border-b border-gray-200">
         <h3 class="text-2xl font-bold text-gray-800">
           <i class="fas fa-images mr-2 text-blue-500" />Chỉnh sửa hình ảnh
         </h3>
-        <button
-          class="text-gray-400 hover:text-gray-600 transition-colors duration-200"
-          @click="cancelEdit"
-        >
+        <button class="text-gray-400 hover:text-gray-600 transition-colors duration-200" @click="cancelEdit">
           <i class="fas fa-times text-2xl" />
         </button>
       </div>
       <div class="p-6 overflow-y-auto max-h-[calc(90vh-140px)]">
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-6">
-          <div
-            v-for="(image, index) in images"
-            :key="index"
-            class="relative group"
-          >
+          <div v-for="(image, index) in images" :key="index" class="relative group">
             <img
               :src="image"
               alt="Property Image"
               class="w-full h-32 object-cover rounded-lg shadow-md transition-transform duration-300 group-hover:scale-105"
-            >
+            />
             <button
               class="absolute top-2 right-2 bg-red-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"
               @click="removeImage(index)"
@@ -42,13 +32,7 @@
           >
             <i class="fas fa-cloud-upload-alt text-3xl mb-2" />
             <span class="text-base font-semibold">Chọn hình ảnh</span>
-            <input
-              id="file-upload"
-              type="file"
-              multiple
-              class="hidden"
-              @change="handleFileUpload"
-            >
+            <input id="file-upload" type="file" multiple class="hidden" @change="handleFileUpload" />
           </label>
         </div>
       </div>
@@ -71,8 +55,8 @@
 </template>
 
 <script setup>
-import { ref, watch, getCurrentInstance } from 'vue';
-import { Endpoint } from '@/constants/Endpoint';
+import {ref, watch, getCurrentInstance} from 'vue';
+import {Endpoint} from '@/constants/Endpoint';
 
 const props = defineProps({
   show: Boolean,
@@ -80,13 +64,17 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['update:show', 'save']);
-const { proxy } = getCurrentInstance();
+const {proxy} = getCurrentInstance();
 
 const images = ref([]);
 
-watch(() => props.initialImages, (newImages) => {
-  images.value = [...newImages];
-}, { immediate: true });
+watch(
+  () => props.initialImages,
+  (newImages) => {
+    images.value = [...newImages];
+  },
+  {immediate: true}
+);
 
 const removeImage = (index) => {
   images.value.splice(index, 1);
@@ -96,20 +84,26 @@ const handleFileUpload = async (event) => {
   const files = event.target.files;
   if (files.length) {
     const formData = new FormData();
-    Array.from(files).forEach(file => {
+    Array.from(files).forEach((file) => {
       formData.append('images', file);
     });
+
     try {
       const response = await proxy.$http.post(Endpoint.uploadImages, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       });
-      if (response.success) {
-        images.value.push(...response.data);
+
+      if (response.succeeded) {
+        const uploadedImages = Array.isArray(response.result) ? response.result : [response.result];
+        images.value.push(...uploadedImages);
+      } else {
+        throw new Error(response.errors ? response.errors.join(', ') : 'Failed to upload images');
       }
     } catch (error) {
       console.error('Error uploading images:', error);
+      alert('Failed to upload images: ' + error.message);
     }
   }
 };

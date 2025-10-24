@@ -89,15 +89,16 @@
 <script setup>
 import {ref} from 'vue';
 import {useRouter} from 'vue-router';
-import {useToast} from 'vue-toast-notification';
+import {useToast} from '@/stores/useToast';
 import 'vue-toast-notification/dist/theme-default.css';
 import BackHeader from '@/components/BackHeader.vue';
 import BaseInput from '@/components/BaseInput.vue';
 import BaseSelect from '@/components/BaseSelect.vue';
 import SubmitButton from '@/components/SubmitButton.vue';
+import http from '@/api/httpClient';
 
 const router = useRouter();
-const $toast = useToast();
+const {showToast} = useToast();
 
 const username = ref('');
 const password = ref('');
@@ -118,47 +119,30 @@ const handleUserRegister = async () => {
   if (rewritepassword.value === password.value) {
     passwordMismatch.value = false;
     try {
-      const response = await fetch('https://roombooking-fa3a.onrender.com/api/auth/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          username: username.value,
-          password: password.value,
-          email: email.value,
-          fullname: fullname.value,
-          phoneNumber: phoneNumber.value,
-          gender: gender.value,
-          birthday: birthdate.value
-        })
+      const response = await http.post(Endpoint.register, {
+        username: username.value,
+        password: password.value,
+        email: email.value,
+        fullname: fullname.value,
+        phoneNumber: phoneNumber.value,
+        gender: gender.value,
+        birthdate: birthdate.value
       });
 
-      const results = await response.text();
-
-      if (response.status !== 201) {
-        $toast.open({
-          message: results,
-          type: 'error',
-          duration: 5000,
-          dismissible: true,
-          position: 'top'
-        });
-      } else {
-        $toast.open({
-          message: results,
-          type: 'success',
-          duration: 5000,
-          dismissible: true,
-          position: 'top-right'
-        });
+      if (response.succeeded) {
+        showToast.success('Đăng ký thành công! Vui lòng đăng nhập.', 'success');
         router.push('/login');
+      } else {
+        const errorMessage = response.errors.join(', ');
+        showToast.error(`Đăng ký thất bại: ${errorMessage}`, 'error');
       }
     } catch (error) {
       console.error('Lỗi trong quá trình xử lý dữ liệu', error);
+      showToast.error('Có lỗi xảy ra khi đăng ký. Vui lòng thử lại sau.', 'error');
     }
   } else {
     passwordMismatch.value = true;
+    showToast.error('Mật khẩu không khớp. Vui lòng kiểm tra lại.', 'error');
   }
 };
 </script>

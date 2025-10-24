@@ -388,34 +388,27 @@ const saveProfile = async () => {
         }
       });
 
-      if (uploadResponse.success) {
-        user.avatar = uploadResponse.data[0];
+      if (uploadResponse.succeeded) {
+        user.avatar = uploadResponse.result[0];
       } else {
-        alert('Có lỗi xảy ra khi tải lên ảnh.');
+        alert('Có lỗi xảy ra khi tải lên ảnh: ' + uploadResponse.errors.join(', '));
         return;
       }
     }
 
-    const profileResponse = await fetch(`https://roombooking-fa3a.onrender.com/api/users/${user.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('jwt')}`
-      },
-      body: JSON.stringify(user)
-    });
+    const profileResponse = await proxy.$http.put(Endpoint.updateUser(user.id), user);
 
-    if (!profileResponse.ok) {
-      throw new Error('Failed to update profile');
+    if (!profileResponse.succeeded) {
+      throw new Error(profileResponse.errors.join(', '));
     }
 
     isEditing.value = false;
     alert('Thông tin cá nhân đã được cập nhật!');
-    userStore.updateUser(user);
+    userStore.updateUser(profileResponse.result);
     selectedAvatar.value = null;
   } catch (error) {
     console.error('Lỗi trong quá trình xử lý dữ liệu', error);
-    alert('Có lỗi xảy ra khi cập nhật thông tin.');
+    alert('Có lỗi xảy ra khi cập nhật thông tin: ' + error.message);
   }
 };
 
@@ -431,8 +424,8 @@ const changePassword = async () => {
       newPassword: passwordChange.newPassword
     });
 
-    if (!response.success) {
-      throw new Error(response.message || 'Đã xảy ra lỗi khi thay đổi mật khẩu.');
+    if (!response.succeeded) {
+      throw new Error(response.errors.join(', '));
     }
 
     passwordChangeError.value = '';

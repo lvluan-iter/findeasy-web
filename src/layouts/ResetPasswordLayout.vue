@@ -57,14 +57,15 @@ const handleResetPasswordSubmit = async () => {
       token: token.value
     });
 
-    if (!response.success) {
-      window.alert('Error resetting password. Please try again.');
+    if (!response.succeeded) {
+      window.alert('Error resetting password: ' + response.errors.join(', '));
     } else {
       window.alert('Password reset successful! You can now log in with your new password.');
       router.push('/login');
     }
   } catch (error) {
-    console.log('Error processing data', error);
+    console.error('Error processing data:', error);
+    window.alert('An unexpected error occurred. Please try again.');
   }
 };
 </script>

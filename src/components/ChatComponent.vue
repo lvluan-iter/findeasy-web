@@ -1,5 +1,5 @@
 <template>
-  <div 
+  <div
     class="fixed bottom-10 right-10 z-10 w-full sm:w-96 h-[545px] max-h-[calc(100vh-5rem)] max-w-[calc(100vw-2rem)] bg-white rounded-lg shadow-2xl flex flex-col overflow-hidden transition-all duration-300 ease-in-out"
     @focus="onChatWindowFocus"
     @blur="onChatWindowBlur"
@@ -11,7 +11,7 @@
           :src="recipientAvatar"
           alt="Avatar"
           class="w-8 h-8 sm:w-10 sm:h-10 rounded-full mr-2 sm:mr-3 border-2 border-white"
-        >
+        />
         <div>
           <h2 class="text-base sm:text-lg font-semibold">
             {{ recipientName }}
@@ -19,32 +19,25 @@
           <span class="text-xs sm:text-sm text-blue-100">{{ onlineStatus }}</span>
         </div>
       </div>
-      <button
-        class="text-white hover:text-blue-200 transition duration-200"
-        @click="closeChat"
-      >
+      <button class="text-white hover:text-blue-200 transition duration-200" @click="closeChat">
         <i class="fas fa-times" />
       </button>
     </div>
-    
+
     <!-- Messages area -->
-    <div
-      ref="messagesContainer"
-      class="flex-grow overflow-y-auto p-3 sm:p-4 space-y-3 sm:space-y-4 bg-gray-50"
-    >
-      <div 
-        v-for="message in messages" 
-        :key="message.id" 
+    <div ref="messagesContainer" class="flex-grow overflow-y-auto p-3 sm:p-4 space-y-3 sm:space-y-4 bg-gray-50">
+      <div
+        v-for="message in messages"
+        :key="message.id"
         :class="['flex', message.senderId === senderId ? 'justify-end' : 'justify-start']"
       >
         <div
-          :class="['max-w-[75%] rounded-lg p-2 sm:p-3 shadow', 
-                   message.senderId === senderId ? 'bg-blue-500 text-white rounded-br-none' : 'bg-white rounded-bl-none']"
+          :class="[
+            'max-w-[75%] rounded-lg p-2 sm:p-3 shadow',
+            message.senderId === senderId ? 'bg-blue-500 text-white rounded-br-none' : 'bg-white rounded-bl-none'
+          ]"
         >
-          <p
-            v-if="message.senderId !== senderId"
-            class="text-xs font-semibold mb-1"
-          >
+          <p v-if="message.senderId !== senderId" class="text-xs font-semibold mb-1">
             {{ getSenderName(message.senderId) }}
           </p>
           <p class="text-sm">
@@ -55,14 +48,11 @@
           </p>
         </div>
       </div>
-      <div
-        v-if="isLoading"
-        class="flex justify-center items-center my-2"
-      >
+      <div v-if="isLoading" class="flex justify-center items-center my-2">
         <div class="loader" />
       </div>
     </div>
-    
+
     <!-- Improved input area with emote picker -->
     <div class="p-3 sm:p-4 bg-white border-t relative">
       <div class="flex items-center bg-gray-100 rounded-full overflow-hidden">
@@ -78,20 +68,20 @@
         >
           <i class="fas fa-paperclip" />
         </button>
-        <input 
-          v-model="newMessage" 
-          placeholder="Nhập tin nhắn..." 
-          class="flex-grow p-2 bg-transparent focus:outline-none text-sm sm:text-base" 
+        <input
+          v-model="newMessage"
+          placeholder="Nhập tin nhắn..."
+          class="flex-grow p-2 bg-transparent focus:outline-none text-sm sm:text-base"
           @keyup.enter="sendMessage"
-        >
-        <button 
+        />
+        <button
           class="bg-blue-500 text-white rounded-full p-2 hover:bg-blue-600 transition duration-200 mr-1"
           @click="sendMessage"
         >
           <i class="fas fa-paper-plane" />
         </button>
       </div>
-      
+
       <!-- Messenger-like Emote Picker -->
       <transition name="emote-picker">
         <div
@@ -99,8 +89,8 @@
           class="emote-picker absolute bottom-full left-0 mb-2 p-2 bg-white rounded-lg shadow-lg w-full max-h-48 sm:max-h-64 overflow-y-auto"
         >
           <div class="grid grid-cols-6 sm:grid-cols-8 gap-2">
-            <button 
-              v-for="emote in emotes" 
+            <button
+              v-for="emote in emotes"
               :key="emote"
               class="text-xl sm:text-2xl hover:bg-gray-100 rounded p-1 transition duration-200"
               @click="addEmote(emote)"
@@ -115,12 +105,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick, onUnmounted, getCurrentInstance } from 'vue'
-import { format, parseISO } from 'date-fns'
-import { webSocketService } from '@/api/websocketClient'
-import { Endpoint } from '@/constants/Endpoint'
+import {ref, onMounted, nextTick, onUnmounted, getCurrentInstance} from 'vue';
+import {format, parseISO} from 'date-fns';
+import {webSocketService} from '@/api/websocketClient';
+import {Endpoint} from '@/constants/Endpoint';
 
-const { proxy } = getCurrentInstance()
+const {proxy} = getCurrentInstance();
 
 const props = defineProps({
   senderId: {
@@ -131,94 +121,238 @@ const props = defineProps({
     type: [String, Number],
     required: true
   }
-})
+});
 
-const emit = defineEmits(['close'])
+const emit = defineEmits(['close']);
 
-const messages = ref([])
-const newMessage = ref('')
-const conversationId = ref(null)
-const chatWindowFocused = ref(false)
-const isLoading = ref(false)
-const messagesContainer = ref(null)
+const messages = ref([]);
+const newMessage = ref('');
+const conversationId = ref(null);
+const chatWindowFocused = ref(false);
+const isLoading = ref(false);
+const messagesContainer = ref(null);
 
-const recipientName = ref('')
-const recipientAvatar = ref('')
-const onlineStatus = ref('')
+const recipientName = ref('');
+const recipientAvatar = ref('');
+const onlineStatus = ref('');
 
-const showEmotePicker = ref(false)
+const showEmotePicker = ref(false);
 const emotes = [
-  '😀', '😃', '😄', '😁', '😆', '😅', '🤣', '😂', '🙂', '🙃', '😉', '😊',
-  '😇', '🥰', '😍', '🤩', '😘', '😗', '☺️', '😚', '😙', '🥲', '😋', '😛',
-  '😜', '🤪', '😝', '🤑', '🤗', '🤭', '🤫', '🤔', '🤐', '🤨', '😐', '😑',
-  '😶', '😶‍🌫️', '😏', '😒', '🙄', '😬', '😮‍💨', '🤥', '😌', '😔', '😪', '🤤',
-  '😴', '😷', '🤒', '🤕', '🤢', '🤮', '🤧', '🥵', '🥶', '🥴', '😵', '😵‍💫',
-  '🤯', '🤠', '🥳', '🥸', '😎', '🤓', '🧐', '😕', '😟', '🙁', '☹️', '😮',
-  '😯', '😲', '😳', '🥺', '😦', '😧', '😨', '😰', '😥', '😢', '😭', '😱',
-  '😖', '😣', '😞', '😓', '😩', '😫', '🥱', '😤', '😡', '😠', '🤬', '😈',
-  '👿', '💀', '☠️', '💩', '🤡', '👹', '👺', '👻', '👽', '👾', '🤖', '😺',
-  '😸', '😹', '😻', '😼', '😽', '🙀', '😿', '😾', '🙈', '🙉', '🙊', '💋',
-  '💌', '💘', '💝', '💖', '💗', '💓', '💞', '💕', '💟', '❣️', '💔', '❤️‍🔥',
-  '❤️‍🩹', '❤️', '🧡', '💛', '💚', '💙', '💜', '🤎', '🖤', '🤍', '💯', '💢',
-  '💥', '💫', '💦', '💨', '🕳️', '💣', '💬', '👁️‍🗨️', '🗨️', '🗯️', '💭', '💤'
-]
+  '😀',
+  '😃',
+  '😄',
+  '😁',
+  '😆',
+  '😅',
+  '🤣',
+  '😂',
+  '🙂',
+  '🙃',
+  '😉',
+  '😊',
+  '😇',
+  '🥰',
+  '😍',
+  '🤩',
+  '😘',
+  '😗',
+  '☺️',
+  '😚',
+  '😙',
+  '🥲',
+  '😋',
+  '😛',
+  '😜',
+  '🤪',
+  '😝',
+  '🤑',
+  '🤗',
+  '🤭',
+  '🤫',
+  '🤔',
+  '🤐',
+  '🤨',
+  '😐',
+  '😑',
+  '😶',
+  '😶‍🌫️',
+  '😏',
+  '😒',
+  '🙄',
+  '😬',
+  '😮‍💨',
+  '🤥',
+  '😌',
+  '😔',
+  '😪',
+  '🤤',
+  '😴',
+  '😷',
+  '🤒',
+  '🤕',
+  '🤢',
+  '🤮',
+  '🤧',
+  '🥵',
+  '🥶',
+  '🥴',
+  '😵',
+  '😵‍💫',
+  '🤯',
+  '🤠',
+  '🥳',
+  '🥸',
+  '😎',
+  '🤓',
+  '🧐',
+  '😕',
+  '😟',
+  '🙁',
+  '☹️',
+  '😮',
+  '😯',
+  '😲',
+  '😳',
+  '🥺',
+  '😦',
+  '😧',
+  '😨',
+  '😰',
+  '😥',
+  '😢',
+  '😭',
+  '😱',
+  '😖',
+  '😣',
+  '😞',
+  '😓',
+  '😩',
+  '😫',
+  '🥱',
+  '😤',
+  '😡',
+  '😠',
+  '🤬',
+  '😈',
+  '👿',
+  '💀',
+  '☠️',
+  '💩',
+  '🤡',
+  '👹',
+  '👺',
+  '👻',
+  '👽',
+  '👾',
+  '🤖',
+  '😺',
+  '😸',
+  '😹',
+  '😻',
+  '😼',
+  '😽',
+  '🙀',
+  '😿',
+  '😾',
+  '🙈',
+  '🙉',
+  '🙊',
+  '💋',
+  '💌',
+  '💘',
+  '💝',
+  '💖',
+  '💗',
+  '💓',
+  '💞',
+  '💕',
+  '💟',
+  '❣️',
+  '💔',
+  '❤️‍🔥',
+  '❤️‍🩹',
+  '❤️',
+  '🧡',
+  '💛',
+  '💚',
+  '💙',
+  '💜',
+  '🤎',
+  '🖤',
+  '🤍',
+  '💯',
+  '💢',
+  '💥',
+  '💫',
+  '💦',
+  '💨',
+  '🕳️',
+  '💣',
+  '💬',
+  '👁️‍🗨️',
+  '🗨️',
+  '🗯️',
+  '💭',
+  '💤'
+];
 
 onMounted(() => {
-  loadConversation()
-  subscribeToTopics()
-  updateConversationStatus('READ')
-  fetchRecipientUser()
-  document.addEventListener('click', closeEmotePickerOutside)
-})
+  loadConversation();
+  subscribeToTopics();
+  updateConversationStatus('READ');
+  fetchRecipientUser();
+  document.addEventListener('click', closeEmotePickerOutside);
+});
 
 function subscribeToTopics() {
-  webSocketService.addSubscription(`/user/${props.senderId}/topic/messages`, handleNewMessage)
-  webSocketService.addSubscription(`/user/${props.senderId}/topic/message-status`, handleMessageStatusUpdate)
-  webSocketService.addSubscription('/topic/user-status', handleUserStatus)
+  webSocketService.addSubscription(`/user/${props.senderId}/topic/messages`, handleNewMessage);
+  webSocketService.addSubscription(`/user/${props.senderId}/topic/message-status`, handleMessageStatusUpdate);
+  webSocketService.addSubscription('/topic/user-status', handleUserStatus);
 }
 
 function handleNewMessage(message) {
-  const receivedMessage = message
-  const existingMessageIndex = messages.value.findIndex(m => m.id === receivedMessage.id)
-  
+  const receivedMessage = message;
+  const existingMessageIndex = messages.value.findIndex((m) => m.id === receivedMessage.id);
+
   if (existingMessageIndex !== -1) {
     messages.value[existingMessageIndex] = {
       ...receivedMessage,
       createdAt: format(parseISO(receivedMessage.createdAt), 'HH:mm')
-    }
+    };
   } else {
     messages.value.push({
       ...receivedMessage,
       createdAt: format(parseISO(receivedMessage.createdAt), 'HH:mm')
-    })
+    });
   }
-  
-  updateMessageStatus(receivedMessage.id, 'RECEIVED')
-  scrollToBottom()
+
+  updateMessageStatus(receivedMessage.id, 'RECEIVED');
+  scrollToBottom();
 }
 
 function handleMessageStatusUpdate(statusUpdate) {
-  const updatedMessage = JSON.parse(statusUpdate.body)
-  const messageIndex = messages.value.findIndex(m => m.id === updatedMessage.id)
+  const updatedMessage = JSON.parse(statusUpdate.body);
+  const messageIndex = messages.value.findIndex((m) => m.id === updatedMessage.id);
   if (messageIndex !== -1) {
     messages.value[messageIndex] = {
       ...updatedMessage,
       createdAt: format(parseISO(updatedMessage.createdAt), 'HH:mm')
-    }
+    };
   }
 }
 
 function handleUserStatus(message) {
-  const statusUpdate = message
+  const statusUpdate = message;
   if (statusUpdate.userId === props.recipientId) {
-    onlineStatus.value = statusUpdate.status.status
+    const status = statusUpdate.status?.status ?? statusUpdate.status;
+    onlineStatus.value = status || 'offline';
   }
 }
 
 function sendMessage() {
   if (newMessage.value.trim() !== '') {
-    isLoading.value = true
-    conversationId.value = generateConversationId(props.senderId, props.recipientId)
+    isLoading.value = true;
+    conversationId.value = generateConversationId(props.senderId, props.recipientId);
     const message = {
       id: Date.now(),
       senderId: props.senderId,
@@ -227,27 +361,27 @@ function sendMessage() {
       content: newMessage.value,
       createdAt: new Date().toISOString(),
       status: 'SENT'
-    }
-    
-    webSocketService.sendMessage(message.conversationId, message.content, message.recipientId)
-    
+    };
+
+    webSocketService.sendMessage(message.conversationId, message.content, message.recipientId);
+
     messages.value.push({
       ...message,
       createdAt: format(parseISO(message.createdAt), 'HH:mm')
-    })
-    
-    newMessage.value = ''
-    showEmotePicker.value = false
-    
+    });
+
+    newMessage.value = '';
+    showEmotePicker.value = false;
+
     setTimeout(() => {
-      isLoading.value = false
-      scrollToBottom()
-    }, 1000)
+      isLoading.value = false;
+      scrollToBottom();
+    }, 1000);
   }
 }
 
 function updateMessageStatus(messageId, status) {
-  webSocketService.updateMessageStatus(messageId, status)
+  webSocketService.updateMessageStatus(messageId, status);
 }
 
 function updateConversationStatus(status) {
@@ -255,96 +389,104 @@ function updateConversationStatus(status) {
   webSocketService.updateConversationStatus(conversationId.value, props.senderId, status);
 }
 
-function loadConversation() {
-  conversationId.value = generateConversationId(props.senderId, props.recipientId)
-  fetch(`https://roombooking-fa3a.onrender.com${Endpoint.getConversation(conversationId.value)}`)
-    .then(response => response.json())
-    .then(data => {
-      messages.value = data.map(msg => ({
+async function loadConversation() {
+  conversationId.value = generateConversationId(props.senderId, props.recipientId);
+  try {
+    const response = await proxy.$http.get(Endpoint.getConversation(conversationId.value));
+    if (response.succeeded) {
+      messages.value = response.result.map((msg) => ({
         ...msg,
         createdAt: format(parseISO(msg.createdAt), 'HH:mm')
-      }))
-      scrollToBottom()
-    })
-    .catch(error => console.error('Error loading conversation:', error))
+      }));
+      scrollToBottom();
+    } else {
+      throw new Error(response.errors ? response.errors.join(', ') : 'Failed to load conversation');
+    }
+  } catch (error) {
+    console.error('Error loading conversation:', error);
+  }
 }
 
 async function fetchRecipientUser() {
   try {
-    const response = await proxy.$http.get(Endpoint.getUserById(props.recipientId))
-    if (response.success) {
-      recipientName.value = response.data.fullname
-      recipientAvatar.value = response.data.avatar
+    const response = await proxy.$http.get(Endpoint.getUserById(props.recipientId));
+    if (response.succeeded) {
+      const userData = response.result;
+      recipientName.value = userData.fullname;
+      recipientAvatar.value = userData.avatar;
+      onlineStatus.value = userData.status || 'offline';
+    } else {
+      throw new Error(response.errors ? response.errors.join(', ') : 'Failed to fetch recipient user');
     }
   } catch (error) {
-    console.error('Error fetching user contact:', error)
+    console.error('Error fetching user contact:', error);
   }
 }
 
 function generateConversationId(userId1, userId2) {
-  return `${Math.min(userId1, userId2)}_${Math.max(userId1, userId2)}`
+  return `${Math.min(userId1, userId2)}_${Math.max(userId1, userId2)}`;
 }
 
 function getSenderName(senderId) {
-  return senderId === props.senderId ? 'Bạn' : 'Người nhận'
+  return senderId === props.senderId ? 'Bạn' : 'Người nhận';
 }
 
 function formatTime(timestamp) {
-  if (!timestamp) return ''
-  
+  if (!timestamp) return '';
+
   try {
-    const date = parseISO(timestamp)
-    return format(date, 'HH:mm')
+    const date = parseISO(timestamp);
+    return format(date, 'HH:mm');
   } catch (error) {
-    console.error('Error formatting date:', error)
-    return 'Invalid date'
+    console.error('Error formatting date:', error);
+    return 'Invalid date';
   }
 }
 
 function scrollToBottom() {
   nextTick(() => {
     if (messagesContainer.value) {
-      messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight
+      messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight;
     }
-  })
+  });
 }
 
 function closeChat() {
-  emit('close')
+  emit('close');
 }
 
 function onChatWindowFocus() {
-  chatWindowFocused.value = true
-  updateConversationStatus('READ')
+  chatWindowFocused.value = true;
+  updateConversationStatus('READ');
 }
 
 function onChatWindowBlur() {
-  chatWindowFocused.value = false
+  chatWindowFocused.value = false;
 }
 
 function toggleEmotePicker() {
-  showEmotePicker.value = !showEmotePicker.value
+  showEmotePicker.value = !showEmotePicker.value;
 }
 
 function addEmote(emote) {
-  newMessage.value += emote
+  newMessage.value += emote;
 }
 
 function openFileUpload() {
-  console.log('Open file upload')
+  console.log('Open file upload');
 }
 
 function closeEmotePickerOutside(event) {
-  const emotePickerButton = document.querySelector('.emote-picker-button')
-  const emotePicker = document.querySelector('.emote-picker')
+  const emotePickerButton = document.querySelector('.emote-picker-button');
+  const emotePicker = document.querySelector('.emote-picker');
   if (showEmotePicker.value && !emotePickerButton.contains(event.target) && !emotePicker.contains(event.target)) {
-    showEmotePicker.value = false
+    showEmotePicker.value = false;
   }
 }
 
 onUnmounted(() => {
-  document.removeEventListener('click', closeEmotePickerOutside)
-})
+  document.removeEventListener('click', closeEmotePickerOutside);
+});
 </script>
 
 <style scoped>
@@ -372,14 +514,24 @@ onUnmounted(() => {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* Thêm hiệu ứng xuất hiện cho tin nhắn mới */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .messages > div:last-child {

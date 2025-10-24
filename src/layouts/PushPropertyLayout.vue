@@ -376,23 +376,27 @@ const submitProperty = async () => {
         'Content-Type': 'multipart/form-data'
       }
     });
-    if (!imageResponse.success) throw new Error('Failed to upload images');
-    property.imageUrls = imageResponse.data;
+
+    if (!imageResponse.succeeded) {
+      throw new Error(imageResponse.errors ? imageResponse.errors.join(', ') : 'Failed to upload images');
+    }
+    property.imageUrls = imageResponse.result;
 
     property.isPaid = selectedPlan.value === 'premium';
 
     const propertyResponse = await proxy.$http.post(Endpoint.createProperty, property);
 
-    if (propertyResponse.success) {
-      if (propertyResponse.data.paymentUrl) {
-        window.location.href = propertyResponse.data.paymentUrl;
-      } else {
-        resetForm();
-        toast.success('Property added successfully!');
-        router.push('/');
-      }
+    if (!propertyResponse.succeeded) {
+      throw new Error(propertyResponse.errors ? propertyResponse.errors.join(', ') : 'Failed to create property');
+    }
+
+    const result = propertyResponse.result;
+    if (result && result.paymentUrl) {
+      window.location.href = result.paymentUrl;
     } else {
-      throw new Error('Failed to create property');
+      resetForm();
+      toast.success('Property added successfully!');
+      router.push('/');
     }
   } catch (error) {
     console.error('Error:', error);
