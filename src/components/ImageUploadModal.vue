@@ -1,59 +1,32 @@
 <template>
-  <div
-    v-if="isVisible"
-    class="modal"
-  >
+  <div v-if="isVisible" class="modal">
     <div class="modal-content">
-      <span
-        class="close"
-        @click="close"
-      >&times;</span>
+      <span class="close" @click="close">&times;</span>
       <h2>Thay đổi ảnh</h2>
       <div class="image-grid">
-        <div
-          v-for="(image, index) in images"
-          :key="index"
-          class="image-item"
-        >
-          <img
-            :src="image.url"
-            alt="Property Image"
-          >
-          <button
-            class="remove"
-            @click="removeImage(index)"
-          >
-            x
-          </button>
+        <div v-for="(image, index) in images" :key="index" class="image-item">
+          <img :src="image.url" alt="Property Image" />
+          <button class="remove" @click="removeImage(index)">x</button>
         </div>
-        <div
-          class="image-item add-new"
-          @click="triggerFileInput"
-        >
+        <div class="image-item add-new" @click="triggerFileInput">
           <input
             ref="fileInput"
             type="file"
             accept="image/*"
             multiple
-            style="display: none;"
+            style="display: none"
             @change="handleFileChange"
-          >
-          <button class="add">
-            +
-          </button>
+          />
+          <button class="add">+</button>
         </div>
       </div>
-      <button
-        class="save"
-        @click="save"
-      >
-        Xong
-      </button>
+      <button class="save" @click="save">Xong</button>
     </div>
   </div>
 </template>
 
 <script>
+import {Endpoint} from '@/constants/Endpoint';
 export default {
   props: ['isVisible', 'initialImages'],
   data() {
@@ -68,11 +41,11 @@ export default {
     },
     handleFileChange(event) {
       const files = Array.from(event.target.files);
-      files.forEach(file => {
+      files.forEach((file) => {
         this.newImages.push(file);
         const reader = new FileReader();
         reader.onload = (e) => {
-          this.images.push({ url: e.target.result, file });
+          this.images.push({url: e.target.result, file});
         };
         reader.readAsDataURL(file);
       });
@@ -84,27 +57,41 @@ export default {
       this.images.splice(index, 1);
     },
     async save() {
+      if (this.newImages.length === 0) {
+        const finalImages = this.images.map((image) => image.url);
+        this.$emit('save', finalImages);
+        this.close();
+        return;
+      }
+
       const formData = new FormData();
-      this.newImages.forEach(file => {
+      this.newImages.forEach((file) => {
         formData.append('images', file);
       });
-      
+
       try {
-        const response = await fetch(`${process.env.VUE_APP_API_BASE_URL || 'https://roombooking-fa3a.onrender.com'}/api/upload-images`, {
-          method: 'POST',
-          body: formData
+        const response = await this.$http.post(Endpoint.uploadImages, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
         });
-        
-        if (!response.ok) {
-          throw new Error('Failed to upload images');
+
+        if (!response || !response.succeeded) {
+          const err = response && response.errors ? response.errors.join(', ') : 'Failed to upload images';
+          console.error('Upload error:', response);
+          window.alert(err);
+          return;
         }
 
-        const uploadedUrls = await response.json();
-        const finalImages = this.images.map(image => image.url).concat(uploadedUrls);
+        const uploadedUrls = response.result || [];
+        const existingUrls = this.images.map((image) => image.url);
+        const finalImages = existingUrls.concat(uploadedUrls);
+
         this.$emit('save', finalImages);
         this.close();
       } catch (error) {
-        console.error(error);
+        console.error('Error uploading images:', error);
+        window.alert('An unexpected error occurred while uploading images. Please try again.');
       }
     }
   }

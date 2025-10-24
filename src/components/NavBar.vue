@@ -3,14 +3,11 @@
     <nav
       :class="[
         'flex justify-between items-center bg-white/60 backdrop-blur-lg text-[#2c3038] h-[80px] w-full rounded-lg shadow-md',
-        { 'fixed top-0 left-0 w-full shadow-md px-[120px] z-10 rounded-none': isSticky }
+        {'fixed top-0 left-0 w-full shadow-md px-[120px] z-10 rounded-none': isSticky}
       ]"
     >
       <div class="flex items-center">
-        <div
-          v-if="isSticky"
-          class="flex items-center text-3xl"
-        >
+        <div v-if="isSticky" class="flex items-center text-3xl">
           <i class="fa-solid fa-house-circle-check text-[#0a73c0] mr-1.5" />
           <h1>FINDEASY</h1>
           <div class="flex items-center w-[1px] h-[40px] bg-black mx-[20px]" />
@@ -55,20 +52,16 @@
           </div>
           <i class="fa-solid fa-chevron-down text-sm transition-transform duration-300 group-hover:rotate-180" />
         </button>
-        <ProfileSettingsDropdown
-          v-if="userStore.isAuthenticated"
-          ref="userdropdown"
-          :user="userStore.user"
-        />
+        <ProfileSettingsDropdown v-if="userStore.isAuthenticated" ref="userdropdown" :user="userStore.user" />
       </div>
     </nav>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
-import { useRouter } from 'vue-router';
-import { useUserStore } from '../stores/userStore';
+import {ref, onMounted, onUnmounted} from 'vue';
+import {useRouter} from 'vue-router';
+import {useUserStore} from '../stores/userStore';
 import ProfileSettingsDropdown from './ProfileSettingsDropdown.vue';
 
 const router = useRouter();
@@ -77,10 +70,10 @@ const isSticky = ref(false);
 const userdropdown = ref(null);
 
 const navItems = [
-  { label: 'Trang chủ', action: linkToHome },
-  { label: 'Tin tức', action: () => {} },
-  { label: 'Giới thiệu', action: () => {} },
-  { label: 'Liên hệ', action: () => {} }
+  {label: 'Trang chủ', action: linkToHome},
+  {label: 'Tin tức', action: () => {}},
+  {label: 'Giới thiệu', action: () => {}},
+  {label: 'Liên hệ', action: () => {}}
 ];
 
 function linkToHome() {
@@ -131,7 +124,7 @@ onUnmounted(() => {
 
 <style scoped>
 .nav-item::after {
-  content: "";
+  content: '';
   position: absolute;
   bottom: -5px;
   left: 0;

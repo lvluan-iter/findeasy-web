@@ -1,13 +1,7 @@
 <template>
   <Teleport to="body">
-    <div
-      v-if="isShow"
-      class="fixed inset-0 z-50 flex items-center justify-center p-4"
-    >
-      <div 
-        class="fixed inset-0 bg-black/50" 
-        @click="close" 
-      />
+    <div v-if="isShow" class="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div class="fixed inset-0 bg-black/50" @click="close" />
 
       <div class="relative bg-white rounded-lg shadow-lg w-full max-w-md">
         <div class="p-6 space-y-4">
@@ -18,10 +12,7 @@
             {{ message }}
           </p>
           <div class="flex justify-end gap-3">
-            <button
-              class="px-4 py-2 text-sm text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
-              @click="close"
-            >
+            <button class="px-4 py-2 text-sm text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200" @click="close">
               {{ cancelText }}
             </button>
             <button
@@ -39,10 +30,10 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import {ref} from 'vue';
 
-const isShow = ref(false)
-const resolvePromise = ref(null)
+const isShow = ref(false);
+const resolvePromise = ref(null);
 
 defineProps({
   title: String,
@@ -59,24 +50,24 @@ defineProps({
     type: String,
     default: 'primary'
   }
-})
+});
 
 const confirm = () => {
-  isShow.value = false
-  resolvePromise.value?.(true)
-}
+  isShow.value = false;
+  resolvePromise.value?.(true);
+};
 
 const close = () => {
-  isShow.value = false
-  resolvePromise.value?.(false)
-}
+  isShow.value = false;
+  resolvePromise.value?.(false);
+};
 
 const showModal = () => {
-  isShow.value = true
-  return new Promise(resolve => {
-    resolvePromise.value = resolve
-  })
-}
+  isShow.value = true;
+  return new Promise((resolve) => {
+    resolvePromise.value = resolve;
+  });
+};
 
-defineExpose({ showModal })
+defineExpose({showModal});
 </script>

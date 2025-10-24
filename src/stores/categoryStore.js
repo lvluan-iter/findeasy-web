@@ -1,4 +1,6 @@
-import { defineStore } from 'pinia'
+import {defineStore} from 'pinia';
+import http from '@/api/httpClient';
+import {Endpoint} from '@/constants/Endpoint';
 
 export const useCategoryStore = defineStore('category', {
   state: () => ({
@@ -6,33 +8,32 @@ export const useCategoryStore = defineStore('category', {
     isLoading: false,
     error: null
   }),
-  
+
   getters: {
     getCategoryOptions: (state) => {
       return [
-        { value: -1, label: 'Select Category' },
-        ...state.categories.map(category => ({
+        {value: -1, label: 'Select Category'},
+        ...state.categories.map((category) => ({
           value: category.id,
           label: category.categoryName
         }))
-      ]
+      ];
     }
   },
-  
+
   actions: {
     async fetchCategories() {
-      this.isLoading = true
-      this.error = null
+      this.isLoading = true;
+      this.error = null;
       try {
-        const response = await fetch('https://roombooking-fa3a.onrender.com/api/categories/')
-        if (!response.ok) throw new Error('Failed to fetch categories')
-        this.categories = await response.json()
+        const response = await http.get(Endpoint.getCategories);
+        this.categories = response.result;
       } catch (error) {
-        console.error('Error fetching categories:', error)
-        this.error = 'Failed to load categories'
+        console.error('Error fetching categories:', error);
+        this.error = 'Failed to load categories';
       } finally {
-        this.isLoading = false
+        this.isLoading = false;
       }
     }
   }
-})
+});

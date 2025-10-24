@@ -230,10 +230,10 @@ const fetchMyProperties = async () => {
   isLoading.value = true;
   try {
     const response = await proxy.$http.get(Endpoint.getPropertiesByUser(user.value.id));
-    if (response.success) {
-      properties.value = response.data;
+    if (response.succeeded) {
+      properties.value = response.result;
     } else {
-      throw new Error('Failed to fetch properties');
+      throw new Error(response.errors ? response.errors.join(', ') : 'Failed to fetch properties');
     }
   } catch (error) {
     console.error('Error fetching properties:', error);
@@ -279,12 +279,17 @@ const toggleVisibility = async (property) => {
     try {
       const response = await proxy.$http.patch(Endpoint.togglePropertyVisibility(property.id));
 
-      if (response.success) {
-        window.location.reload();
+      if (response.succeeded) {
+        const updated = response.result;
+        if (updated && typeof updated.available !== 'undefined') {
+          property.available = updated.available;
+        } else {
+          property.available = !property.available;
+        }
         const message = property.available ? 'Tin đăng đã được hiển thị!' : 'Tin đăng đã bị ẩn!';
         toast.success(message);
       } else {
-        toast.error('Đã có lỗi xảy ra. Vui lòng thử lại.');
+        throw new Error(response.errors ? response.errors.join(', ') : 'Failed to toggle visibility');
       }
     } catch (error) {
       console.error('Error:', error);
@@ -306,12 +311,15 @@ const confirmExtend = async () => {
     isLoading.value = true;
     const response = await proxy.$http.post(Endpoint.extendProperty(selectedProperty.value.id));
 
-    if (!response.success) {
-      throw new Error('Failed to extend property');
+    if (!response.succeeded) {
+      throw new Error(response.errors ? response.errors.join(', ') : 'Failed to extend property');
     }
 
-    if (response.data.paymentUrl) {
-      window.location.href = response.data.paymentUrl;
+    const result = response.result;
+    if (result && result.paymentUrl) {
+      window.location.href = result.paymentUrl;
+    } else {
+      toast.success('Gia hạn tin đăng thành công.');
     }
   } catch (error) {
     console.error('Error extending property:', error);
@@ -331,11 +339,11 @@ const handleDelete = async (property) => {
     try {
       const response = await proxy.$http.delete(Endpoint.deleteProperty(property.id));
 
-      if (response.success) {
+      if (response.succeeded) {
         properties.value = properties.value.filter((p) => p.id !== property.id);
         toast.success('Tin đăng đã được xóa thành công!');
       } else {
-        throw new Error('Failed to delete property');
+        throw new Error(response.errors ? response.errors.join(', ') : 'Failed to delete property');
       }
     } catch (error) {
       console.error('Error deleting property:', error);

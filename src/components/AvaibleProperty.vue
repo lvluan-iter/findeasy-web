@@ -1,16 +1,10 @@
 <template>
   <div class="container mx-auto px-4 py-6">
-    <div
-      v-if="loading"
-      class="flex justify-center items-center py-8"
-    >
+    <div v-if="loading" class="flex justify-center items-center py-8">
       <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600" />
     </div>
-    
-    <div
-      v-else
-      class="space-y-4"
-    >
+
+    <div v-else class="space-y-4">
       <div
         v-for="property in properties"
         :key="property.id"
@@ -18,16 +12,12 @@
       >
         <div class="flex flex-col md:flex-row">
           <div class="md:w-2/5 relative">
-            <img
-              class="w-full h-64 md:h-full object-cover"
-              :src="property.imageUrls[0]"
-              :alt="property.title"
-            >
+            <img class="w-full h-64 md:h-full object-cover" :src="property.imageUrls[0]" :alt="property.title" />
             <div class="absolute top-2 left-2 bg-blue-600 text-white px-2 py-1 text-xs uppercase">
               {{ property.type }}
             </div>
           </div>
-          
+
           <div class="md:w-3/5 p-4 flex flex-col justify-between">
             <div>
               <div class="flex justify-between items-start mb-2">
@@ -35,7 +25,9 @@
                   {{ property.title }}
                 </h3>
                 <div class="text-2xl font-bold text-blue-600">
-                  {{ (property.price / 1000000).toFixed(1) }}M<span class="text-sm text-gray-500 font-normal">/tháng</span>
+                  {{ (property.price / 1000000).toFixed(1) }}M<span class="text-sm text-gray-500 font-normal"
+                    >/tháng</span
+                  >
                 </div>
               </div>
               <div class="flex items-center text-gray-600 mb-2 text-sm">
@@ -60,19 +52,14 @@
                 </div>
               </div>
               <div class="mb-3">
-                <h4 class="text-sm font-semibold text-gray-700 mb-1">
-                  Tính năng nổi bật:
-                </h4>
+                <h4 class="text-sm font-semibold text-gray-700 mb-1">Tính năng nổi bật:</h4>
                 <div class="flex flex-wrap gap-2">
                   <span
-                    v-for="amenity in property.amenities.slice(0,5)"
+                    v-for="amenity in property.amenities.slice(0, 5)"
                     :key="amenity.id"
                     class="bg-blue-50 text-blue-700 text-xs px-3 py-1 rounded-full flex items-center transition duration-300 hover:bg-blue-100"
                   >
-                    <i
-                      :class="amenity.icon"
-                      class="mr-1"
-                    />
+                    <i :class="amenity.icon" class="mr-1" />
                     {{ amenity.name }}
                   </span>
                   <span
@@ -83,33 +70,18 @@
                   </span>
                 </div>
               </div>
-              <div
-                v-if="property.nearbyPlaces && property.nearbyPlaces.length > 0"
-                class="mb-3"
-              >
-                <h4 class="text-sm font-semibold text-gray-700 mb-1">
-                  Khu vực lân cận:
-                </h4>
+              <div v-if="property.nearbyPlaces && property.nearbyPlaces.length > 0" class="mb-3">
+                <h4 class="text-sm font-semibold text-gray-700 mb-1">Khu vực lân cận:</h4>
                 <ul class="text-xs text-gray-600 list-none pl-4">
-                  <li
-                    v-for="place in property.nearbyPlaces"
-                    :key="place.id"
-                  >
+                  <li v-for="place in property.nearbyPlaces" :key="place.id">
                     <i class="fas fa-map-pin text-red-500 mr-2" />
                     {{ place.name }} (cách {{ place.distance }} {{ place.unit }})
                   </li>
                 </ul>
               </div>
-              <div
-                v-else
-                class="mb-3"
-              >
-                <h4 class="text-sm font-semibold text-gray-700 mb-1">
-                  Khu vực lân cận:
-                </h4>
-                <p class="text-xs text-gray-600">
-                  Không có thông tin về các địa điểm lân cận.
-                </p>
+              <div v-else class="mb-3">
+                <h4 class="text-sm font-semibold text-gray-700 mb-1">Khu vực lân cận:</h4>
+                <p class="text-xs text-gray-600">Không có thông tin về các địa điểm lân cận.</p>
               </div>
               <div class="flex items-center mb-3">
                 <div class="flex items-center mr-2">
@@ -120,13 +92,15 @@
             </div>
             <div class="flex justify-between items-center">
               <div class="flex flex-wrap gap-2">
-                <button 
+                <button
                   class="px-4 py-2 min-w-32 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 transition-colors duration-300"
                   @click="linktoDetail(property.id)"
                 >
                   View Details
                 </button>
-                <button class="px-4 py-2 min-w-32 bg-gray-200 text-gray-700 text-sm rounded hover:bg-gray-300 transition-colors duration-300">
+                <button
+                  class="px-4 py-2 min-w-32 bg-gray-200 text-gray-700 text-sm rounded hover:bg-gray-300 transition-colors duration-300"
+                >
                   Contact Agent
                 </button>
               </div>
@@ -144,9 +118,7 @@
           </div>
         </div>
         <div class="bg-gray-100 px-4 py-2 flex justify-between items-center">
-          <div class="text-gray-500 text-xs">
-            Listed on {{ new Date(property.createdAt).toLocaleDateString() }}
-          </div>
+          <div class="text-gray-500 text-xs">Listed on {{ new Date(property.createdAt).toLocaleDateString() }}</div>
           <button
             class="px-4 py-2 bg-green-500 text-white text-sm rounded hover:bg-green-600 transition-colors duration-300 flex items-center"
             @click.stop="toggleCompare(property)"
@@ -163,15 +135,9 @@
         </div>
       </div>
     </div>
-    
-    <div
-      v-if="showPagination"
-      class="mt-6 flex justify-center"
-    >
-      <nav
-        class="inline-flex rounded-md shadow"
-        aria-label="Pagination"
-      >
+
+    <div v-if="showPagination" class="mt-6 flex justify-center">
+      <nav class="inline-flex rounded-md shadow" aria-label="Pagination">
         <button
           :disabled="currentPage === 0"
           class="px-3 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
@@ -205,13 +171,13 @@
 </template>
 
 <script setup>
-import { computed, getCurrentInstance } from 'vue';
-import { useRouter } from 'vue-router';
-import { useUserStore } from '../stores/userStore';
-import { usePropertyStore } from '../stores/propertyStore';
-import { Endpoint } from '@/constants/Endpoint';
+import {computed, getCurrentInstance} from 'vue';
+import {useRouter} from 'vue-router';
+import {useUserStore} from '../stores/userStore';
+import {usePropertyStore} from '../stores/propertyStore';
+import {Endpoint} from '@/constants/Endpoint';
 
-const { proxy } = getCurrentInstance();
+const {proxy} = getCurrentInstance();
 const userStore = useUserStore();
 const propertyStore = usePropertyStore();
 const router = useRouter();
@@ -245,9 +211,8 @@ const displayedPages = computed(() => {
   const range = 2;
   const start = Math.max(1, props.currentPage + 1 - range);
   const end = Math.min(props.totalPages, props.currentPage + 1 + range);
-  return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+  return Array.from({length: end - start + 1}, (_, i) => start + i);
 });
-
 
 const linktoDetail = (id) => {
   router.push(`/propertydetail/${id}`);
@@ -276,29 +241,43 @@ const getIconClass = (action) => {
 const shareProperty = (property) => {
   const shareUrl = `${window.location.origin}/propertydetail/${property.id}`;
   if (navigator.share) {
-    navigator.share({
-      title: property.title,
-      text: property.description,
-      url: shareUrl
-    }).then(() => console.log('Thanks for sharing!')).catch(console.error);
+    navigator
+      .share({
+        title: property.title,
+        text: property.description,
+        url: shareUrl
+      })
+      .then(() => console.log('Thanks for sharing!'))
+      .catch(console.error);
   } else {
-    navigator.clipboard.writeText(shareUrl)
+    navigator.clipboard
+      .writeText(shareUrl)
       .then(() => alert('Link copied to clipboard!'))
-      .catch(err => console.error('Could not copy text: ', err));
+      .catch((err) => console.error('Could not copy text: ', err));
   }
 };
 
 const addToFavorites = async (propertyId) => {
   try {
     const response = await proxy.$http.post(Endpoint.addToFavorites(userStore.user.id, propertyId));
-    
-    const message = response.success ? 'Added to favorites!' :
-      response.status === 409 ? `Error: ${response.message}` :
-        response.status === 404 ? `Resource not found: ${response.message}` :
-          'An error occurred. Please try again later.';
-    alert(message);
+
+    if (response && response.succeeded) {
+      alert('Added to favorites!');
+      return;
+    }
+
+    const apiErrors =
+      response && response.errors
+        ? Array.isArray(response.errors)
+          ? response.errors.join(', ')
+          : String(response.errors)
+        : response && response.result && response.result.message
+          ? response.result.message
+          : 'An error occurred. Please try again later.';
+
+    alert('Error: ' + apiErrors);
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Error adding to favorites:', error);
     alert('An error occurred. Please try again later.');
   }
 };

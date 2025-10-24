@@ -36,10 +36,10 @@ const handleSortChange = async (newSortBy) => {
   if (properties.value.length > 100) {
     try {
       const response = await proxy.$http.post(`${Endpoint.searchProperties}?sort=${newSortBy}`, {});
-      if (response.success) {
-        properties.value = response.data.content;
+      if (response.succeeded) {
+        properties.value = response.result;
       } else {
-        throw new Error('Sort request failed');
+        throw new Error(response.errors.join(', '));
       }
     } catch (error) {
       console.error('Error sorting properties:', error);

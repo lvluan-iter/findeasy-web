@@ -2,35 +2,23 @@
   <div class="bg-white lg:px-[120px] py-5 lg:py-12">
     <div class="flex items-center justify-between">
       <div class="flex items-center">
-        <a
-          class="text-gray-800 hover:text-gray-600 cursor-pointer"
-          @click="$router.push('/')"
-        >
+        <a class="text-gray-800 hover:text-gray-600 cursor-pointer" @click="$router.push('/')">
           <i class="fas fa-home text-xl" />
         </a>
         <span class="mx-4 text-gray-300">|</span>
-        <h1 class="text-xl font-semibold text-gray-800">
-          So sánh bất động sản
-        </h1>
+        <h1 class="text-xl font-semibold text-gray-800">So sánh bất động sản</h1>
       </div>
     </div>
 
-    <hr class="w-full mb-3">
-    
+    <hr class="w-full mb-3" />
+
     <div class="flex items-center space-x-2 mb-2">
-      <span
-        v-for="(property, index) in compareList"
-        :key="property.id"
-        class="font-medium"
-      >
+      <span v-for="(property, index) in compareList" :key="property.id" class="font-medium">
         {{ property.title }}
-        <span
-          v-if="index !== compareList.length - 1"
-          class="text-gray-400"
-        >&</span>
+        <span v-if="index !== compareList.length - 1" class="text-gray-400">&</span>
       </span>
     </div>
-    
+
     <div class="grid grid-cols-3 gap-6">
       <div
         v-for="property in compareList"
@@ -38,11 +26,7 @@
         class="border rounded-lg overflow-hidden relative flex flex-col"
       >
         <div class="relative h-64">
-          <img
-            :src="property.imageUrls[0]"
-            :alt="property.title"
-            class="w-full h-full object-cover"
-          >
+          <img :src="property.imageUrls[0]" :alt="property.title" class="w-full h-full object-cover" />
           <span class="absolute top-2 left-2 bg-white text-black text-xs px-2 py-1 rounded">
             {{ property.type }}
           </span>
@@ -53,7 +37,7 @@
             <i class="fas fa-times text-gray-600 text-xs" />
           </button>
         </div>
-        
+
         <div class="p-4 flex-grow flex flex-col">
           <h2 class="text-base font-semibold mb-2 line-clamp-2 h-12">
             {{ property.title }}
@@ -66,15 +50,9 @@
             <span class="text-red-600 font-bold text-xl">{{ formatCurrency(property.price) }}</span>
           </div>
           <div class="grid grid-cols-3 gap-2 text-sm text-gray-600 mb-2">
-            <div class="flex items-center">
-              <i class="fas fa-bed mr-1" /> {{ property.bedrooms }} PN
-            </div>
-            <div class="flex items-center">
-              <i class="fas fa-bath mr-1" /> {{ property.bathrooms }} PT
-            </div>
-            <div class="flex items-center">
-              <i class="fas fa-vector-square mr-1" /> {{ property.area }} m²
-            </div>
+            <div class="flex items-center"><i class="fas fa-bed mr-1" /> {{ property.bedrooms }} PN</div>
+            <div class="flex items-center"><i class="fas fa-bath mr-1" /> {{ property.bathrooms }} PT</div>
+            <div class="flex items-center"><i class="fas fa-vector-square mr-1" /> {{ property.area }} m²</div>
           </div>
           <div class="flex flex-wrap gap-2 mt-auto">
             <span
@@ -85,16 +63,13 @@
               <i :class="[amenity.icon, 'mr-1']" />
               {{ amenity.name }}
             </span>
-            <span
-              v-if="property.amenities.length > 3"
-              class="text-xs text-gray-500 flex items-center"
-            >
+            <span v-if="property.amenities.length > 3" class="text-xs text-gray-500 flex items-center">
               +{{ property.amenities.length - 2 }} khác
             </span>
           </div>
         </div>
       </div>
-      
+
       <div
         v-if="compareList.length < 3"
         class="border border-dashed border-gray-300 rounded-lg flex items-center justify-center cursor-pointer hover:border-gray-400 transition-colors"
@@ -112,14 +87,14 @@
 </template>
 
 <script setup>
-import { usePropertyStore } from '@/stores/propertyStore';
-import { storeToRefs } from 'pinia';
+import {usePropertyStore} from '@/stores/propertyStore';
+import {storeToRefs} from 'pinia';
 
 const propertyStore = usePropertyStore();
-const { compareList } = storeToRefs(propertyStore);
+const {compareList} = storeToRefs(propertyStore);
 
 const formatCurrency = (value) => {
-  return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
+  return new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(value);
 };
 
 const removeFromCompare = (propertyId) => {

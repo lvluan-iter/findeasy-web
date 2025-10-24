@@ -4,7 +4,8 @@
       <!-- Cột trái (nội dung) -->
       <div class="w-full relative z-10 flex items-end">
         <div
-          class="absolute bottom-0 left-0 w-full h-full px-6 md:pl-[60px] lg:pl-[120px] pt-[30px] md:pt-[40px] lg:pt-[60px] box-border bg-gradient-to-r from-white/90 to-white/70">
+          class="absolute bottom-0 left-0 w-full h-full px-6 md:pl-[60px] lg:pl-[120px] pt-[30px] md:pt-[40px] lg:pt-[60px] box-border bg-gradient-to-r from-white/90 to-white/70"
+        >
           <div class="inline-block py-2 px-5 bg-[rgb(10,115,192,8%)] rounded-full text-[rgb(10,115,192)] mb-2.5">
             <span>Chào mừng đến với FindEasy!</span>
           </div>
@@ -12,7 +13,8 @@
             Tìm ngôi nhà mơ ước tại vị trí lý tưởng
           </h1>
           <div
-            class="text-base mt-auto md:text-xs font-semibold text-[#212529] flex flex-col md:flex-row items-start md:items-center gap-2.5">
+            class="text-base mt-auto md:text-xs font-semibold text-[#212529] flex flex-col md:flex-row items-start md:items-center gap-2.5"
+          >
             <div class="flex items-center gap-1">
               <i class="fa-solid fa-location-dot text-inherit" />
               <span>Tìm kiếm vị trí</span>
