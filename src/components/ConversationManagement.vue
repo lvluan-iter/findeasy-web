@@ -4,26 +4,10 @@
     class="fixed bottom-7 right-10 z-10 w-full sm:w-96 h-[545px] max-h-[calc(100vh-5rem)] max-w-[calc(100vw-2rem)] bg-white rounded-lg shadow-2xl flex flex-col overflow-hidden transition-all duration-300 ease-in-out"
   >
     <div class="bg-gradient-to-r from-blue-500 to-indigo-600 p-4 flex justify-between items-center">
-      <h2 class="text-white font-bold text-lg">
-        Tin nhắn
-      </h2>
-      <button
-        class="text-white hover:text-gray-200 focus:outline-none"
-        @click="$emit('close')"
-      >
-        <svg
-          class="w-6 h-6"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M6 18L18 6M6 6l12 12"
-          />
+      <h2 class="text-white font-bold text-lg">Tin nhắn</h2>
+      <button class="text-white hover:text-gray-200 focus:outline-none" @click="$emit('close')">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
         </svg>
       </button>
     </div>
@@ -35,15 +19,9 @@
           type="text"
           placeholder="Tìm kiếm cuộc hội thoại..."
           class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-        >
+        />
         <div class="absolute left-3 top-2.5 text-gray-400">
-          <svg
-            class="w-5 h-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -56,9 +34,7 @@
     </div>
 
     <!-- Conversation List -->
-    <div
-      class="flex-1 overflow-y-auto"
-    >
+    <div class="flex-1 overflow-y-auto">
       <div
         v-for="conversation in filteredConversations"
         :key="conversation.conversationId"
@@ -70,7 +46,7 @@
             class="h-12 w-12 rounded-full object-cover border-2 border-gray-200"
             :src="getAvatarUrl(conversation.otherUserId)"
             alt="User avatar"
-          >
+          />
           <div
             v-if="conversation.isOnline"
             class="absolute bottom-0 right-0 bg-green-400 rounded-full h-3 w-3 border-2 border-white"
@@ -85,7 +61,7 @@
               {{ formatTime(conversation.latestMessageTime) }}
             </p>
           </div>
-          <p 
+          <p
             class="text-sm truncate mt-1"
             :class="{
               'text-gray-600': conversation.unreadCount === 0,
@@ -113,11 +89,11 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, onMounted } from 'vue';
-import { useUserStore } from '@/stores/userStore';
-import { format, isToday, isYesterday } from 'date-fns';
+import {ref, computed, watch, onMounted} from 'vue';
+import {useUserStore} from '@/stores/userStore';
+import {format, isToday, isYesterday} from 'date-fns';
 import ChatComponent from './ChatComponent.vue';
-import { webSocketService } from '@/api/websocketClient';
+import {webSocketService} from '@/api/websocketClient';
 
 const props = defineProps({
   isOpen: {
@@ -136,9 +112,10 @@ const selectedRecipientId = ref(null);
 
 const filteredConversations = computed(() => {
   if (!searchQuery.value) return conversations.value;
-  return conversations.value.filter(conv => 
-    conv.otherUserName.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-    conv.latestMessageContent.toLowerCase().includes(searchQuery.value.toLowerCase())
+  return conversations.value.filter(
+    (conv) =>
+      conv.otherUserName.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+      conv.latestMessageContent.toLowerCase().includes(searchQuery.value.toLowerCase())
   );
 });
 
@@ -182,9 +159,12 @@ onMounted(() => {
   }
 });
 
-watch(() => userStore.isAuthenticated, (newValue) => {
-  if (newValue) {
-    subscribeToWebSocketUpdates();
+watch(
+  () => userStore.isAuthenticated,
+  (newValue) => {
+    if (newValue) {
+      subscribeToWebSocketUpdates();
+    }
   }
-});
+);
 </script>

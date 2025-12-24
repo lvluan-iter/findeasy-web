@@ -1,20 +1,10 @@
 <template>
   <div class="creative-input">
     <div class="flex items-end h-6">
-      <label
-        :for="id"
-        class="block text-sm font-medium"
-        :class="labelClass"
-      >{{ label }}</label>
-      <div
-        v-if="showTooltip"
-        class="relative ml-2 group tooltip-container"
-      >
+      <label :for="id" class="block text-sm font-medium" :class="labelClass">{{ label }}</label>
+      <div v-if="showTooltip" class="relative ml-2 group tooltip-container">
         <i :class="[iconClass, 'text-sm cursor-help']" />
-        <div
-          class="tooltip"
-          :class="tooltipClass"
-        >
+        <div class="tooltip" :class="tooltipClass">
           <slot name="tooltip">
             {{ tooltipContent }}
           </slot>
@@ -31,14 +21,13 @@
           :id="id"
           :value="modelValue"
           :required="required"
-          :class="[inputClass, 'block w-full pl-10 pr-3 py-2 h-9 text-sm border-b focus:outline-none transition duration-300 bg-transparent']"
+          :class="[
+            inputClass,
+            'block w-full pl-10 pr-3 py-2 h-9 text-sm border-b focus:outline-none transition duration-300 bg-transparent'
+          ]"
           @change="handleChange"
         >
-          <option
-            v-for="option in options"
-            :key="option.value"
-            :value="option.value"
-          >
+          <option v-for="option in options" :key="option.value" :value="option.value">
             {{ option.label }}
           </option>
         </select>
@@ -48,11 +37,14 @@
           :type="type"
           :value="modelValue"
           :required="required"
-          :class="[inputClass, 'block w-full pl-10 pr-3 py-2 h-9 text-sm border-b focus:outline-none transition duration-300 bg-transparent']"
+          :class="[
+            inputClass,
+            'block w-full pl-10 pr-3 py-2 h-9 text-sm border-b focus:outline-none transition duration-300 bg-transparent'
+          ]"
           :placeholder="placeholder"
           @input="handleInput"
           @blur="handleBlur"
-        >
+        />
       </slot>
     </div>
   </div>
@@ -126,16 +118,16 @@ export default {
   emits: ['update:modelValue', 'blur'],
   methods: {
     handleInput(event) {
-      this.$emit('update:modelValue', event.target.value)
+      this.$emit('update:modelValue', event.target.value);
     },
     handleChange(event) {
-      this.$emit('update:modelValue', event.target.value)
+      this.$emit('update:modelValue', event.target.value);
     },
     handleBlur(event) {
-      this.$emit('blur', event)
+      this.$emit('blur', event);
     }
   }
-}
+};
 </script>
 
 <style scoped>
@@ -154,13 +146,15 @@ export default {
   margin-left: -100px;
   opacity: 0;
   transition: opacity 0.3s;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
   font-size: 0.75rem;
   line-height: 1.2;
 }
 
 .tooltip::after {
-  content: "";
+  content: '';
   position: absolute;
   top: 100%;
   left: 50%;

@@ -35,10 +35,7 @@
           <div class="h-px bg-gray-300 flex-grow" />
         </div>
 
-        <!-- Username Input -->
         <BaseInput id="username" v-model="username" label="Tên đăng nhập" required />
-
-        <!-- Password Input -->
         <BaseInput id="password" v-model="password" label="Mật khẩu" type="password" required />
 
         <div class="flex items-center justify-center gap-1.5">
@@ -52,10 +49,6 @@
         >
 
         <SubmitButton :loading="isSubmitting" text="Đăng nhập" loading-text="Đang đăng nhập..." />
-
-        <p v-if="errorMessage" class="text-red-500 mt-4 text-center">
-          {{ errorMessage }}
-        </p>
       </form>
     </div>
   </div>
@@ -64,7 +57,6 @@
 <script setup>
 import {ref} from 'vue';
 import {useRouter} from 'vue-router';
-import {useToast} from '@/stores/useToast';
 import {useUserStore} from '@/stores/userStore';
 import BackHeader from '@/components/BackHeader.vue';
 import BaseInput from '@/components/BaseInput.vue';
@@ -72,11 +64,9 @@ import SubmitButton from '@/components/SubmitButton.vue';
 
 const router = useRouter();
 const userStore = useUserStore();
-const {showToast} = useToast();
 
 const username = ref('');
 const password = ref('');
-const errorMessage = ref('');
 const isSubmitting = ref(false);
 
 const handleUserSubmit = async () => {
@@ -91,15 +81,7 @@ const handleUserSubmit = async () => {
       const redirectTo = localStorage.getItem('redirectAfterLogin') || '/';
       localStorage.removeItem('redirectAfterLogin');
       router.push(redirectTo);
-
-      showToast('Đăng nhập thành công!', 'success');
-    } else {
-      errorMessage.value = 'Tên đăng nhập hoặc mật khẩu không đúng.';
-      showToast(errorMessage.value, 'error');
     }
-  } catch (error) {
-    errorMessage.value = 'Đã xảy ra lỗi, vui lòng thử lại sau.';
-    showToast(errorMessage.value, 'error');
   } finally {
     isSubmitting.value = false;
   }

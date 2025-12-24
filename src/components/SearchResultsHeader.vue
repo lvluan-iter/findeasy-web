@@ -7,9 +7,7 @@
             <h2 class="text-3xl font-bold text-white">
               {{ resultCount }} <span class="text-blue-400">Luxurious Homes</span>
             </h2>
-            <p class="text-sm text-gray-300 mt-1">
-              Refined selection for "{{ searchTerm }}"
-            </p>
+            <p class="text-sm text-gray-300 mt-1">Refined selection for "{{ searchTerm }}"</p>
           </div>
           <div class="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
             <div class="relative">
@@ -18,44 +16,18 @@
                 class="appearance-none bg-gray-700 border border-gray-600 rounded-md pl-10 pr-10 py-2 text-sm font-medium text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
                 @change="emit('sort-change', localSortBy)"
               >
-                <option
-                  disabled
-                  value=""
-                >
-                  Sort by
-                </option>
-                <option value="relevance">
-                  Relevance
-                </option>
-                <option value="popularity">
-                  Popularity
-                </option>
-                <option value="price-high-low">
-                  Price: High to Low
-                </option>
-                <option value="price-low-high">
-                  Price: Low to High
-                </option>
-                <option value="newest">
-                  Newest
-                </option>
-                <option value="bedrooms">
-                  Bedrooms
-                </option>
-                <option value="bathrooms">
-                  Bathrooms
-                </option>
-                <option value="area">
-                  Area
-                </option>
+                <option disabled value="">Sort by</option>
+                <option value="relevance">Relevance</option>
+                <option value="popularity">Popularity</option>
+                <option value="price-high-low">Price: High to Low</option>
+                <option value="price-low-high">Price: Low to High</option>
+                <option value="newest">Newest</option>
+                <option value="bedrooms">Bedrooms</option>
+                <option value="bathrooms">Bathrooms</option>
+                <option value="area">Area</option>
               </select>
               <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
-                <svg
-                  class="h-4 w-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
+                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path
                     stroke-linecap="round"
                     stroke-linejoin="round"
@@ -65,18 +37,8 @@
                 </svg>
               </div>
               <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
-                <svg
-                  class="h-4 w-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M19 9l-7 7-7-7"
-                  />
+                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                 </svg>
               </div>
             </div>
@@ -84,13 +46,7 @@
               class="inline-flex items-center px-4 py-2 border border-blue-500 rounded-md shadow-sm text-sm font-medium text-blue-500 bg-transparent hover:bg-blue-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out"
               @click="emit('toggle-map-view')"
             >
-              <svg
-                v-if="isMapView"
-                class="h-5 w-5 mr-2"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
+              <svg v-if="isMapView" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
@@ -98,13 +54,7 @@
                   d="M4 6h16M4 10h16M4 14h16M4 18h16"
                 />
               </svg>
-              <svg
-                v-else
-                class="h-5 w-5 mr-2"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
+              <svg v-else class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
@@ -118,12 +68,7 @@
               class="inline-flex items-center px-4 py-2 border border-blue-500 rounded-md shadow-sm text-sm font-medium text-blue-500 bg-transparent hover:bg-blue-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out"
               @click="$emit('toggle-save-search')"
             >
-              <svg
-                class="h-5 w-5 mr-2"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
+              <svg class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
@@ -141,7 +86,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue';
+import {ref, watch} from 'vue';
 
 const props = defineProps({
   searchTerm: {
@@ -166,7 +111,10 @@ const emit = defineEmits(['sort-change', 'toggle-map-view', 'toggle-save-search'
 
 const localSortBy = ref(props.sortBy);
 
-watch(() => props.sortBy, (newValue) => {
-  localSortBy.value = newValue;
-});
+watch(
+  () => props.sortBy,
+  (newValue) => {
+    localSortBy.value = newValue;
+  }
+);
 </script>

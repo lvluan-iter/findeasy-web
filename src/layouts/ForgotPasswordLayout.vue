@@ -34,13 +34,15 @@ const handleForgotPasswordSubmit = async () => {
       email: email.value
     });
 
-    if (response.success) {
+    if (response.succeeded) {
       window.alert('Reset link sent! Please check your email.');
     } else {
-      window.alert('Error sending reset link. Please try again.');
+      const err = response.errors ? response.errors.join(', ') : 'Error sending reset link.';
+      window.alert('Error: ' + err);
     }
   } catch (error) {
-    console.log('Error processing data', error);
+    console.error('Error processing data', error);
+    window.alert('An unexpected error occurred. Please try again.');
   } finally {
     isSubmitting.value = false;
   }

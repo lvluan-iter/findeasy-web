@@ -1,14 +1,16 @@
 <template>
-  <transition name="fade">
-    <div
-      v-if="visible"
-      id="toast"
-      :class="[
-        'fixed top-6 left-1/2 transform -translate-x-1/2 z-[9999] min-w-[250px] px-4 py-3 rounded-2xl shadow-lg text-white text-center font-semibold',
-        typeClass
-      ]"
-    >
-      {{ message }}
+  <transition name="toast">
+    <div v-if="visible" class="fixed top-8 left-1/2 -translate-x-1/2 z-[9999] pointer-events-none">
+      <div
+        :class="[
+          'relative min-w-[260px] max-w-[420px] px-4 py-3 rounded-2xl shadow-lg border flex items-center gap-3 text-sm font-medium pointer-events-auto bg-white',
+          borderClass,
+          textClass
+        ]"
+      >
+        <i :class="['text-lg', iconClass]"></i>
+        <div class="flex-1 text-left">{{ message }}</div>
+      </div>
     </div>
   </transition>
 </template>
@@ -18,48 +20,57 @@ import {ref, watchEffect, computed} from 'vue';
 
 const props = defineProps({
   message: String,
-  type: {
-    type: String,
-    default: 'info'
-  },
-  duration: {
-    type: Number,
-    default: 3000
-  }
+  type: {type: String, default: 'info'},
+  duration: {type: Number, default: 4000}
 });
 
 const visible = ref(true);
 
 watchEffect(() => {
   if (visible.value) {
-    setTimeout(() => {
-      visible.value = false;
-    }, props.duration);
+    setTimeout(() => (visible.value = false), props.duration);
   }
 });
 
-const typeClass = computed(() => {
-  switch (props.type) {
-    case 'success':
-      return 'bg-green-500';
-    case 'error':
-      return 'bg-red-500';
-    case 'warning':
-      return 'bg-yellow-500 text-black';
-    default:
-      return 'bg-blue-500';
-  }
-});
+const borderClass = computed(
+  () =>
+    ({
+      success: 'border-green-500/30',
+      error: 'border-red-500/30',
+      warning: 'border-amber-500/30',
+      info: 'border-sky-500/30'
+    })[props.type] || 'border-sky-500/30'
+);
+
+const textClass = computed(
+  () =>
+    ({
+      success: 'text-green-600',
+      error: 'text-red-600',
+      warning: 'text-amber-600',
+      info: 'text-sky-600'
+    })[props.type] || 'text-sky-600'
+);
+
+const iconClass = computed(
+  () =>
+    ({
+      success: 'fa-solid fa-circle-check text-green-500',
+      error: 'fa-solid fa-circle-xmark text-red-500',
+      warning: 'fa-solid fa-triangle-exclamation text-amber-500',
+      info: 'fa-solid fa-circle-info text-sky-500'
+    })[props.type] || 'fa-solid fa-circle-info text-sky-500'
+);
 </script>
 
 <style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: all 0.4s ease;
+.toast-enter-active,
+.toast-leave-active {
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.fade-enter-from,
-.fade-leave-to {
+.toast-enter-from,
+.toast-leave-to {
   opacity: 0;
-  transform: translateY(-10px);
+  transform: translateY(-10px) scale(0.96);
 }
 </style>

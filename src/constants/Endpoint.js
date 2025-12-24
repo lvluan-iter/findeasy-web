@@ -1,6 +1,7 @@
 export const Endpoint = {
   // User endpoints
   getUsers: '/api/users',
+  getUserInfo: '/api/users/info',
   getUserById: (userId) => `/api/users/id/${userId}`,
   updateUser: (userId) => `/api/users/${userId}`,
   updateUserPassword: (userId) => `/api/users/${userId}/password`,
@@ -8,7 +9,7 @@ export const Endpoint = {
   updateUserRole: (userId) => `/api/users/${userId}/role`,
   lockUser: (userId) => `/api/users/${userId}/lock`,
   unlockUser: (userId) => `/api/users/${userId}/unlock`,
-  
+
   // Property endpoints
   getProperties: '/api/properties',
   createProperty: '/api/properties',
@@ -29,26 +30,26 @@ export const Endpoint = {
   rejectProperty: (propertyId) => `/api/properties/${propertyId}/reject`,
   lockProperty: (propertyId) => `/api/properties/${propertyId}/lock`,
   unlockProperty: (propertyId) => `/api/properties/${propertyId}/unlock`,
-  
+
   // Category endpoints
-  getCategories: '/api/categories',
+  getCategories: '/api/categories/',
   createCategory: '/api/categories',
   updateCategory: (categoryId) => `/api/categories/${categoryId}`,
   deleteCategory: (categoryId) => `/api/categories/${categoryId}`,
-  
+
   // Location endpoints
   getLocations: '/api/location',
-  
+
   // Amenities endpoints
   getAmenities: '/api/amenities',
   createAmenity: '/api/amenities',
   updateAmenity: (amenityId) => `/api/amenities/${amenityId}`,
   deleteAmenity: (amenityId) => `/api/amenities/${amenityId}`,
-  
+
   // User favorites endpoints
   addToFavorites: (userId, propertyId) => `/api/users/${userId}/favorites/${propertyId}`,
   removeFromFavorites: (userId, propertyId) => `/api/users/${userId}/favorites/${propertyId}`,
-  
+
   // Tour request endpoints
   createTourRequest: '/api/tour-requests',
   getTourRequestsByUser: (userId) => `/api/tour-requests/user/${userId}`,
@@ -57,15 +58,17 @@ export const Endpoint = {
   rescheduleTourRequest: (requestId) => `/api/tour-requests/${requestId}/reschedule`,
   deleteTourRequest: (requestId) => `/api/tour-requests/${requestId}`,
   updateTourRequestDate: (requestId) => `/api/tour-requests/${requestId}/date`,
-  
+
   // Upload endpoints
   uploadImages: '/api/upload-images',
-  
+
   // Auth endpoints
+  login: '/api/auth/login',
   register: '/api/auth/register',
   forgotPassword: '/api/auth/forgot-password',
   resetPassword: '/api/auth/reset-password',
-  
+  refreshToken: '/api/auth/refresh-token',
+
   // Conversation endpoints
   getConversation: (conversationId) => `/conversations/${conversationId}`
 };

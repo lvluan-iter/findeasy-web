@@ -13,7 +13,7 @@
         {{ title }}
       </h1>
     </div>
-    <hr class="w-full mb-5">
+    <hr class="w-full mb-5" />
   </div>
 </template>
 
@@ -23,5 +23,5 @@ defineProps({
     type: String,
     required: true
   }
-})
+});
 </script>

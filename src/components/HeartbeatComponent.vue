@@ -5,23 +5,23 @@
 </template>
 
 <script setup>
-import { onMounted, onUnmounted } from 'vue'
-import { webSocketService } from '../api/websocketClient'
-import { useUserStore } from '../stores/userStore'  // Import userStore
+import {onMounted, onUnmounted} from 'vue';
+import {webSocketService} from '../api/websocketClient';
+import {useUserStore} from '../stores/userStore';
 
-const userStore = useUserStore()  // Use the userStore
+const userStore = useUserStore();
 
 const handleVisibilityChange = () => {
   if (userStore.user) {
-    webSocketService.sendUserStatus(document.hidden ? 'offline' : 'online')
+    webSocketService.sendUserStatus(document.hidden ? 'offline' : 'online');
   }
-}
+};
 
 onMounted(() => {
-  document.addEventListener('visibilitychange', handleVisibilityChange)
-})
+  document.addEventListener('visibilitychange', handleVisibilityChange);
+});
 
 onUnmounted(() => {
-  document.removeEventListener('visibilitychange', handleVisibilityChange)
-})
+  document.removeEventListener('visibilitychange', handleVisibilityChange);
+});
 </script>

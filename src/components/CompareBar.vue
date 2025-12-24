@@ -12,11 +12,7 @@
             class="flex-shrink-0 w-40 sm:w-48 bg-gray-100 rounded-lg overflow-hidden"
           >
             <div class="relative">
-              <img
-                :src="property.imageUrls[0]"
-                :alt="property.title"
-                class="w-full h-20 sm:h-24 object-cover"
-              >
+              <img :src="property.imageUrls[0]" :alt="property.title" class="w-full h-20 sm:h-24 object-cover" />
               <button
                 class="absolute top-1 right-1 p-1 bg-white rounded-full shadow-md hover:bg-gray-100"
                 @click="removeFromCompare(property.id)"
@@ -34,9 +30,7 @@
             v-if="compareList.length < 3"
             class="flex-shrink-0 w-40 sm:w-48 h-[100px] sm:h-[120px] bg-gray-100 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center"
           >
-            <button 
-              class="text-gray-400 hover:text-gray-600" 
-            >
+            <button class="text-gray-400 hover:text-gray-600">
               <i class="fas fa-plus text-xl sm:text-2xl" />
               <span class="block text-xs sm:text-sm mt-1">Thêm sản phẩm</span>
             </button>
@@ -50,10 +44,7 @@
           >
             So sánh ngay
           </button>
-          <button
-            class="text-blue-600 hover:underline text-xs sm:text-sm"
-            @click="clearCompareList"
-          >
+          <button class="text-blue-600 hover:underline text-xs sm:text-sm" @click="clearCompareList">
             Xóa tất cả sản phẩm
           </button>
         </div>
@@ -63,13 +54,13 @@
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router';
-import { usePropertyStore } from '../stores/propertyStore';
-import { storeToRefs } from 'pinia';
+import {useRouter} from 'vue-router';
+import {usePropertyStore} from '../stores/propertyStore';
+import {storeToRefs} from 'pinia';
 
 const router = useRouter();
 const propertyStore = usePropertyStore();
-const { compareList } = storeToRefs(propertyStore);
+const {compareList} = storeToRefs(propertyStore);
 
 const removeFromCompare = (propertyId) => {
   propertyStore.removeFromCompare(propertyId);
@@ -81,7 +72,7 @@ const clearCompareList = () => {
 
 const goToComparePage = () => {
   if (compareList.value.length >= 2) {
-    const compareIds = compareList.value.map(p => p.id).join(',');
+    const compareIds = compareList.value.map((p) => p.id).join(',');
     router.push(`/compare/${compareIds}`);
   }
 };

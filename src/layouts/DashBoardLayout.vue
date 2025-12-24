@@ -300,14 +300,14 @@ const updateDateTime = () => {
 };
 
 const fetchUserProperties = async () => {
-  if (!user.value?.id) {
-    return;
-  }
+  if (!user.value?.id) return;
 
   try {
     const response = await proxy.$http.get(Endpoint.getPropertiesByUser(user.value.id));
-    if (response.success) {
-      properties.value = response.data;
+    if (response.succeeded) {
+      properties.value = response.result;
+    } else {
+      throw new Error(response.errors ? response.errors.join(', ') : 'Failed to fetch properties');
     }
   } catch (err) {
     console.error('Error fetching property stats:', err);

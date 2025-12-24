@@ -1,10 +1,6 @@
 <template>
   <div class="space-y-4">
-    <div
-      v-for="(place, index) in modelValue"
-      :key="index"
-      class="flex items-center space-x-4"
-    >
+    <div v-for="(place, index) in modelValue" :key="index" class="flex items-center space-x-4">
       <div class="flex-grow">
         <input
           v-model="place.name"
@@ -12,7 +8,7 @@
           :placeholder="'Place name (e.g., University, Market)'"
           class="block w-full px-3 py-2 text-sm border-b border-gray-300 focus:border-blue-500 focus:outline-none transition duration-300 bg-transparent"
           @input="updateModelValue"
-        >
+        />
       </div>
       <div class="w-24">
         <input
@@ -23,7 +19,7 @@
           :placeholder="'Distance'"
           class="block w-full px-3 py-2 text-sm border-b border-gray-300 focus:border-blue-500 focus:outline-none transition duration-300 bg-transparent"
           @input="updateModelValue"
-        >
+        />
       </div>
       <div class="w-24">
         <select
@@ -31,19 +27,11 @@
           class="block w-full px-3 py-2 text-sm border-b border-gray-300 focus:border-blue-500 focus:outline-none transition duration-300 bg-transparent"
           @change="updateModelValue"
         >
-          <option value="km">
-            km
-          </option>
-          <option value="m">
-            m
-          </option>
+          <option value="km">km</option>
+          <option value="m">m</option>
         </select>
       </div>
-      <button
-        type="button"
-        class="text-red-500 hover:text-red-700 transition duration-300"
-        @click="removePlace(index)"
-      >
+      <button type="button" class="text-red-500 hover:text-red-700 transition duration-300" @click="removePlace(index)">
         <i class="fas fa-trash-alt" />
       </button>
     </div>
@@ -58,7 +46,7 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits } from 'vue';
+import {defineProps, defineEmits} from 'vue';
 
 const props = defineProps({
   modelValue: {
@@ -70,7 +58,7 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue']);
 
 const addPlace = () => {
-  const updatedPlaces = [...props.modelValue, { name: '', distance: null, unit: 'km' }];
+  const updatedPlaces = [...props.modelValue, {name: '', distance: null, unit: 'km'}];
   emit('update:modelValue', updatedPlaces);
 };
 

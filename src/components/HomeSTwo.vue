@@ -8,23 +8,16 @@
         Gặp Gỡ Nhà Môi Giới Hàng Đầu
       </h1>
       <span class="text-[#707070] block">
-        Những nhà môi giới giàu kinh nghiệm của chúng tôi luôn sẵn sàng giúp bạn tìm hiểu và điều hướng thị trường bất động sản. 
-        Dù bạn đang tìm mua, bán, hay thuê, các chuyên gia của chúng tôi cung cấp sự tư vấn chuyên sâu và dịch vụ cá nhân hóa, đảm bảo đáp ứng nhu cầu của bạn. 
-        Kết nối với những chuyên gia uy tín và đạt được mục tiêu bất động sản của bạn một cách tự tin.
+        Những nhà môi giới giàu kinh nghiệm của chúng tôi luôn sẵn sàng giúp bạn tìm hiểu và điều hướng thị trường bất
+        động sản. Dù bạn đang tìm mua, bán, hay thuê, các chuyên gia của chúng tôi cung cấp sự tư vấn chuyên sâu và dịch
+        vụ cá nhân hóa, đảm bảo đáp ứng nhu cầu của bạn. Kết nối với những chuyên gia uy tín và đạt được mục tiêu bất
+        động sản của bạn một cách tự tin.
       </span>
     </div>
 
-    <div
-      v-if="isLoading"
-      class="flex flex-col items-center justify-center py-12 px-4 text-center"
-    >
+    <div v-if="isLoading" class="flex flex-col items-center justify-center py-12 px-4 text-center">
       <div class="bg-blue-50 rounded-full p-6 mb-6 animate-pulse">
-        <svg
-          class="w-16 h-16 text-blue-500"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
+        <svg class="w-16 h-16 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
@@ -33,25 +26,15 @@
           />
         </svg>
       </div>
-      <h3 class="text-xl font-semibold text-gray-900 mb-2">
-        Đang tải dữ liệu...
-      </h3>
+      <h3 class="text-xl font-semibold text-gray-900 mb-2">Đang tải dữ liệu...</h3>
       <p class="text-gray-500 mb-6 max-w-md">
         Vui lòng đợi trong giây lát trong khi chúng tôi tải thông tin nhà môi giới.
       </p>
     </div>
 
-    <div 
-      v-else-if="users.length === 0"
-      class="flex flex-col items-center justify-center py-12 px-4 text-center"
-    >
+    <div v-else-if="users.length === 0" class="flex flex-col items-center justify-center py-12 px-4 text-center">
       <div class="bg-gray-100 rounded-full p-6 mb-6">
-        <svg
-          class="w-16 h-16 text-gray-400"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
+        <svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
@@ -60,20 +43,15 @@
           />
         </svg>
       </div>
-      <h3 class="text-xl font-semibold text-gray-900 mb-2">
-        Chưa có nhà môi giới nào
-      </h3>
+      <h3 class="text-xl font-semibold text-gray-900 mb-2">Chưa có nhà môi giới nào</h3>
       <p class="text-gray-500 mb-6 max-w-md">
         Hiện tại chưa có nhà môi giới nào đăng ký trên hệ thống. Vui lòng quay lại sau.
       </p>
     </div>
 
-    <div 
-      v-else
-      class="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-6"
-    >
-      <div 
-        v-for="user in users" 
+    <div v-else class="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-6">
+      <div
+        v-for="user in users"
         :key="user.id"
         class="flex flex-col items-center justify-center overflow-hidden transition-transform duration-300 hover:scale-105 cursor-pointer"
         @click="linktoUser(user.id)"
@@ -81,11 +59,7 @@
         <div>
           <div class="border border-[#0a73c0] p-[4px] rounded-full inline-block">
             <div class="avatar w-[158px] h-[158px] rounded-full overflow-hidden">
-              <img 
-                class="w-full h-full object-cover" 
-                :src="user.avatar" 
-                alt="User avatar"
-              >
+              <img class="w-full h-full object-cover" :src="user.avatar" alt="User avatar" />
             </div>
           </div>
         </div>
@@ -100,45 +74,45 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
-import { Endpoint } from '@/constants/Endpoint'
-import { getCurrentInstance } from 'vue'
+import {ref, onMounted} from 'vue';
+import {useRouter} from 'vue-router';
+import {Endpoint} from '@/constants/Endpoint';
+import {getCurrentInstance} from 'vue';
 
-
-const router = useRouter()
-const users = ref([])
-const isLoading = ref(true)
-const { proxy } = getCurrentInstance()
+const router = useRouter();
+const users = ref([]);
+const isLoading = ref(true);
+const {proxy} = getCurrentInstance();
 
 async function fetchUsers() {
   try {
-    isLoading.value = true
-    const res = await proxy.$http.get(Endpoint.getUsers)
-    users.value = res.data 
+    isLoading.value = true;
+    const res = await proxy.$http.get(Endpoint.getUsers);
+    users.value = res.result;
   } catch (err) {
-    console.error('Failed to fetch users:', err)
+    console.error('Failed to fetch users:', err);
   } finally {
-    isLoading.value = false
+    isLoading.value = false;
   }
 }
 
 function linktoUser(id) {
-  router.push(`/user-property/${id}`)
+  router.push(`/user-property/${id}`);
 }
 
 onMounted(() => {
-  fetchUsers()
-})
+  fetchUsers();
+});
 </script>
 
 <style scoped>
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {
-    opacity: .5;
+    opacity: 0.5;
   }
 }
 

@@ -25,9 +25,19 @@ const fetchData = async () => {
       proxy.$http.get(Endpoint.getPropertiesByUser(userId))
     ]);
 
-    if (userResponse.success && propertiesResponse.success) {
-      user.value = userResponse.data;
-      properties.value = propertiesResponse.data;
+    if (userResponse.succeeded) {
+      user.value = userResponse.result;
+    } else {
+      console.error('Error fetching user:', userResponse.errors ? userResponse.errors.join(', ') : userResponse);
+    }
+
+    if (propertiesResponse.succeeded) {
+      properties.value = propertiesResponse.result;
+    } else {
+      console.error(
+        'Error fetching properties:',
+        propertiesResponse.errors ? propertiesResponse.errors.join(', ') : propertiesResponse
+      );
     }
   } catch (error) {
     console.error('Error fetching data:', error);

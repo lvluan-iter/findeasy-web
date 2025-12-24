@@ -10,8 +10,8 @@
       </button>
       <div class="hidden sm:block w-px h-6 bg-gray-300" />
       <h1 class="flex items-center gap-2 text-xl sm:text-2xl font-bold text-gray-800">
-        Yêu Cầu Xem Nhà 
-        <div 
+        Yêu Cầu Xem Nhà
+        <div
           v-if="pendingRequestsCount > 0"
           class="bg-orange-500 text-white w-5 h-5 flex items-center justify-center rounded-full text-sm"
         >
@@ -19,8 +19,8 @@
         </div>
       </h1>
     </div>
-    <hr class="w-full mb-5">
-    
+    <hr class="w-full mb-5" />
+
     <div class="flex flex-col space-y-4 sm:space-y-0 sm:flex-row sm:justify-between sm:items-center mb-6">
       <div class="relative w-full sm:w-64 md:w-72 lg:w-96">
         <input
@@ -28,7 +28,7 @@
           type="text"
           placeholder="Search"
           class="w-full border p-2 pr-10 rounded text-sm sm:text-base"
-        >
+        />
         <span class="absolute right-3 top-1/2 transform -translate-y-1/2">🔍</span>
       </div>
       <div class="flex flex-col sm:flex-row items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-4">
@@ -38,9 +38,7 @@
             :key="status"
             :class="[
               'px-2 sm:px-3 py-1 rounded transition duration-300 text-xs sm:text-sm uppercase tracking-wide font-semibold',
-              filterStatus === status
-                ? 'bg-blue-600 text-white'
-                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+              filterStatus === status ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
             ]"
             @click="filterStatus = status"
           >
@@ -49,38 +47,19 @@
         </div>
         <div class="flex items-center">
           <span class="mr-2 text-xs sm:text-sm text-gray-600">Sắp xếp:</span>
-          <select 
-            v-model="sortBy" 
-            class="border p-1 rounded text-xs sm:text-sm bg-white"
-          >
-            <option value="dateDesc">
-              Mới nhất
-            </option>
-            <option value="dateAsc">
-              Cũ nhất
-            </option>
-            <option value="nameAsc">
-              Tên (A-Z)
-            </option>
-            <option value="nameDesc">
-              Tên (Z-A)
-            </option>
+          <select v-model="sortBy" class="border p-1 rounded text-xs sm:text-sm bg-white">
+            <option value="dateDesc">Mới nhất</option>
+            <option value="dateAsc">Cũ nhất</option>
+            <option value="nameAsc">Tên (A-Z)</option>
+            <option value="nameDesc">Tên (Z-A)</option>
           </select>
         </div>
       </div>
     </div>
 
-    <div
-      v-if="isLoading"
-      class="flex flex-col items-center justify-center py-12 px-4 text-center"
-    >
+    <div v-if="isLoading" class="flex flex-col items-center justify-center py-12 px-4 text-center">
       <div class="bg-blue-50 rounded-full p-6 mb-6 animate-pulse">
-        <svg
-          class="w-16 h-16 text-blue-500"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
+        <svg class="w-16 h-16 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
@@ -89,18 +68,13 @@
           />
         </svg>
       </div>
-      <h3 class="text-xl font-semibold text-gray-900 mb-2">
-        Đang tải dữ liệu...
-      </h3>
+      <h3 class="text-xl font-semibold text-gray-900 mb-2">Đang tải dữ liệu...</h3>
       <p class="text-gray-500 mb-6 max-w-md">
         Vui lòng đợi trong giây lát trong khi chúng tôi tải thông tin yêu cầu xem nhà của bạn.
       </p>
     </div>
 
-    <div 
-      v-else-if="tourRequests.length === 0" 
-      class="flex flex-col items-center justify-center py-12 px-4 text-center"
-    >
+    <div v-else-if="tourRequests.length === 0" class="flex flex-col items-center justify-center py-12 px-4 text-center">
       <div class="bg-gray-100 rounded-full p-6 mb-6">
         <svg
           class="w-16 h-16 text-gray-400"
@@ -117,22 +91,16 @@
           />
         </svg>
       </div>
-      <h3 class="text-xl font-semibold text-gray-900 mb-2">
-        Chưa có yêu cầu xem nhà nào
-      </h3>
+      <h3 class="text-xl font-semibold text-gray-900 mb-2">Chưa có yêu cầu xem nhà nào</h3>
       <p class="text-gray-500 mb-6 max-w-md">
-        Khi có người đặt lịch xem nhà, yêu cầu sẽ xuất hiện ở đây. Bạn có thể quản lý và phản hồi các yêu cầu một cách dễ dàng.
+        Khi có người đặt lịch xem nhà, yêu cầu sẽ xuất hiện ở đây. Bạn có thể quản lý và phản hồi các yêu cầu một cách
+        dễ dàng.
       </p>
       <button
         class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-300"
         @click="refreshData"
       >
-        <svg
-          class="w-4 h-4 mr-2"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
@@ -153,22 +121,22 @@
         <span
           :class="[
             'absolute top-0 right-0 px-3 py-1 text-xs font-semibold rounded-[0_8px_0_8px] shadow-sm transition-all duration-300',
-            request.status === 'pending' ? 'bg-yellow-100 text-yellow-800' : 
-            request.status === 'confirmed' ? 'bg-green-100 text-green-800' : 
-            request.status === 'cancelled' ? 'bg-red-100 text-red-800' :
-            request.status === 'completed' ? 'bg-purple-100 text-purple-800' :
-            'bg-blue-100 text-blue-800'
+            request.status === 'pending'
+              ? 'bg-yellow-100 text-yellow-800'
+              : request.status === 'confirmed'
+                ? 'bg-green-100 text-green-800'
+                : request.status === 'cancelled'
+                  ? 'bg-red-100 text-red-800'
+                  : request.status === 'completed'
+                    ? 'bg-purple-100 text-purple-800'
+                    : 'bg-blue-100 text-blue-800'
           ]"
         >
           {{ request.status }}
         </span>
         <div class="flex items-center mb-4">
           <div class="w-20 h-14 sm:w-24 sm:h-16 bg-gray-200 rounded-md mr-3 sm:mr-4 flex-shrink-0">
-            <img 
-              :src="request.url"
-              alt="Image" 
-              class="w-full h-full object-cover rounded-md"
-            >
+            <img :src="request.url" alt="Image" class="w-full h-full object-cover rounded-md" />
           </div>
           <h2 class="text-base sm:text-lg font-semibold line-clamp-2">
             {{ request.title }}
@@ -195,12 +163,7 @@
                 viewBox="0 0 24 24"
                 stroke="currentColor"
               >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M5 13l4 4L19 7"
-                />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
               </svg>
               Confirm
             </button>
@@ -216,12 +179,7 @@
                 viewBox="0 0 24 24"
                 stroke="currentColor"
               >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M6 18L18 6M6 6l12 12"
-                />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
               </svg>
               Decline
             </button>
@@ -277,36 +235,24 @@
       class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
     >
       <div class="bg-white rounded-lg p-6 sm:p-8 max-w-md w-full">
-        <h3 class="text-xl sm:text-2xl font-bold text-gray-900 mb-4">
-          Reschedule Tour Request
-        </h3>
+        <h3 class="text-xl sm:text-2xl font-bold text-gray-900 mb-4">Reschedule Tour Request</h3>
         <div class="mb-4">
-          <label
-            class="block text-gray-700 text-sm font-semibold mb-2"
-            for="newDate"
-          >
-            New Date
-          </label>
-          <input 
-            id="newDate" 
-            v-model="rescheduleDate" 
-            type="date" 
+          <label class="block text-gray-700 text-sm font-semibold mb-2" for="newDate"> New Date </label>
+          <input
+            id="newDate"
+            v-model="rescheduleDate"
+            type="date"
             class="shadow-sm border rounded w-full py-2 px-3 text-gray-700 text-sm sm:text-base leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
+          />
         </div>
         <div class="mb-4">
-          <label
-            class="block text-gray-700 text-sm font-semibold mb-2"
-            for="newTime"
-          >
-            New Time
-          </label>
-          <input 
-            id="newTime" 
-            v-model="rescheduleTime" 
-            type="time" 
+          <label class="block text-gray-700 text-sm font-semibold mb-2" for="newTime"> New Time </label>
+          <input
+            id="newTime"
+            v-model="rescheduleTime"
+            type="time"
             class="shadow-sm border rounded w-full py-2 px-3 text-gray-700 text-sm sm:text-base leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
+          />
         </div>
         <div class="flex justify-end space-x-2">
           <button
@@ -328,110 +274,111 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch, getCurrentInstance } from 'vue'
-import { useUserStore } from '../stores/userStore'
-import { storeToRefs } from 'pinia'
-import { Endpoint } from '@/constants/Endpoint'
+import {ref, computed, onMounted, watch, getCurrentInstance} from 'vue';
+import {useUserStore} from '../stores/userStore';
+import {storeToRefs} from 'pinia';
+import {Endpoint} from '@/constants/Endpoint';
 
-const userStore = useUserStore()
-const { user } = storeToRefs(userStore)
-const { proxy } = getCurrentInstance()
-const tourRequests = ref([])
-const searchQuery = ref('')
-const filterStatus = ref('all')
-const showRescheduleModalFlag = ref(false)
-const rescheduleDate = ref('')
-const rescheduleTime = ref('')
-const currentRequest = ref(null)
-const currentDate = ref('')
-const sortBy = ref('dateDesc')
-const isLoading = ref(false)
+const userStore = useUserStore();
+const {user} = storeToRefs(userStore);
+const {proxy} = getCurrentInstance();
+const tourRequests = ref([]);
+const searchQuery = ref('');
+const filterStatus = ref('all');
+const showRescheduleModalFlag = ref(false);
+const rescheduleDate = ref('');
+const rescheduleTime = ref('');
+const currentRequest = ref(null);
+const currentDate = ref('');
+const sortBy = ref('dateDesc');
+const isLoading = ref(false);
 
 onMounted(() => {
-  currentDate.value = new Date().toLocaleDateString('en-GB')
-})
+  currentDate.value = new Date().toLocaleDateString('en-GB');
+});
 
 const refreshData = () => {
-  fetchTourRequests()
-}
+  fetchTourRequests();
+};
 
 const pendingRequestsCount = computed(() => {
-  return tourRequests.value.filter(request => request.status === 'pending').length
-})
+  return tourRequests.value.filter((request) => request.status === 'pending').length;
+});
 
 const filteredRequests = computed(() => {
-  let filtered = tourRequests.value.filter(request =>
-    (request.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-     request.email.toLowerCase().includes(searchQuery.value.toLowerCase())) &&
-    (filterStatus.value === 'all' || request.status === filterStatus.value)
-  )
+  let filtered = tourRequests.value.filter(
+    (request) =>
+      (request.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+        request.email.toLowerCase().includes(searchQuery.value.toLowerCase())) &&
+      (filterStatus.value === 'all' || request.status === filterStatus.value)
+  );
 
   switch (sortBy.value) {
     case 'dateDesc':
-      filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-      break
+      filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      break;
     case 'dateAsc':
-      filtered.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
-      break
+      filtered.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+      break;
     case 'nameAsc':
-      filtered.sort((a, b) => a.email.localeCompare(b.email))
-      break
+      filtered.sort((a, b) => a.email.localeCompare(b.email));
+      break;
     case 'nameDesc':
-      filtered.sort((a, b) => b.email.localeCompare(a.email))
-      break
+      filtered.sort((a, b) => b.email.localeCompare(a.email));
+      break;
   }
 
-  return filtered
-})
+  return filtered;
+});
 
 const formatDate = (dateString) => {
-  const options = { year: 'numeric', month: 'long', day: 'numeric' }
-  return new Date(dateString).toLocaleDateString(undefined, options)
-}
+  const options = {year: 'numeric', month: 'long', day: 'numeric'};
+  return new Date(dateString).toLocaleDateString(undefined, options);
+};
 
 const fetchTourRequests = async () => {
-  if (!user.value) return
-  isLoading.value = true
+  if (!user.value) return;
+  isLoading.value = true;
   try {
-    const response = await proxy.$http.get(Endpoint.getTourRequestsByUser(user.value.id))
-    if (response.success) {
-      tourRequests.value = response.data
+    const response = await proxy.$http.get(Endpoint.getTourRequestsByUser(user.value.id));
+    if (response.succeeded) {
+      tourRequests.value = response.result;
     } else {
-      throw new Error('Failed to fetch tour requests')
+      throw new Error(response.errors.join(', '));
     }
   } catch (error) {
-    console.error('Error fetching tour requests:', error)
+    console.error('Error fetching tour requests:', error);
   } finally {
-    isLoading.value = false
+    isLoading.value = false;
   }
-}
+};
 
 const updateStatus = async (id, newStatus) => {
   try {
-    const response = await proxy.$http.patch(Endpoint.updateTourRequestStatus(id), newStatus)
-    if (response.success) {
-      await fetchTourRequests()
+    const response = await proxy.$http.patch(Endpoint.updateTourRequestStatus(id), newStatus);
+    if (response.succeeded) {
+      await fetchTourRequests();
     } else {
-      throw new Error('Failed to update status')
+      throw new Error(response.errors.join(', '));
     }
   } catch (error) {
-    console.error('Error updating tour request status:', error)
+    console.error('Error updating tour request status:', error);
   }
-}
+};
 
 const showRescheduleModal = (request) => {
-  currentRequest.value = request
-  rescheduleDate.value = request.appointmentDate
-  rescheduleTime.value = request.appointmentTime
-  showRescheduleModalFlag.value = true
-}
+  currentRequest.value = request;
+  rescheduleDate.value = request.appointmentDate;
+  rescheduleTime.value = request.appointmentTime;
+  showRescheduleModalFlag.value = true;
+};
 
 const closeRescheduleModal = () => {
-  showRescheduleModalFlag.value = false
-  currentRequest.value = null
-  rescheduleDate.value = ''
-  rescheduleTime.value = ''
-}
+  showRescheduleModalFlag.value = false;
+  currentRequest.value = null;
+  rescheduleDate.value = '';
+  rescheduleTime.value = '';
+};
 
 const submitReschedule = async () => {
   if (currentRequest.value) {
@@ -439,19 +386,21 @@ const submitReschedule = async () => {
       const response = await proxy.$http.put(Endpoint.rescheduleTourRequest(currentRequest.value.id), {
         appointmentDate: rescheduleDate.value,
         appointmentTime: rescheduleTime.value
-      })
-      if (!response.success) {
-        throw new Error('Network response was not ok')
+      });
+
+      if (response.succeeded) {
+        await fetchTourRequests();
+        closeRescheduleModal();
+      } else {
+        throw new Error(response.errors.join(', '));
       }
-      await fetchTourRequests()
-      closeRescheduleModal()
     } catch (error) {
-      console.error('Error rescheduling tour request:', error)
+      console.error('Error rescheduling tour request:', error);
     }
   }
-}
+};
 
-watch(user, fetchTourRequests, { immediate: true })
+watch(user, fetchTourRequests, {immediate: true});
 
-onMounted(fetchTourRequests)
+onMounted(fetchTourRequests);
 </script>

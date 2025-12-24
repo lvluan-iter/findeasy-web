@@ -4,14 +4,14 @@
       <!-- Info Section -->
       <div class="bg-gray-800 p-6 rounded-lg flex flex-col">
         <div class="w-12 h-1 bg-[#0A73C0] mb-4" />
-        <h2 class="text-2xl text-white font-bold mb-4">
-          Khám Phá
-        </h2>
+        <h2 class="text-2xl text-white font-bold mb-4">Khám Phá</h2>
         <p class="text-gray-400 mb-6 text-sm">
-          Tìm kiếm nơi an cư lý tưởng hoặc cơ hội đầu tư bất động sản với chúng tôi. 
-          Khám phá các thành phố tốt nhất để thuê hoặc mua nhà, đáp ứng mọi nhu cầu sống và kinh doanh của bạn.
+          Tìm kiếm nơi an cư lý tưởng hoặc cơ hội đầu tư bất động sản với chúng tôi. Khám phá các thành phố tốt nhất để
+          thuê hoặc mua nhà, đáp ứng mọi nhu cầu sống và kinh doanh của bạn.
         </p>
-        <button class="bg-black text-white px-6 py-3 hover:bg-gray-700 transition duration-300 text-sm flex items-center">
+        <button
+          class="bg-black text-white px-6 py-3 hover:bg-gray-700 transition duration-300 text-sm flex items-center"
+        >
           Xem Tất Cả
           <svg
             class="w-4 h-4 ml-2"
@@ -20,20 +20,11 @@
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M9 5l7 7-7 7"
-            />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
           </svg>
         </button>
         <div class="mt-auto">
-          <img
-            src="@/assets/images/map.png"
-            alt="Map"
-            class="hidden lg:block w-full h-auto opacity-50"
-          >
+          <img src="@/assets/images/map.png" alt="Map" class="hidden lg:block w-full h-auto opacity-50" />
           <div class="flex justify-center mt-4">
             <span class="w-2 h-2 bg-[#0A73C0] rounded-full mx-1" />
             <span class="w-2 h-2 bg-gray-600 rounded-full mx-1" />
@@ -41,17 +32,9 @@
         </div>
       </div>
 
-      <div
-        v-if="isLoading"
-        class="lg:col-span-3 h-full flex flex-col items-center justify-center text-center px-4"
-      >
+      <div v-if="isLoading" class="lg:col-span-3 h-full flex flex-col items-center justify-center text-center px-4">
         <div class="bg-blue-500/10 rounded-full p-6 mb-6 animate-pulse">
-          <svg
-            class="w-16 h-16 text-blue-500"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
+          <svg class="w-16 h-16 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -60,9 +43,7 @@
             />
           </svg>
         </div>
-        <h3 class="text-xl font-semibold text-white mb-2">
-          Đang tải dữ liệu...
-        </h3>
+        <h3 class="text-xl font-semibold text-white mb-2">Đang tải dữ liệu...</h3>
         <p class="text-gray-400 mb-6 max-w-md">
           Vui lòng đợi trong giây lát trong khi chúng tôi tải thông tin địa điểm.
         </p>
@@ -73,12 +54,7 @@
         class="lg:col-span-3 h-full flex flex-col items-center justify-center text-center px-4"
       >
         <div class="bg-gray-800 rounded-full p-6 mb-6">
-          <svg
-            class="w-16 h-16 text-gray-600"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
+          <svg class="w-16 h-16 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -87,17 +63,10 @@
             />
           </svg>
         </div>
-        <h3 class="text-xl font-semibold text-white mb-2">
-          Không có dữ liệu thành phố
-        </h3>
-        <p class="text-gray-400 mb-6 max-w-md">
-          Hiện tại chưa có thông tin về các thành phố. Vui lòng thử lại sau.
-        </p>
+        <h3 class="text-xl font-semibold text-white mb-2">Không có dữ liệu thành phố</h3>
+        <p class="text-gray-400 mb-6 max-w-md">Hiện tại chưa có thông tin về các thành phố. Vui lòng thử lại sau.</p>
       </div>
-      <div
-        v-else
-        class="lg:col-span-3 h-full relative overflow-hidden"
-      >
+      <div v-else class="lg:col-span-3 h-full relative overflow-hidden">
         <swiper
           :slides-per-view="slidesPerView"
           :space-between="24"
@@ -108,29 +77,20 @@
           @swiper="onSwiper"
           @slide-change="onSlideChange"
         >
-          <swiper-slide
-            v-for="(city, index) in cities"
-            :key="index"
-            class="h-full"
-          >
+          <swiper-slide v-for="(city, index) in cities" :key="index" class="h-full">
             <div
               class="relative rounded-lg overflow-hidden h-full transition-all duration-300 no-copy"
               :class="{'opacity-50': !isActiveOrNext(index)}"
             >
-              <img
-                :src="city.url"
-                :alt="city.name"
-                class="w-full h-full object-cover"
-              >
+              <img :src="city.url" :alt="city.name" class="w-full h-full object-cover" />
               <div
                 v-if="isActiveOrNext(index)"
                 class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70"
               />
-              <div
-                v-if="isActiveOrNext(index)"
-                class="absolute bottom-0 left-0 p-6 text-white"
-              >
-                <span class="bg-[#0A73C0] text-xs px-4 py-2 rounded shadow-[0_0_0_4px_rgba(255,255,255,.2)] mb-3 inline-block">
+              <div v-if="isActiveOrNext(index)" class="absolute bottom-0 left-0 p-6 text-white">
+                <span
+                  class="bg-[#0A73C0] text-xs px-4 py-2 rounded shadow-[0_0_0_4px_rgba(255,255,255,.2)] mb-3 inline-block"
+                >
                   {{ city.count }} PROPERTIES
                 </span>
                 <h3 class="text-xl font-bold mb-2">
@@ -150,10 +110,10 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, computed, getCurrentInstance } from 'vue';
-import { Swiper, SwiperSlide } from 'swiper/vue';
-import { Navigation } from 'swiper/modules';
-import { Endpoint } from '@/constants/Endpoint';
+import {ref, onMounted, onUnmounted, computed, getCurrentInstance} from 'vue';
+import {Swiper, SwiperSlide} from 'swiper/vue';
+import {Navigation} from 'swiper/modules';
+import {Endpoint} from '@/constants/Endpoint';
 import 'swiper/css';
 import 'swiper/css/navigation';
 
@@ -161,16 +121,26 @@ const cities = ref([]);
 const isLoading = ref(true);
 const activeIndex = ref(0);
 const windowWidth = ref(window.innerWidth);
-const { proxy } = getCurrentInstance();
+const {proxy} = getCurrentInstance();
 
 const fetchData = async () => {
   try {
     isLoading.value = true;
     const response = await proxy.$http.get(Endpoint.getLocations);
-    if (response.success) {
-      cities.value = response.data;
+
+    if (response.succeeded) {
+      const res = response.result;
+      if (Array.isArray(res)) {
+        cities.value = res;
+      } else if (res && res.content && Array.isArray(res.content)) {
+        cities.value = res.content;
+      } else {
+        cities.value = [];
+      }
     } else {
-      throw new Error('Failed to fetch locations');
+      const err = Array.isArray(response.errors) ? response.errors.join(', ') : 'Failed to fetch locations';
+      console.error('Fetch locations error:', err, response);
+      cities.value = [];
     }
   } catch (error) {
     console.error('Error:', error);
@@ -245,11 +215,12 @@ onUnmounted(() => {
 }
 
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {
-    opacity: .5;
+    opacity: 0.5;
   }
 }
 

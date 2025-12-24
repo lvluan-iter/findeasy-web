@@ -1,13 +1,10 @@
 <template>
-  <div
-    v-if="property"
-    class="py-6"
-  >
+  <div v-if="property" class="py-6">
     <!-- Header section -->
     <div class="flex flex-wrap gap-2 sm:gap-5 items-center my-4 sm:my-5 mx-4 sm:mx-8 md:mx-16 lg:mx-32">
       <div
         class="text-[rgb(10,115,192)] font-medium cursor-pointer inline-block hover:underline"
-        @click="$router.go(-1);"
+        @click="$router.go(-1)"
       >
         <i class="fa-solid fa-angle-left" />
         Quay lại
@@ -57,13 +54,13 @@
         v-for="(image, index) in property.imageUrls"
         :key="index"
         class="absolute inset-0 transition-opacity duration-500 ease-in-out"
-        :style="{ opacity: currentImageIndex === index ? 1 : 0 }"
+        :style="{opacity: currentImageIndex === index ? 1 : 0}"
       >
         <img
           :src="image"
           :alt="`Property Image ${index + 1}`"
           class="w-full h-full object-fill transition-transform duration-500 ease-in-out transform hover:scale-105"
-        >
+        />
       </div>
 
       <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-60" />
@@ -76,9 +73,15 @@
           {{ property.address }}
         </p>
         <div class="flex flex-wrap items-center space-x-2 sm:space-x-4">
-          <span class="flex items-center text-xs sm:text-sm md:text-base"><i class="fas fa-bed mr-1 sm:mr-2" />{{ property.bedrooms }} giường</span>
-          <span class="flex items-center text-xs sm:text-sm md:text-base"><i class="fas fa-bath mr-1 sm:mr-2" />{{ property.bathrooms }} nhà tắm</span>
-          <span class="flex items-center text-xs sm:text-sm md:text-base"><i class="fas fa-vector-square mr-1 sm:mr-2" />{{ property.area }} m²</span>
+          <span class="flex items-center text-xs sm:text-sm md:text-base"
+            ><i class="fas fa-bed mr-1 sm:mr-2" />{{ property.bedrooms }} giường</span
+          >
+          <span class="flex items-center text-xs sm:text-sm md:text-base"
+            ><i class="fas fa-bath mr-1 sm:mr-2" />{{ property.bathrooms }} nhà tắm</span
+          >
+          <span class="flex items-center text-xs sm:text-sm md:text-base"
+            ><i class="fas fa-vector-square mr-1 sm:mr-2" />{{ property.area }} m²</span
+          >
         </div>
       </div>
 
@@ -87,14 +90,10 @@
           v-for="(image, index) in property.imageUrls.slice(0, 5)"
           :key="index"
           class="w-12 h-12 sm:w-16 sm:h-16 rounded-md overflow-hidden cursor-pointer transition-all duration-300 hover:scale-110 flex-shrink-0"
-          :class="{ 'ring-2 ring-white': currentImageIndex === index }"
+          :class="{'ring-2 ring-white': currentImageIndex === index}"
           @click="currentImageIndex = index"
         >
-          <img
-            :src="image"
-            :alt="`Property Image ${index + 1}`"
-            class="w-full h-full object-cover"
-          >
+          <img :src="image" :alt="`Property Image ${index + 1}`" class="w-full h-full object-cover" />
         </div>
       </div>
 
@@ -129,10 +128,7 @@
         <div class="lg:w-2/3">
           <div>
             <div class="flex justify-between items-center mb-6">
-              <h1
-                v-if="!isEditing"
-                class="text-3xl font-bold text-gray-800"
-              >
+              <h1 v-if="!isEditing" class="text-3xl font-bold text-gray-800">
                 {{ property.title }}
               </h1>
               <input
@@ -140,7 +136,7 @@
                 v-model="editedProperty.title"
                 class="w-full text-3xl font-bold p-2 border-b-2 border-blue-500 focus:outline-none focus:border-blue-700"
                 placeholder="Property Title"
-              >
+              />
             </div>
 
             <div class="flex items-center text-gray-600 mb-4">
@@ -151,7 +147,7 @@
                 v-model="editedProperty.address"
                 class="w-full p-2 border-b border-gray-300 focus:outline-none focus:border-blue-500"
                 placeholder="Property Address"
-              >
+              />
             </div>
 
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-gray-700">
@@ -163,11 +159,8 @@
                   v-model="editedProperty.area"
                   type="number"
                   class="w-20 p-1 border-b border-gray-300 focus:outline-none focus:border-blue-500"
-                >
-                <span
-                  v-if="isEditing"
-                  class="ml-1"
-                >m²</span>
+                />
+                <span v-if="isEditing" class="ml-1">m²</span>
               </div>
               <div class="flex items-center">
                 <i class="fas fa-bed text-blue-500 mr-2" />
@@ -177,11 +170,8 @@
                   v-model="editedProperty.bedrooms"
                   type="number"
                   class="w-16 p-1 border-b border-gray-300 focus:outline-none focus:border-blue-500"
-                >
-                <span
-                  v-if="isEditing"
-                  class="ml-1"
-                >giường</span>
+                />
+                <span v-if="isEditing" class="ml-1">giường</span>
               </div>
               <div class="flex items-center">
                 <i class="fas fa-bath text-blue-500 mr-2" />
@@ -191,11 +181,8 @@
                   v-model="editedProperty.bathrooms"
                   type="number"
                   class="w-16 p-1 border-b border-gray-300 focus:outline-none focus:border-blue-500"
-                >
-                <span
-                  v-if="isEditing"
-                  class="ml-1"
-                >nhà tắm</span>
+                />
+                <span v-if="isEditing" class="ml-1">nhà tắm</span>
               </div>
               <div class="flex items-center">
                 <i class="fas fa-couch text-blue-500 mr-2" />
@@ -205,17 +192,15 @@
                   v-model="editedProperty.furniture"
                   class="w-full p-1 border-b border-gray-300 focus:outline-none focus:border-blue-500"
                   placeholder="Furniture status"
-                >
+                />
               </div>
             </div>
           </div>
 
-          <hr class="my-10">
+          <hr class="my-10" />
 
           <div class="mb-8">
-            <h4 class="text-2xl font-semibold text-gray-800 mb-4">
-              Thông tin bất động sản
-            </h4>
+            <h4 class="text-2xl font-semibold text-gray-800 mb-4">Thông tin bất động sản</h4>
             <div class="flex flex-wrap gap-4">
               <div>
                 <CreativeInput
@@ -226,17 +211,14 @@
                   :is-select="true"
                   :show-tooltip="false"
                   :options="[
-                    { value: '', label: 'Select Type' },
-                    { value: 'For Rent', label: 'For Rent' },
-                    { value: 'For Sale', label: 'For Sale' }
+                    {value: '', label: 'Select Type'},
+                    {value: 'For Rent', label: 'For Rent'},
+                    {value: 'For Sale', label: 'For Sale'}
                   ]"
                   input-icon-class="fas fa-building text-blue-800"
                   input-class="bg-transparent border-none focus:outline-none text-blue-800 w-full"
                 />
-                <div 
-                  v-else 
-                  class="bg-blue-100 text-blue-800 px-4 py-2 rounded-full flex items-center"
-                >
+                <div v-else class="bg-blue-100 text-blue-800 px-4 py-2 rounded-full flex items-center">
                   <i class="fas fa-building mr-2" />
                   <span>{{ property.type }}</span>
                 </div>
@@ -253,10 +235,7 @@
                   input-icon-class="fas fa-layer-group text-green-800"
                   input-class="bg-transparent border-none focus:outline-none text-green-800 w-full"
                 />
-                <div 
-                  v-else 
-                  class="bg-green-100 text-green-800 px-4 py-2 rounded-full flex items-center"
-                >
+                <div v-else class="bg-green-100 text-green-800 px-4 py-2 rounded-full flex items-center">
                   <i class="fas fa-layer-group mr-2" />
                   <span>{{ property.categoryName }}</span>
                 </div>
@@ -264,16 +243,11 @@
             </div>
           </div>
 
-          <hr class="my-10">
+          <hr class="my-10" />
 
           <div>
-            <h4 class="text-2xl font-semibold text-gray-800 mb-4">
-              Mô tả
-            </h4>
-            <p
-              v-if="!isEditing"
-              class="text-gray-600 leading-relaxed"
-            >
+            <h4 class="text-2xl font-semibold text-gray-800 mb-4">Mô tả</h4>
+            <p v-if="!isEditing" class="text-gray-600 leading-relaxed">
               {{ property.description }}
             </p>
             <textarea
@@ -288,30 +262,23 @@
             </p>
           </div>
 
-          <hr class="my-10">
+          <hr class="my-10" />
 
           <div class="mb-8">
-            <h4 class="text-2xl font-semibold text-gray-800 mb-4">
-              Khu vực lân cận
-            </h4>
+            <h4 class="text-2xl font-semibold text-gray-800 mb-4">Khu vực lân cận</h4>
             <div v-if="!isEditing">
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div
                   v-for="(place, index) in property.nearbyPlaces"
-                  :key="index" 
+                  :key="index"
                   class="flex items-center p-3 bg-gray-100 rounded-lg transition-all duration-300 hover:shadow-md"
                 >
-                  <i
-                    :class="getPlaceIcon(place.name)"
-                    class="text-2xl text-indigo-500 mr-3"
-                  />
+                  <i :class="getPlaceIcon(place.name)" class="text-2xl text-indigo-500 mr-3" />
                   <div>
                     <h5 class="font-semibold text-gray-800">
                       {{ place.name }}
                     </h5>
-                    <p class="text-sm text-gray-600">
-                      {{ place.distance }} {{ place.unit }}
-                    </p>
+                    <p class="text-sm text-gray-600">{{ place.distance }} {{ place.unit }}</p>
                   </div>
                 </div>
               </div>
@@ -321,47 +288,30 @@
             </div>
           </div>
 
-          <hr class="my-10">
+          <hr class="my-10" />
 
           <div>
-            <h4 class="text-2xl font-semibold text-gray-800 mb-4">
-              Tiện ích sẵn có
-            </h4>
-            <div
-              v-if="!isEditing"
-              class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4"
-            >
+            <h4 class="text-2xl font-semibold text-gray-800 mb-4">Tiện ích sẵn có</h4>
+            <div v-if="!isEditing" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
               <div
                 v-for="amenity in property.amenities"
                 :key="amenity.id"
                 class="text-[16px] leading-[1.6] text-[#707070] flex items-center"
               >
-                <i
-                  :class="amenity.icon"
-                  class="text-blue-500 mr-2"
-                />
+                <i :class="amenity.icon" class="text-blue-500 mr-2" />
                 {{ amenity.name }}
               </div>
             </div>
-            <AmenitiesCheckbox
-              v-else
-              v-model="editedProperty.amenities"
-            />
-            <hr class="my-10">
+            <AmenitiesCheckbox v-else v-model="editedProperty.amenities" />
+            <hr class="my-10" />
           </div>
 
           <div>
-            <h4 class="text-2xl font-semibold text-gray-800 mb-4">
-              Kết nối chủ sở hữu
-            </h4>
+            <h4 class="text-2xl font-semibold text-gray-800 mb-4">Kết nối chủ sở hữu</h4>
             <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6">
               <div class="relative flex-shrink-0">
                 <div class="w-24 h-24 sm:w-32 sm:h-32 rounded-full border-4 border-[#0a73c0] overflow-hidden">
-                  <img
-                    class="w-full h-full object-cover"
-                    :src="property.user.avatar"
-                    alt="Agent avatar"
-                  >
+                  <img class="w-full h-full object-cover" :src="property.user.avatar" alt="Agent avatar" />
                 </div>
                 <div
                   v-if="isAgentOnline"
@@ -393,13 +343,11 @@
                 </div>
               </div>
             </div>
-            <hr class="my-10">
+            <hr class="my-10" />
           </div>
 
           <div>
-            <h4 class="text-2xl font-semibold text-gray-800 mb-4">
-              Vị trí
-            </h4>
+            <h4 class="text-2xl font-semibold text-gray-800 mb-4">Vị trí</h4>
             <div class="map h-[400px] w-full rounded-[10px] overflow-hidden shadow-md mb-[60px]">
               <MapView
                 v-if="property && propertyCoordinates"
@@ -414,38 +362,23 @@
         <!-- Right column: Form and agent info -->
         <div class="lg:w-1/3">
           <div class="bg-white shadow-lg rounded-3xl p-8 max-w-md w-full mx-auto">
-            <h2 class="text-2xl font-bold text-gray-800 mb-2">
-              Đặt lịch xem nhà
-            </h2>
+            <h2 class="text-2xl font-bold text-gray-800 mb-2">Đặt lịch xem nhà</h2>
             <p class="text-sm text-gray-600 mb-6">
               {{ property.type }} for {{ property.categoryName }} - {{ property.address }}
             </p>
             <div class="bg-blue-50 rounded-xl p-4 mb-6">
-              <p class="text-sm text-blue-800 font-medium">
-                Giá niêm yết
-              </p>
-              <p 
-                v-if="!isEditing" 
-                class="text-3xl font-bold text-blue-900"
-              >
-                ${{ formatPrice(property.price) }}
-              </p>
+              <p class="text-sm text-blue-800 font-medium">Giá niêm yết</p>
+              <p v-if="!isEditing" class="text-3xl font-bold text-blue-900">${{ formatPrice(property.price) }}</p>
               <input
                 v-else
                 v-model="editedProperty.price"
                 type="number"
                 class="p-1 bg-transparent border-b border-gray-300 focus:outline-none focus:border-blue-500"
-              >
+              />
             </div>
-            <form
-              class="space-y-4"
-              @submit.prevent="handleSubmit"
-            >
+            <form class="space-y-4" @submit.prevent="handleSubmit">
               <div class="relative">
-                <i
-                  class="fas fa-phone absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                  :size="18"
-                />
+                <i class="fas fa-phone absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" :size="18" />
                 <input
                   v-model="formData.phoneNumber"
                   type="tel"
@@ -453,7 +386,7 @@
                   placeholder="Số điện thoại"
                   class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   required
-                >
+                />
               </div>
               <div class="relative">
                 <i
@@ -466,20 +399,17 @@
                   name="appointmentDate"
                   class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   required
-                >
+                />
               </div>
               <div class="relative">
-                <i
-                  class="fas fa-clock absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                  :size="18"
-                />
+                <i class="fas fa-clock absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" :size="18" />
                 <input
                   v-model="formData.appointmentTime"
                   type="time"
                   name="appointmentTime"
                   class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   required
-                >
+                />
               </div>
               <div class="relative">
                 <i
@@ -493,7 +423,7 @@
                   placeholder="Email"
                   class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   required
-                >
+                />
               </div>
               <button
                 type="submit"
@@ -504,24 +434,14 @@
             </form>
             <p class="mt-4 text-xs text-center text-gray-500">
               Bằng cách đặt lịch, bạn đã đồng ý
-              <a 
-                href="#" 
-                class="text-blue-500 hover:underline"
-              >Điều khoản dịch vụ</a> <br>và
-              <a 
-                href="#" 
-                class="text-blue-500 hover:underline"
-              >Chính sách bảo mật</a> của chúng tôi
+              <a href="#" class="text-blue-500 hover:underline">Điều khoản dịch vụ</a> <br />và
+              <a href="#" class="text-blue-500 hover:underline">Chính sách bảo mật</a> của chúng tôi
             </p>
           </div>
         </div>
       </div>
 
-      <EditImage
-        v-model:show="showImageDialog"
-        :initial-images="editedProperty.imageUrls"
-        @save="handleSaveImages"
-      />
+      <EditImage v-model:show="showImageDialog" :initial-images="editedProperty.imageUrls" @save="handleSaveImages" />
       <ChatComponent
         v-if="showChat && user"
         :sender-id="user.id"
@@ -529,41 +449,38 @@
         @close="showChat = false"
       />
     </div>
-    <hr class="my-10">
-    <MortgageCalculator 
-      v-if="property.type == 'For Sale'"
-      :property-price="property.price" 
-    />
+    <hr class="my-10" />
+    <MortgageCalculator v-if="property.type == 'For Sale'" :property-price="property.price" />
     <PropertyGallery :images="property.imageUrls" />
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch, getCurrentInstance} from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import { Endpoint } from '@/constants/Endpoint';
+import {ref, computed, onMounted, watch, getCurrentInstance} from 'vue';
+import {useRoute, useRouter} from 'vue-router';
+import {Endpoint} from '@/constants/Endpoint';
 import ChatComponent from './ChatComponent.vue';
 import AmenitiesCheckbox from './AmenitiesCheckbox.vue';
 import NearbyPlacesInput from './NearbyPlacesInput.vue';
 import 'leaflet/dist/leaflet.css';
-import { formatDistanceToNow, parseISO } from 'date-fns';
-import { vi } from 'date-fns/locale';
-import { webSocketService } from '@/api/websocketClient'
-import { useUserStore } from '../stores/userStore'
-import { storeToRefs } from 'pinia'
+import {formatDistanceToNow, parseISO} from 'date-fns';
+import {vi} from 'date-fns/locale';
+import {webSocketService} from '@/api/websocketClient';
+import {useUserStore} from '../stores/userStore';
+import {storeToRefs} from 'pinia';
 import MortgageCalculator from './MortgageCalculator.vue';
-import MapView from './MapView.vue'
+import MapView from './MapView.vue';
 import CreativeInput from './CreativeInput.vue';
 import EditImage from './EditImage.vue';
 import PropertyGallery from './PropertyGallery.vue';
-import { useCategoryStore } from '../stores/categoryStore'
+import {useCategoryStore} from '../stores/categoryStore';
 
 const route = useRoute();
 const router = useRouter();
-const userStore = useUserStore()
-const categoryStore = useCategoryStore()
-const { user } = storeToRefs(userStore)
-const { proxy } = getCurrentInstance()
+const userStore = useUserStore();
+const categoryStore = useCategoryStore();
+const {user} = storeToRefs(userStore);
+const {proxy} = getCurrentInstance();
 
 const showChat = ref(false);
 const property = ref(null);
@@ -582,7 +499,7 @@ const propertyCoordinates = ref(null);
 
 const emit = defineEmits(['loadNearbyProperty']);
 
-const categoryOptions = computed(() => categoryStore.getCategoryOptions)
+const categoryOptions = computed(() => categoryStore.getCategoryOptions);
 
 const isShow = computed(() => {
   return user.value && user.value.id === property.value?.user.id;
@@ -604,20 +521,20 @@ const info = computed(() => {
 });
 
 const formatPrice = (price) => {
-  return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
+  return new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(price);
 };
 
 const formatUpdatedAt = (dateString) => {
   const date = parseISO(dateString);
-  return formatDistanceToNow(date, { addSuffix: true, locale: vi });
+  return formatDistanceToNow(date, {addSuffix: true, locale: vi});
 };
 
 const getPlaceIcon = (placeName) => {
   const iconMap = {
     'đại học': 'fas fa-university',
-    'trường': 'fas fa-school',
+    trường: 'fas fa-school',
     'học viện': 'fas fa-university',
-    'chợ': 'fas fa-store',
+    chợ: 'fas fa-store',
     'siêu thị': 'fas fa-shopping-cart',
     'cửa hàng': 'fas fa-store',
     'bệnh viện': 'fas fa-hospital',
@@ -627,7 +544,7 @@ const getPlaceIcon = (placeName) => {
     'quán ăn': 'fas fa-utensils',
     'quán cà phê': 'fas fa-coffee',
     'phòng tập': 'fas fa-dumbbell',
-    'ga': 'fas fa-train',
+    ga: 'fas fa-train',
     'bến xe': 'fas fa-bus',
     'thư viện': 'fas fa-book',
     'rạp chiếu phim': 'fas fa-film',
@@ -641,9 +558,9 @@ const getPlaceIcon = (placeName) => {
     'trạm cứu hỏa': 'fas fa-fire-extinguisher',
     'bưu điện': 'fas fa-mail-bulk',
     'nhà thờ': 'fas fa-church',
-    'chùa': 'fas fa-place-of-worship',
-    'đền': 'fas fa-place-of-worship',
-    'miếu': 'fas fa-place-of-worship',
+    chùa: 'fas fa-place-of-worship',
+    đền: 'fas fa-place-of-worship',
+    miếu: 'fas fa-place-of-worship',
     'trung tâm thương mại': 'fas fa-shopping-mall',
     'sân vận động': 'fas fa-futbol',
     'trạm xăng': 'fas fa-gas-pump',
@@ -670,12 +587,12 @@ const getPlaceIcon = (placeName) => {
 const fetchProperty = async () => {
   try {
     const response = await proxy.$http.get(Endpoint.getPropertyById(route.params.id));
-    if (response.success) {
-      property.value = response.data;
+    if (response.succeeded) {
+      property.value = response.result;
       editedProperty.value = JSON.parse(JSON.stringify(property.value));
       emit('loadNearbyProperty', info.value);
     } else {
-      throw new Error('Failed to fetch property');
+      throw new Error(response.errors ? response.errors.join(', ') : 'Failed to fetch property');
     }
   } catch (error) {
     console.error('Error fetching property:', error);
@@ -684,7 +601,9 @@ const fetchProperty = async () => {
 
 const getCoordinates = async (address) => {
   try {
-    const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`);
+    const response = await fetch(
+      `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`
+    );
     const data = await response.json();
     if (data && data.length > 0) {
       return [parseFloat(data[0].lat), parseFloat(data[0].lon)];
@@ -698,7 +617,9 @@ const getCoordinates = async (address) => {
 const updateProperty = async () => {
   try {
     const response = await proxy.$http.put(Endpoint.updateProperty(property.value.id), editedProperty.value);
-    if (!response.success) throw new Error('Failed to update property');
+    if (!response.succeeded) {
+      throw new Error(response.errors ? response.errors.join(', ') : 'Failed to update property');
+    }
     property.value = JSON.parse(JSON.stringify(editedProperty.value));
     isEditing.value = false;
     await fetchAllData();
@@ -708,13 +629,12 @@ const updateProperty = async () => {
 };
 
 const fetchUserStatus = async () => {
-  if (!user.value) {
-    return;
-  }
+  if (!property.value?.user?.id) return;
   try {
-    const response = await proxy.$http.get(Endpoint.updateUserStatus(contact.value.id));
-    if (response.success) {
-      isAgentOnline.value = response.data.status === "online";
+    const response = await proxy.$http.get(Endpoint.updateUserStatus(property.value.user.id));
+    if (response.succeeded) {
+      const status = response.result?.status ?? response.result;
+      isAgentOnline.value = status === 'online';
     }
   } catch (error) {
     console.error('Error fetching user status:', error);
@@ -728,17 +648,16 @@ const handleSubmit = async () => {
       phoneNumber: formData.value.phoneNumber,
       email: formData.value.email,
       appointmentDate: formData.value.appointmentDate,
-      appointmentTime: formData.value.appointmentTime,
+      appointmentTime: formData.value.appointmentTime
     };
 
     const response = await proxy.$http.post(Endpoint.createTourRequest, tourRequestDTO);
 
-    if (!response.success) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || 'Failed to submit tour request');
+    if (!response.succeeded) {
+      throw new Error(response.errors ? response.errors.join(', ') : 'Failed to submit tour request');
     }
 
-    const result = await response.json();
+    const result = response.result;
     console.log('Tour request submitted successfully:', result);
 
     formData.value = {
@@ -749,7 +668,6 @@ const handleSubmit = async () => {
     };
 
     alert('Tour request submitted successfully!');
-
   } catch (error) {
     console.error('Error submitting tour request:', error);
     alert(error.message || 'Failed to submit tour request. Please try again.');
@@ -771,14 +689,10 @@ const handleSaveImages = (newImages) => {
 };
 
 function handleUserStatus(message) {
-  const statusUpdate = message
-  if (statusUpdate.userId === contact.value.id) {
-    const data = statusUpdate.status.status
-    if (data === "online") {
-      isAgentOnline.value = true
-    } else {
-      isAgentOnline.value = false
-    }
+  const statusUpdate = message;
+  if (statusUpdate.userId === property.value?.user?.id) {
+    const data = statusUpdate.status?.status ?? statusUpdate.status;
+    isAgentOnline.value = data === 'online';
   }
 }
 
@@ -795,28 +709,35 @@ const fetchAllData = async () => {
 };
 
 const prevImage = () => {
-  currentImageIndex.value = (currentImageIndex.value - 1 + property.value.imageUrls.length) % property.value.imageUrls.length;
+  if (!property.value?.imageUrls?.length) return;
+  currentImageIndex.value =
+    (currentImageIndex.value - 1 + property.value.imageUrls.length) % property.value.imageUrls.length;
 };
 
 const nextImage = () => {
+  if (!property.value?.imageUrls?.length) return;
   currentImageIndex.value = (currentImageIndex.value + 1) % property.value.imageUrls.length;
 };
 
 const initialFetchDone = ref(false);
 
-watch(() => route.params.id, (newId) => {
-  if (newId && !initialFetchDone.value) {
-    fetchAllData();
-    initialFetchDone.value = true;
-  }
-}, { immediate: true });
+watch(
+  () => route.params.id,
+  (newId) => {
+    if (newId && !initialFetchDone.value) {
+      fetchAllData();
+      initialFetchDone.value = true;
+    }
+  },
+  {immediate: true}
+);
 
 onMounted(() => {
   if (!initialFetchDone.value) {
     fetchAllData();
     initialFetchDone.value = true;
   }
-  webSocketService.addSubscription('/topic/user-status', handleUserStatus)
+  webSocketService.addSubscription('/topic/user-status', handleUserStatus);
 });
 </script>
 
