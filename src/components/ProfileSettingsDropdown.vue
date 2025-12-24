@@ -1,19 +1,27 @@
 <template>
   <div class="relative inline-block">
     <div
-      class="dropdown-content absolute top-[70px] right-0 sm:right-0 left-auto sm:left-auto flex flex-col gap-2 bg-white rounded-xl shadow-lg z-50 overflow-hidden transition-all duration-300 ease-in-out w-[250px] sm:w-[325px]"
-      :class="{'max-h-[80vh] p-2': isOpen, 'max-h-0 p-0': !isOpen}"
+      data-testid="user-menu"
+      :aria-hidden="!isOpen"
+      class="dropdown-content absolute top-[70px] right-0 flex flex-col gap-2 bg-white rounded-xl shadow-lg z-50 overflow-hidden transition-all duration-300 ease-in-out w-[300px]"
+      :class="{
+        'max-h-[80vh] p-2': isOpen,
+        'max-h-0 p-0': !isOpen
+      }"
     >
-      <div class="flex p-2 items-center gap-3 sm:gap-5 bg-blue-50 rounded-xl">
-        <div class="w-12 h-12 sm:w-[50px] sm:h-[50px] overflow-hidden rounded-xl shrink-0">
-          <img class="w-full h-full object-cover" :src="props.user.avatar" alt="Avatar" />
+      <div class="flex p-2 items-center gap-4 bg-blue-50 rounded-xl">
+        <div class="w-12 h-12 overflow-hidden rounded-xl">
+          <img class="w-full h-full object-cover" :src="user.avatar" alt="Avatar" />
         </div>
-        <div class="flex-grow flex items-center justify-between">
-          <div class="text-sm sm:text-base font-medium truncate">Hi! {{ props.user.fullname }}</div>
+
+        <div class="flex-grow flex justify-between items-center">
+          <div class="font-medium truncate">Hi! {{ user.fullname }}</div>
+
           <button
-            class="text-blue-600 hover:text-orange-500 transition-colors duration-300 ease-in-out"
+            data-testid="user-menu-edit-profile"
             aria-label="Edit profile"
-            @click="$router.push('/profile')"
+            class="text-blue-600 hover:text-orange-500"
+            @click="goProfile"
           >
             <i class="fa-solid fa-user-pen" />
           </button>
@@ -21,31 +29,25 @@
       </div>
 
       <button
-        v-for="(item, index) in menuItems"
-        :key="index"
-        class="flex p-2 items-center gap-3 sm:gap-5 border border-gray-200 rounded-xl hover:bg-gray-100 transition-all duration-300 ease-in-out text-left"
+        v-for="item in menuItems"
+        :key="item.route"
+        :data-testid="`user-menu-item-${item.route.replace('/', '')}`"
+        class="flex items-center gap-3 p-2 rounded-xl hover:bg-gray-100 text-left"
         @click="handleItemClick(item)"
       >
-        <div class="text-sm sm:text-base font-medium pl-3 sm:pl-[25px] flex-grow">
+        <span class="flex-grow font-medium">
           {{ item.label }}
-        </div>
-        <div
-          class="w-10 h-10 sm:w-[50px] sm:h-[50px] overflow-hidden rounded-xl flex items-center justify-center border border-gray-200 bg-gray-50 shrink-0"
-        >
-          <i class="fa-solid fa-caret-right text-blue-600" />
-        </div>
+        </span>
+        <i class="fa-solid fa-caret-right text-blue-600" />
       </button>
 
       <button
-        class="flex p-2 items-center gap-3 sm:gap-5 border border-gray-200 rounded-xl bg-blue-600 hover:bg-blue-700 transition-all duration-300 ease-in-out"
+        data-testid="user-menu-logout"
+        class="flex items-center gap-3 p-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white"
         @click="handleLogout"
       >
-        <div
-          class="w-10 h-10 sm:w-[50px] sm:h-[50px] overflow-hidden rounded-xl flex items-center justify-center border border-gray-200 bg-gray-50 shrink-0"
-        >
-          <i class="fa-solid fa-right-from-bracket text-blue-600" />
-        </div>
-        <div class="text-sm sm:text-base font-medium text-white flex-grow text-center">Đăng Xuất</div>
+        <i class="fa-solid fa-right-from-bracket" />
+        <span class="flex-grow text-center font-medium"> Đăng Xuất </span>
       </button>
     </div>
   </div>
@@ -56,38 +58,51 @@ import {ref} from 'vue';
 import {useRouter} from 'vue-router';
 import {useUserStore} from '@/stores/userStore';
 
-const props = defineProps({
+defineProps({
   user: {
     type: Object,
     required: true
   }
 });
 
+const emit = defineEmits(['close']);
+
 const router = useRouter();
 const userStore = useUserStore();
-
 const isOpen = ref(false);
+
 const menuItems = [
   {label: 'Tổng Quan', route: '/dashboard'},
-  {label: 'Quản Lý Bất Động Sản', route: '/yourproperty'},
-  {label: 'Quản Lý Yêu Cầu', route: '/tourrequest'},
-  {label: 'Quản Lý Tài Khoản', route: '/profile'}
+  {label: 'Quản Lý BĐS', route: '/yourproperty'},
+  {label: 'Yêu Cầu', route: '/tourrequest'},
+  {label: 'Tài Khoản', route: '/profile'}
 ];
 
 const toggleDropdown = () => {
   isOpen.value = !isOpen.value;
+  return isOpen.value;
 };
 
-const handleItemClick = (item) => {
+function handleItemClick(item) {
   router.push(item.route);
-  isOpen.value = false;
-};
+  close();
+}
 
-const handleLogout = async () => {
+function goProfile() {
+  router.push('/profile');
+  close();
+}
+
+function handleLogout() {
   userStore.logout();
   router.push('/login');
+  close();
+}
+
+function close() {
   isOpen.value = false;
-};
+  emit('close');
+}
 
 defineExpose({toggleDropdown});
 </script>
