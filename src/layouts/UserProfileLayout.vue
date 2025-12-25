@@ -171,21 +171,21 @@
                 <div class="flex items-center justify-between">
                   <span class="text-sm font-medium text-gray-700">Hiển thị email công khai</span>
                   <label class="switch">
-                    <input v-model="user.publicEmail" type="checkbox" />
+                    <input id="toggle-public-email" v-model="user.publicEmail" type="checkbox" />
                     <span class="slider round" />
                   </label>
                 </div>
                 <div class="flex items-center justify-between">
                   <span class="text-sm font-medium text-gray-700">Hiển thị số điện thoại công khai</span>
                   <label class="switch">
-                    <input v-model="user.publicPhone" type="checkbox" />
+                    <input id="toggle-public-phone" v-model="user.publicPhone" type="checkbox" />
                     <span class="slider round" />
                   </label>
                 </div>
                 <div class="flex items-center justify-between">
                   <span class="text-sm font-medium text-gray-700">Hiển thị ngày sinh công khai</span>
                   <label class="switch">
-                    <input v-model="user.publicProfile" type="checkbox" />
+                    <input id="toggle-public-birthdate" v-model="user.publicProfile" type="checkbox" />
                     <span class="slider round" />
                   </label>
                 </div>
@@ -200,6 +200,7 @@
                 <i class="fas fa-times mr-2" /> Hủy
               </button>
               <button
+                data-testid="save-profile-button"
                 class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-300"
                 @click="saveProfile"
               >
@@ -264,11 +265,16 @@
                 </div>
               </div>
             </div>
-            <div v-if="passwordChangeError" class="text-red-500 text-sm mt-2 animate-fade-in">
+            <div
+              v-if="passwordChangeError"
+              data-testid="password-change-error"
+              class="text-red-500 text-sm mt-2 animate-fade-in"
+            >
               {{ passwordChangeError }}
             </div>
             <div class="flex justify-end">
               <button
+                data-testid="change-password-button"
                 class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition duration-300"
                 @click="changePassword"
               >
@@ -280,7 +286,6 @@
       </div>
     </div>
 
-    <!-- Avatar Modal -->
     <div v-if="showAvatarModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div class="bg-white rounded-lg p-6 w-full max-w-md">
         <h2 class="text-xl font-semibold mb-4">Update Avatar</h2>
@@ -324,7 +329,7 @@
 </template>
 
 <script setup>
-import {ref, reactive, watch, onMounted, getCurrentInstance} from 'vue';
+import {ref, reactive, watch, onMounted, getCurrentInstance, nextTick} from 'vue';
 import Cropper from 'cropperjs';
 import 'cropperjs/dist/cropper.css';
 import {useUserStore} from '../stores/userStore';
@@ -342,6 +347,7 @@ const selectedAvatarFile = ref(null);
 const currentDate = ref('');
 const showAvatarModal = ref(false);
 const imageUrl = ref(null);
+const imageElement = ref(null);
 const cropper = ref(null);
 const passwordChangeError = ref('');
 
